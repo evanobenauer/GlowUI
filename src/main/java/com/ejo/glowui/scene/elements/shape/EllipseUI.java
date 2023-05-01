@@ -1,26 +1,23 @@
-package com.ejo.glowui.screen.elements.shape;
+package com.ejo.glowui.scene.elements.shape;
 
-import com.ejo.glowui.screen.Screen;
+import com.ejo.glowui.scene.Scene;
 import org.util.glowlib.math.Vector;
 import org.util.glowlib.misc.ColorE;
 
-public class PolygonUI extends ShapeUI {
+public class EllipseUI extends ShapeUI {
 
-    Vector[] vertices;
-
-    public PolygonUI(Screen screen, Vector pos, ColorE color, Vector... vertices) {
-        super(screen,pos,color,true);
-        this.vertices = vertices;
+    public EllipseUI(Scene scene, Vector pos, Vector size, ColorE color) {
+        super(scene,pos,color,true);
     }
 
     @Override
     public void draw() {
-        //TODO: Create a polygon
+        //Make Ellipse draw code here
     }
 
     @Override
     public boolean updateMouseOver(Vector mousePos) {
-        //TODO find how to do this lol
+        //TODO FINISH THIS
         return false;
     }
 

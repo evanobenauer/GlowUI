@@ -1,22 +1,32 @@
-package com.ejo.glowui.screen.elements.interactable;
+package com.ejo.glowui.scene.elements.interactable;
 
-import com.ejo.glowui.screen.Screen;
-import com.ejo.glowui.screen.elements.shape.RectangleUI;
+import com.ejo.glowui.scene.Scene;
+import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import org.util.glowlib.math.Vector;
 import org.util.glowlib.misc.ColorE;
+import org.util.glowlib.misc.Container;
 
-public class ButtonUI extends InteractableUI {
+//TODO: INCOMPLETE PLACEHOLDER
+public class SliderUI<T extends Number> extends InteractableUI {
 
     private Vector size;
     private ColorE color;
+    private final Container<T> container;
 
     public RectangleUI baseRect;
 
-    public ButtonUI(Screen screen, Vector pos, Vector size, ColorE color, Runnable action) {
-        super(screen,pos,true,action);
+    public T value;
+
+    public SliderUI(Scene scene, Vector pos, Vector size, ColorE color, Container<T> container) {
+        super(scene,pos,true,null);
         this.size = size;
         this.color = color;
-        baseRect = new RectangleUI(getScreen(),getPos(),getSize(),getColor());
+        this.container = container;
+
+        this.value = null;
+        setAction(() -> container.set(value));
+
+        baseRect = new RectangleUI(getScene(),getPos(),getSize(),getColor());
     }
 
 
@@ -29,7 +39,7 @@ public class ButtonUI extends InteractableUI {
 
     @Override
     public void tick() {
-        baseRect = new RectangleUI(getScreen(),getPos(),getSize(),getColor());
+        baseRect = new RectangleUI(getScene(),getPos(),getSize(),getColor());
         super.tick();
     }
 
@@ -39,8 +49,10 @@ public class ButtonUI extends InteractableUI {
 
     @Override
     public void onMouseClick(int button, int action, int mods, Vector mousePos) {
-        if (isMouseOver() && action == 1) {
-            getAction().run();
+        //TODO: MAKE SLIDER CODE HERE
+        // have the action be setting a setting
+        if (isMouseOver()) {
+            //stuff
         }
     }
 
@@ -48,6 +60,7 @@ public class ButtonUI extends InteractableUI {
     public boolean updateMouseOver(Vector mousePos) {
         return baseRect.updateMouseOver(mousePos);
     }
+
 
     public void setSize(Vector size) {
         this.size = size;
@@ -71,4 +84,7 @@ public class ButtonUI extends InteractableUI {
         return color;
     }
 
+    public Container<T> getContainer() {
+        return container;
+    }
 }

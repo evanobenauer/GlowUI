@@ -1,12 +1,13 @@
-package com.ejo.glowui.screen.elements.interactable;
+package com.ejo.glowui.scene.elements.interactable;
 
-import com.ejo.glowui.screen.Screen;
+import com.ejo.glowui.scene.Scene;
 import org.util.glowlib.math.Vector;
 
+//TODO: INCOMPLETE PLACEHOLDER
 public class ModeCycleUI extends InteractableUI {
 
-    public ModeCycleUI(Screen screen, Vector pos, boolean shouldRender, Runnable action) {
-        super(screen, pos, shouldRender, action);
+    public ModeCycleUI(Scene scene, Vector pos, boolean shouldRender, Runnable action) {
+        super(scene, pos, shouldRender, action);
     }
 
     @Override

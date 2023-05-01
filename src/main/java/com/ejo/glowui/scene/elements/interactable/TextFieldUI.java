@@ -1,10 +1,12 @@
-package com.ejo.glowui.screen.elements.interactable;
+package com.ejo.glowui.scene.elements.interactable;
 
-import com.ejo.glowui.screen.Screen;
-import com.ejo.glowui.screen.elements.shape.RectangleUI;
+import com.ejo.glowui.scene.Scene;
+import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import org.util.glowlib.math.Vector;
 import org.util.glowlib.misc.ColorE;
 
+
+//TODO: INCOMPLETE PLACEHOLDER
 public class TextFieldUI extends InteractableUI {
 
     private Vector size;
@@ -12,11 +14,11 @@ public class TextFieldUI extends InteractableUI {
 
     public RectangleUI baseRect;
 
-    public TextFieldUI(Screen screen, Vector pos, Vector size, ColorE color, Runnable action) {
-        super(screen,pos,true,action);
+    public TextFieldUI(Scene scene, Vector pos, Vector size, ColorE color, Runnable action) {
+        super(scene,pos,true,action);
         this.size = size;
         this.color = color;
-        baseRect = new RectangleUI(getScreen(),getPos(),getSize(),getColor());
+        baseRect = new RectangleUI(getScene(),getPos(),getSize(),getColor());
     }
 
 
@@ -29,7 +31,7 @@ public class TextFieldUI extends InteractableUI {
 
     @Override
     public void tick() {
-        baseRect = new RectangleUI(getScreen(),getPos(),getSize(),getColor());
+        baseRect = new RectangleUI(getScene(),getPos(),getSize(),getColor());
         super.tick();
     }
 
