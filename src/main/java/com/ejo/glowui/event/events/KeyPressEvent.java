@@ -4,6 +4,9 @@ import org.util.glowlib.event.EventE;
 
 public class KeyPressEvent extends EventE {
 
+    public static int ACTION_PRESS = 1;
+    public static int ACTION_RELEASE = 0;
+
     long window;
     int key;
     int scancode;
