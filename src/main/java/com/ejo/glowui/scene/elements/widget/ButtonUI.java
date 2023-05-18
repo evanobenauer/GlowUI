@@ -35,7 +35,6 @@ public class ButtonUI extends WidgetUI {
             if (action == Mouse.ACTION_CLICK) this.baseColor = getColor();
             if (isMouseOver()) {
                 if (action == Mouse.ACTION_CLICK) {
-
                     int[] colVal = {getColor().getRed(),getColor().getGreen(),getColor().getBlue()};
                     for (int i = 0; i < colVal.length; i++) {
                         int col = colVal[i] - 50;
