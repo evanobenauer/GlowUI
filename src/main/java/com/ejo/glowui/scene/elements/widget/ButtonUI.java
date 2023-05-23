@@ -26,6 +26,7 @@ public class ButtonUI extends WidgetUI {
     @Override
     protected void drawWidget() {
         new RectangleUI(getScene(),getPos(),getSize(),getColor()).draw();
+        //Draw Name Here
     }
 
     @Override
@@ -57,13 +58,16 @@ public class ButtonUI extends WidgetUI {
     public void setName(String name) {
         this.name = name;
     }
+
     public void setColor(ColorE color) {
         this.color = color;
     }
 
+
     public String getName() {
         return name;
     }
+
     public ColorE getColor() {
         return color;
     }

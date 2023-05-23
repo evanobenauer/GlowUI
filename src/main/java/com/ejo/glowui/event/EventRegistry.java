@@ -16,7 +16,6 @@ public class EventRegistry {
     public static MouseClickEvent EVENT_MOUSE_CLICK = new MouseClickEvent();
     public static RenderEvent EVENT_RENDER = new RenderEvent();
     public static TickEvent EVENT_TICK = new TickEvent();
-    public static EventE EVENT_RUN_MAINTENANCE = new EventE() {
-    };
+    public static EventE EVENT_RUN_MAINTENANCE = new EventE();
 
 }

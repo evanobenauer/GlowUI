@@ -17,28 +17,34 @@ public class SliderUI<T extends Number> extends WidgetUI {
 
     private ColorE color;
 
+    private String name;
+
     private T value;
     private final T min;
     private final T max;
     private final T step;
 
-    private boolean sliding = false;
+    private boolean sliding;
 
-    public SliderUI(Scene scene, Container<T> container, T defaultValue, T min, T max, T step, Vector pos, Vector size, ColorE color) {
+    public SliderUI(Scene scene, Container<T> container, String name, T defaultValue, T min, T max, T step, Vector pos, Vector size, ColorE color) {
         super(scene,pos,size,true,true,null);
         this.color = color;
         this.container = container;
+
+        this.name = name;
 
         this.value = defaultValue;
         this.min = min;
         this.max = max;
         this.step = step;
 
+        this.sliding = false;
+
         setAction(() -> container.set(value));
     }
 
     public SliderUI(Scene scene, SettingUI<T> settingUI, Vector pos, Vector size, ColorE color) {
-        this(scene,settingUI,null, settingUI.getMin(), settingUI.getMax(), settingUI.getStep(), pos, size, color);
+        this(scene,settingUI, settingUI.getKey(), settingUI.getDefaultValue(), settingUI.getMin(), settingUI.getMax(), settingUI.getStep(), pos, size, color);
     }
 
     @Override
@@ -49,7 +55,7 @@ public class SliderUI<T extends Number> extends WidgetUI {
         //Draw the slider fill
         int borderY = 10; //TODO Figure out scaling math for the borders
         int borderX = 10;
-        double sliderWidth = getSize().getX() * (getContainer().get().doubleValue() / (getContainer().getMax()).doubleValue());
+        double sliderWidth = getSize().getX() * (getContainer().get().doubleValue() / getMax().doubleValue());
         new RectangleUI(getScene(),getPos().getAdded(new Vector(borderX,borderY)), new Vector(sliderWidth - borderX, getSize().getY() - borderY*2), new ColorE(0, 125, 200, 150)).draw();
 
         //Draw the slider node
@@ -62,9 +68,9 @@ public class SliderUI<T extends Number> extends WidgetUI {
         //Draw the slider text
         String title;
         if (getContainer().getType().equals("integer")) {
-            title = getContainer().getKey() + ": " + getContainer().get().intValue();
+            title = getName() + ": " + getContainer().get().intValue();
         } else {
-            title = getContainer().getKey() + ": " + String.format("%.2f", getContainer().get());
+            title = getName() + ": " + String.format("%.2f", getContainer().get().doubleValue());
         }
         TextUI text = new TextUI(getScene(),title,null,Vector.NULL);
         text.setPos(getPos().getAdded(new Vector(2,getSize().getY() / 2 - text.getHeight() / 2)));
@@ -78,11 +84,11 @@ public class SliderUI<T extends Number> extends WidgetUI {
     public void tick() {
         super.tick();
         if (sliding) { //Updates the value of the setting based off of the current width of the slider
-            double settingRange = getContainer().getMax().doubleValue() - getContainer().getMin().doubleValue();
+            double settingRange = getMax().doubleValue() - getMin().doubleValue();
             double sliderWidth = getScene().getWindow().getMousePos().getX() - getPos().getX();
             double sliderPercent = NumberUtil.boundValue(sliderWidth,0,getSize().getX()).doubleValue() / getSize().getX();
-            double calculatedValue = getContainer().getMin().doubleValue() + (sliderPercent * settingRange);
-            double val = MathE.roundDouble((((Math.round(calculatedValue / getContainer().getStep().doubleValue())) * getContainer().getStep().doubleValue())), 2); //Rounds the slider based off of the step val
+            double calculatedValue = getMin().doubleValue() + (sliderPercent * settingRange);
+            double val = MathE.roundDouble((((Math.round(calculatedValue / getStep().doubleValue())) * getStep().doubleValue())), 2); //Rounds the slider based off of the step val
 
             value = getContainer().getType().equals("integer") ? (T) (Integer) (int) val : (T) (Double) val;
 
@@ -111,16 +117,27 @@ public class SliderUI<T extends Number> extends WidgetUI {
         this.color = color;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
     public ColorE getColor() {
         return color;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public T getMin() {
         return min;
     }
+
     public T getMax() {
         return max;
     }
+
     public T getStep() {
         return step;
     }

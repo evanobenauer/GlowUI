@@ -41,19 +41,24 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
     public boolean updateMouseOver(Vector mousePos) {
         return false;
     }
+
     public void setSize(Vector size) {
         this.size = size;
     }
 
+
     public Vector getSize() {
         return size;
     }
+
     public double getMin() {
         return min;
     }
+
     public double getMax() {
         return max;
     }
+
     public Container<T> getContainer() {
         return container;
     }

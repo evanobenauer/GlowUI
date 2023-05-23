@@ -20,14 +20,6 @@ public abstract class WidgetUI extends ElementUI {
     private final StopWatch hoverWatch = new StopWatch();
     protected int hoverFade = 0;
 
-    public WidgetUI(Scene scene, Vector pos, Vector size, boolean shouldRender, boolean shouldTick, Runnable action) {
-        super(scene, pos, shouldRender,shouldTick);
-        this.action = action;
-        this.size = size;
-        baseRect = new RectangleUI(scene,Vector.NULL,Vector.NULL,new ColorE(0,0,0,0));
-        onMaintenance.subscribe();
-    }
-
     /**
      * This EventAction injects into the Window Maintenance to consistently update the hover fade rectangle. Whenever an
      * intractable is hovered over, it will gain a slight highlight that fades in upon mouse hover which indicates that it
@@ -40,6 +32,14 @@ public abstract class WidgetUI extends ElementUI {
             hoverWatch.restart();
         }
     });
+
+    public WidgetUI(Scene scene, Vector pos, Vector size, boolean shouldRender, boolean shouldTick, Runnable action) {
+        super(scene, pos, shouldRender,shouldTick);
+        this.action = action;
+        this.size = size;
+        baseRect = new RectangleUI(scene,Vector.NULL,Vector.NULL,new ColorE(0,0,0,0));
+        onMaintenance.subscribe();
+    }
 
     /**
      * Always make sure when creating a child class of an interactable that you reinstantiate the baseRect with the stats of your
@@ -66,9 +66,11 @@ public abstract class WidgetUI extends ElementUI {
         return baseRect.updateMouseOver(mousePos);
     }
 
+
     public void setSize(Vector size) {
         this.size = size;
     }
+
     public void setAction(Runnable action) {
         this.action = action;
     }
@@ -77,6 +79,7 @@ public abstract class WidgetUI extends ElementUI {
     public Vector getSize() {
         return size;
     }
+
     public Runnable getAction() {
         return action;
     }

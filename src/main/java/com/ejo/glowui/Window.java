@@ -32,6 +32,7 @@ public class Window {
     public int frames;
 
     private Scene scene;
+
     public Window(String title, Vector pos, Vector size, Scene startingScene, int maxTPS) {
         this.title = title;
         this.pos = pos;

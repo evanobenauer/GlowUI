@@ -18,6 +18,7 @@ public class ToggleUI extends WidgetUI {
     private final Container<Boolean> container;
 
     private final StopWatch hoverWatch = new StopWatch();
+
     public EventAction onMaintenance = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
         hoverWatch.start();
         if (hoverWatch.hasTimePassedMS(1)) {
@@ -29,6 +30,7 @@ public class ToggleUI extends WidgetUI {
     public ToggleUI(Scene scene, Container<Boolean> container, Vector pos, Vector size) {
         super(scene, pos, size, true, true,null);
         this.container = container;
+
         setAction(() -> container.set(!container.get()));
         onMaintenance.subscribe();
     }

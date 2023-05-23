@@ -2,12 +2,19 @@ package com.ejo.glowui.scene.elements.widget;
 
 import com.ejo.glowui.scene.Scene;
 import org.util.glowlib.math.Vector;
+import org.util.glowlib.misc.Container;
+import org.util.glowlib.setting.SettingUI;
 
 //TODO: INCOMPLETE PLACEHOLDER
-public class ModeCycleUI extends WidgetUI {
+public class ModeCycleUI<T> extends WidgetUI {
 
-    public ModeCycleUI(Scene scene, Vector pos, Vector size, boolean shouldRender, Runnable action) {
-        super(scene, pos, size, shouldRender, true,action);
+    public ModeCycleUI(Scene scene, Container<T> container, String name, Vector pos, Vector size, T... modes) {
+        super(scene, pos, size, true, true,null);
+
+    }
+
+    public ModeCycleUI(Scene scene, SettingUI<T> settingUI, Vector pos, Vector size) {
+        this(scene,settingUI,settingUI.getKey(),pos,size, settingUI.getModes());
     }
 
     @Override

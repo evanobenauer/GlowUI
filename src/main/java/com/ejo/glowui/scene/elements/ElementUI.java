@@ -59,6 +59,7 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
         setTicking(false);
     }
 
+    public abstract boolean updateMouseOver(Vector mousePos);
 
     public void setRendered(boolean shouldRender) {
         this.rendered = shouldRender;
@@ -68,13 +69,14 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
         this.ticking = ticking;
     }
 
-    public abstract boolean updateMouseOver(Vector mousePos);
-
-
     public Vector setPos(Vector pos) {
         return this.pos = pos;
     }
 
+
+    public boolean isMouseOver() {
+        return this.mouseOver;
+    }
 
     public boolean shouldRender() {
         return this.rendered;
@@ -84,13 +86,10 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
         return this.ticking;
     }
 
-    public boolean isMouseOver() {
-        return this.mouseOver;
-    }
-
     public Vector getPos() {
         return this.pos;
     }
+
 
     public Scene getScene() {
         return this.scene;
