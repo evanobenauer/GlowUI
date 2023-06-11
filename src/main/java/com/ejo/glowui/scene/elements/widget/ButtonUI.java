@@ -10,17 +10,19 @@ import org.util.glowlib.util.NumberUtil;
 
 public class ButtonUI extends WidgetUI {
 
-    private String name;
     private ColorE color;
 
     private ColorE baseColor;
 
     public ButtonUI(Scene scene, String name, Vector pos, Vector size, ColorE color, Runnable action) {
-        super(scene,pos,size, true, true, action);
-        this.name = name;
+        super(scene,name,pos,size, true, true, action);
         this.color = color;
 
         this.baseColor = color;
+    }
+
+    public ButtonUI(Scene scene, Vector pos, Vector size, ColorE color, Runnable action) {
+        this(scene,"",pos,size,color,action);
     }
 
     @Override
@@ -39,7 +41,7 @@ public class ButtonUI extends WidgetUI {
                     int[] colVal = {getColor().getRed(),getColor().getGreen(),getColor().getBlue()};
                     for (int i = 0; i < colVal.length; i++) {
                         int col = colVal[i] - 50;
-                        col = NumberUtil.boundValue(col,0,255).intValue();
+                        col = NumberUtil.getBoundValue(col,0,255).intValue();
                         colVal[i] = col;
                     }
                     setColor(new ColorE(colVal[0],colVal[1],colVal[2],getColor().getAlpha()));
@@ -55,18 +57,11 @@ public class ButtonUI extends WidgetUI {
         }
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public void setColor(ColorE color) {
         this.color = color;
     }
 
-
-    public String getName() {
-        return name;
-    }
 
     public ColorE getColor() {
         return color;

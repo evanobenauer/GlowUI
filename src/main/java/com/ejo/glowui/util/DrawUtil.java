@@ -14,7 +14,7 @@ public class DrawUtil {
         } else {
             if (fade > min) fade -= speed;
         }
-        fade = NumberUtil.boundValue(fade,0,255).floatValue();
+        fade = NumberUtil.getBoundValue(fade,0,255).floatValue();
         return fade;
     }
 

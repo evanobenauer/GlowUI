@@ -26,7 +26,7 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
     @Override
     public void draw() {
         super.draw();
-        double barPercent = NumberUtil.boundValue(getContainer().get().doubleValue(),getMin(),getMax()).doubleValue() / getMax();
+        double barPercent = NumberUtil.getBoundValue(getContainer().get().doubleValue(),getMin(),getMax()).doubleValue() / getMax();
 
         new RectangleUI(getScene(),getPos(),getSize(),new ColorE(50,50,50,200)).draw();
         int border = 10;

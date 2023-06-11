@@ -13,6 +13,8 @@ import org.util.glowlib.time.StopWatch;
 //TODO: for all widgets, add an option to display the text or not
 public abstract class WidgetUI extends ElementUI {
 
+    private String name;
+
     private RectangleUI baseRect;
     private Vector size;
     private Runnable action;
@@ -33,8 +35,9 @@ public abstract class WidgetUI extends ElementUI {
         }
     });
 
-    public WidgetUI(Scene scene, Vector pos, Vector size, boolean shouldRender, boolean shouldTick, Runnable action) {
+    public WidgetUI(Scene scene, String name, Vector pos, Vector size, boolean shouldRender, boolean shouldTick, Runnable action) {
         super(scene, pos, shouldRender,shouldTick);
+        this.name = name;
         this.action = action;
         this.size = size;
         baseRect = new RectangleUI(scene,Vector.NULL,Vector.NULL,new ColorE(0,0,0,0));
@@ -42,7 +45,7 @@ public abstract class WidgetUI extends ElementUI {
     }
 
     /**
-     * Always make sure when creating a child class of an interactable that you reinstantiate the baseRect with the stats of your
+     * Always make sure when creating a child class of an interactable that you re-instantiate the baseRect with the stats of your
      * interactable inside the draw method
      */
     @Override
@@ -67,6 +70,14 @@ public abstract class WidgetUI extends ElementUI {
     }
 
 
+    public void removeName() {
+        setName("");
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setSize(Vector size) {
         this.size = size;
     }
@@ -75,6 +86,14 @@ public abstract class WidgetUI extends ElementUI {
         this.action = action;
     }
 
+
+    public boolean hasName() {
+        return !getName().equals("");
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public Vector getSize() {
         return size;

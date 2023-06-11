@@ -12,45 +12,47 @@ import org.util.glowlib.setting.Setting;
 import org.util.glowlib.setting.SettingUI;
 import org.util.glowlib.util.NumberUtil;
 
+
+//TODO: Minimums that are non-zero are broken
 public class SliderUI<T extends Number> extends WidgetUI {
 
     private final Container<T> container;
 
     private ColorE color;
 
-    private String name;
-
     private T value;
     private final T min;
     private final T max;
     private final T step;
 
+    private boolean displayValue;
+
     private boolean sliding;
 
-    public SliderUI(Scene scene, Container<T> container, String name, T defaultValue, T min, T max, T step, Vector pos, Vector size, ColorE color) {
-        super(scene,pos,size,true,true,null);
+    public SliderUI(Scene scene, Container<T> container, String name, T min, T max, T step, Vector pos, Vector size, ColorE color, boolean displayValue) {
+        super(scene,name,pos,size,true,true,null);
         this.color = color;
         this.container = container;
 
-        this.name = name;
-
-        this.value = defaultValue;
+        this.value = container.get();
         this.min = min;
         this.max = max;
         this.step = step;
 
+        this.displayValue = displayValue;
         this.sliding = false;
 
         setAction(() -> container.set(value));
     }
 
-    public SliderUI(Scene scene, Setting<T> setting, T min, T max, T step, Vector pos, Vector size, ColorE color) {
-        this(scene,setting, setting.getKey(), setting.getDefaultValue(), min, max, step, pos, size, color);
+    public SliderUI(Scene scene, Container<T> container, T min, T max, T step, Vector pos, Vector size, ColorE color,boolean displayValue) {
+        this(scene, container, "", min, max, step, pos, size, color,displayValue);
     }
 
-    public SliderUI(Scene scene, SettingUI<T> settingUI, Vector pos, Vector size, ColorE color) {
-        this(scene,settingUI, settingUI.getName(), settingUI.getDefaultValue(), settingUI.getMin(), settingUI.getMax(), settingUI.getStep(), pos, size, color);
+    public SliderUI(Scene scene, SettingUI<T> settingUI, Vector pos, Vector size, ColorE color, boolean displayValue) {
+        this(scene,settingUI, settingUI.getName(), settingUI.getMin(), settingUI.getMax(), settingUI.getStep(), pos, size, color,displayValue);
     }
+
 
     @Override
     protected void drawWidget() {
@@ -122,17 +124,9 @@ public class SliderUI<T extends Number> extends WidgetUI {
         this.color = color;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
 
     public ColorE getColor() {
         return color;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public T getMin() {

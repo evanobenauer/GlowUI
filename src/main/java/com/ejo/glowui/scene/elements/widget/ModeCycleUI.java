@@ -9,12 +9,11 @@ import org.util.glowlib.setting.SettingUI;
 public class ModeCycleUI<T> extends WidgetUI {
 
     public ModeCycleUI(Scene scene, Container<T> container, String name, Vector pos, Vector size, T... modes) {
-        super(scene, pos, size, true, true,null);
-
+        super(scene, name,pos, size, true, true,null);
     }
 
     public ModeCycleUI(Scene scene, SettingUI<T> settingUI, Vector pos, Vector size) {
-        this(scene,settingUI,settingUI.getKey(),pos,size, settingUI.getModes());
+        this(scene,settingUI,settingUI.getName(),pos,size, settingUI.getModes());
     }
 
     @Override

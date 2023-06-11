@@ -34,8 +34,12 @@ public class TextUI extends ElementUI {
     @Override
     public void draw() {
         super.draw();
-        setFont(new Font("Arial", Font.PLAIN, 54));
+        //setFont(new Font("Arial", Font.PLAIN, 54));
         drawText(getText(), getPos().getX(), getPos().getY(), getFont());
+    }
+
+    public void drawCentered(Vector size) {
+        drawText(getText(),getPos().getX() + size.getX() - getWidth()/2,getPos().getY() + size.getY() - getHeight()/2,getFont());
     }
 
     private void drawText(String text, double x, double y, Font font) {
