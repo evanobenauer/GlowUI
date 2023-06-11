@@ -32,17 +32,26 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
         if (!shouldRender()) return;
     }
 
+    /**
+     * Make sure that for every implementation of the tick method in different elements, you supersede the code with the super
+     */
     @Override
     public void tick() {
         if (!shouldTick()) return;
         mouseOver = updateMouseOver(getScene().getWindow().getMousePos());
     }
 
+    /**
+     * Make sure that for every implementation of the tick method in different elements, you supersede the code with the super
+     */
     @Override
     public void onKeyPress(int key, int scancode, int action, int mods) {
         if (!shouldTick()) return;
     }
 
+    /**
+     * Make sure that for every implementation of the tick method in different elements, you supersede the code with the super
+     */
     @Override
     public void onMouseClick(int button, int action, int mods, Vector mousePos) {
         if (!shouldTick()) return;

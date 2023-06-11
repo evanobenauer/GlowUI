@@ -8,6 +8,7 @@ import org.util.glowlib.math.MathE;
 import org.util.glowlib.math.Vector;
 import org.util.glowlib.misc.ColorE;
 import org.util.glowlib.misc.Container;
+import org.util.glowlib.setting.Setting;
 import org.util.glowlib.setting.SettingUI;
 import org.util.glowlib.util.NumberUtil;
 
@@ -43,8 +44,12 @@ public class SliderUI<T extends Number> extends WidgetUI {
         setAction(() -> container.set(value));
     }
 
+    public SliderUI(Scene scene, Setting<T> setting, T min, T max, T step, Vector pos, Vector size, ColorE color) {
+        this(scene,setting, setting.getKey(), setting.getDefaultValue(), min, max, step, pos, size, color);
+    }
+
     public SliderUI(Scene scene, SettingUI<T> settingUI, Vector pos, Vector size, ColorE color) {
-        this(scene,settingUI, settingUI.getKey(), settingUI.getDefaultValue(), settingUI.getMin(), settingUI.getMax(), settingUI.getStep(), pos, size, color);
+        this(scene,settingUI, settingUI.getName(), settingUI.getDefaultValue(), settingUI.getMin(), settingUI.getMax(), settingUI.getStep(), pos, size, color);
     }
 
     @Override
@@ -59,7 +64,7 @@ public class SliderUI<T extends Number> extends WidgetUI {
         new RectangleUI(getScene(),getPos().getAdded(new Vector(borderX,borderY)), new Vector(sliderWidth - borderX, getSize().getY() - borderY*2), new ColorE(0, 125, 200, 150)).draw();
 
         //Draw the slider node
-        int nodeWidth = (int)getSize().getX()/20;
+        int nodeWidth = (int)(getSize().getY()/1.5f);
         double nodeX = sliderWidth - nodeWidth / 2f;
         if (nodeX + nodeWidth > getSize().getX()) nodeX = getSize().getX() - nodeWidth;
         if (nodeX < 0) nodeX = 0;
@@ -70,7 +75,7 @@ public class SliderUI<T extends Number> extends WidgetUI {
         if (getContainer().getType().equals("integer")) {
             title = getName() + ": " + getContainer().get().intValue();
         } else {
-            title = getName() + ": " + String.format("%.2f", getContainer().get().doubleValue());
+            title = getName() + ": " + MathE.roundDouble(getContainer().get().doubleValue(),2);
         }
         TextUI text = new TextUI(getScene(),title,null,Vector.NULL);
         text.setPos(getPos().getAdded(new Vector(2,getSize().getY() / 2 - text.getHeight() / 2)));
@@ -86,7 +91,7 @@ public class SliderUI<T extends Number> extends WidgetUI {
         if (sliding) { //Updates the value of the setting based off of the current width of the slider
             double settingRange = getMax().doubleValue() - getMin().doubleValue();
             double sliderWidth = getScene().getWindow().getMousePos().getX() - getPos().getX();
-            double sliderPercent = NumberUtil.boundValue(sliderWidth,0,getSize().getX()).doubleValue() / getSize().getX();
+            double sliderPercent = NumberUtil.getBoundValue(sliderWidth,0,getSize().getX()).doubleValue() / getSize().getX();
             double calculatedValue = getMin().doubleValue() + (sliderPercent * settingRange);
             double val = MathE.roundDouble((((Math.round(calculatedValue / getStep().doubleValue())) * getStep().doubleValue())), 2); //Rounds the slider based off of the step val
 
@@ -143,7 +148,7 @@ public class SliderUI<T extends Number> extends WidgetUI {
     }
 
     //TODO: Convert to container and assign values
-    public SettingUI<T> getContainer() {
-        return (SettingUI<T>) container;
+    public Setting<T> getContainer() {
+        return (Setting<T>) container;
     }
 }
