@@ -13,8 +13,8 @@ public class TextFieldUI extends WidgetUI {
 
     public RectangleUI baseRect;
 
-    public TextFieldUI(Scene scene, String name, Vector pos, Vector size, ColorE color, Runnable action) {
-        super(scene,name,pos,size,true,true,action);
+    public TextFieldUI(Scene scene, String title, Vector pos, Vector size, ColorE color, Runnable action) {
+        super(scene,title,pos,size,true,true,action);
         this.color = color;
     }
 

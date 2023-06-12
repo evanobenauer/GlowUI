@@ -27,8 +27,8 @@ public class ToggleUI extends WidgetUI {
         }
     });
 
-    public ToggleUI(Scene scene, Container<Boolean> container, String name, Vector pos, Vector size) {
-        super(scene, name, pos, size, true, true,null);
+    public ToggleUI(Scene scene, Container<Boolean> container, String title, Vector pos, Vector size) {
+        super(scene, title, pos, size, true, true,null);
         this.container = container;
 
         setAction(() -> container.set(!container.get()));

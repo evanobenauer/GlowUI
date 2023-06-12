@@ -25,7 +25,7 @@ public class TextUI extends ElementUI {
     private Font font;
     private String text;
 
-    public TextUI(Scene scene, String text, Font font, Vector pos) {
+    public TextUI(Scene scene, String text, Font font, Vector pos, ColorE color) {
         super(scene, pos, true,true);
         this.font = font;
         this.text = text;
@@ -35,6 +35,7 @@ public class TextUI extends ElementUI {
     public void draw() {
         super.draw();
         //setFont(new Font("Arial", Font.PLAIN, 54));
+        if (getText().equals("")) return;
         drawText(getText(), getPos().getX(), getPos().getY(), getFont());
     }
 

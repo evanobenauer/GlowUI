@@ -14,8 +14,8 @@ public class ButtonUI extends WidgetUI {
 
     private ColorE baseColor;
 
-    public ButtonUI(Scene scene, String name, Vector pos, Vector size, ColorE color, Runnable action) {
-        super(scene,name,pos,size, true, true, action);
+    public ButtonUI(Scene scene, String title, Vector pos, Vector size, ColorE color, Runnable action) {
+        super(scene,title,pos,size, true, true, action);
         this.color = color;
 
         this.baseColor = color;

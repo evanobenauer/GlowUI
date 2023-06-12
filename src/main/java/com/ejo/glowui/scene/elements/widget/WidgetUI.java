@@ -10,10 +10,9 @@ import org.util.glowlib.math.Vector;
 import org.util.glowlib.misc.ColorE;
 import org.util.glowlib.time.StopWatch;
 
-//TODO: for all widgets, add an option to display the text or not
 public abstract class WidgetUI extends ElementUI {
 
-    private String name;
+    private String title;
 
     private RectangleUI baseRect;
     private Vector size;
@@ -35,9 +34,9 @@ public abstract class WidgetUI extends ElementUI {
         }
     });
 
-    public WidgetUI(Scene scene, String name, Vector pos, Vector size, boolean shouldRender, boolean shouldTick, Runnable action) {
+    public WidgetUI(Scene scene, String title, Vector pos, Vector size, boolean shouldRender, boolean shouldTick, Runnable action) {
         super(scene, pos, shouldRender,shouldTick);
-        this.name = name;
+        this.title = title;
         this.action = action;
         this.size = size;
         baseRect = new RectangleUI(scene,Vector.NULL,Vector.NULL,new ColorE(0,0,0,0));
@@ -70,12 +69,12 @@ public abstract class WidgetUI extends ElementUI {
     }
 
 
-    public void removeName() {
-        setName("");
+    public void removeTitle() {
+        setTitle("");
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setSize(Vector size) {
@@ -87,12 +86,12 @@ public abstract class WidgetUI extends ElementUI {
     }
 
 
-    public boolean hasName() {
-        return !getName().equals("");
+    public boolean hasTitle() {
+        return !getTitle().equals("");
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public Vector getSize() {
