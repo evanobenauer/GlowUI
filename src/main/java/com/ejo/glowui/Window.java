@@ -78,7 +78,10 @@ public class Window {
      */
     public void startMaintenanceLoop() {
         Thread thread = new Thread(() -> {
-            while (true) EventRegistry.EVENT_RUN_MAINTENANCE.post();
+            while (true) {
+                EventRegistry.EVENT_RUN_MAINTENANCE.post();
+                sleepThread(1);
+            }
         });
         thread.setName("Maintenance Thread");
         thread.setDaemon(true);
@@ -96,6 +99,7 @@ public class Window {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             while (!glfwWindowShouldClose(getWindowId())) { //While the window is open
+                sleepThread(1);
                 if (stopWatch.hasTimePassedMS(1000f/(getMaxTPS()))) {
                     stopWatch.restart();
                     tick();
@@ -117,6 +121,14 @@ public class Window {
             updateWindow();
             draw();
             frames++;
+        }
+    }
+
+    private void sleepThread(long ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
