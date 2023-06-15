@@ -15,6 +15,7 @@ public class QuickDraw {
     }
 
     public static void drawText(Scene scene, String text, Font font, Vector pos, ColorE color) {
+        if (text.equals("")) return;
         new TextUI(scene,text,font,pos,color).draw();
     }
 }
