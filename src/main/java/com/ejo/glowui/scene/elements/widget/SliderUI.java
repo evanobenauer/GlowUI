@@ -12,6 +12,7 @@ import org.util.glowlib.util.NumberUtil;
 
 import java.awt.*;
 
+//TODO Fix Colors on all widgets
 public class SliderUI<T extends Number> extends WidgetUI {
 
     public enum Type {
@@ -87,8 +88,8 @@ public class SliderUI<T extends Number> extends WidgetUI {
             title = getTitle();
         }
         //TODO: Fix text scaling
-        TextUI text = new TextUI(getScene(),title,new Font("Arial", Font.PLAIN, 54),Vector.NULL,ColorE.WHITE);
-        text.setPos(getPos().getAdded(new Vector(2,getSize().getY() / 2 - text.getHeight() / 2)));
+        TextUI text = new TextUI(getScene(),title,new Font("Arial", Font.PLAIN, (int)getSize().getY()),Vector.NULL,ColorE.WHITE);
+        text.setPos(getPos().getAdded(new Vector(2,-1 + getSize().getY() / 2 - text.getHeight() / 2)));
         text.draw();
     }
 

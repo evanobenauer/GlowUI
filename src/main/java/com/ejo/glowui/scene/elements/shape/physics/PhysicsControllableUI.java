@@ -4,6 +4,7 @@ import com.ejo.glowui.scene.elements.shape.IShape;
 import com.ejo.glowui.util.Key;
 import org.util.glowlib.math.Vector;
 
+@Deprecated
 public class PhysicsControllableUI extends PhysicsObjectUI {
 
     private double controlSpeed;

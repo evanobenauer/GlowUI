@@ -15,7 +15,7 @@ public class ModeCycleUI<T> extends WidgetUI {
 
     @Override
     protected void drawWidget() {
-
+        //TODO: Add arrows to each side that darken when clicked and then on release, proceed
     }
 
 }
