@@ -1,21 +1,26 @@
 package com.ejo.glowui.scene.elements.widget;
 
 import com.ejo.glowui.event.EventRegistry;
-import com.ejo.glowui.event.events.MouseClickEvent;
 import com.ejo.glowui.scene.Scene;
+import com.ejo.glowui.scene.elements.TextUI;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowui.util.DrawUtil;
 import com.ejo.glowui.util.Mouse;
+import com.ejo.glowui.util.QuickDraw;
 import org.util.glowlib.event.EventAction;
 import org.util.glowlib.math.Vector;
 import org.util.glowlib.misc.ColorE;
 import org.util.glowlib.misc.Container;
 import org.util.glowlib.time.StopWatch;
 
+import java.awt.*;
+
 public class ToggleUI extends WidgetUI {
 
-    private float toggleFade = 0;
     private final Container<Boolean> container;
+    private ColorE color;
+
+    private float toggleFade = 0;
 
     private final StopWatch hoverWatch = new StopWatch();
 
@@ -27,23 +32,26 @@ public class ToggleUI extends WidgetUI {
         }
     });
 
-    public ToggleUI(Scene scene, Container<Boolean> container, String title, Vector pos, Vector size) {
+    public ToggleUI(Scene scene, Container<Boolean> container, String title, Vector pos, Vector size, ColorE color) {
         super(scene, title, pos, size, true, true,null);
         this.container = container;
+        this.color = color;
 
         setAction(() -> container.set(!container.get()));
         onMaintenance.subscribe();
     }
 
-    public ToggleUI(Scene scene, Container<Boolean> container, Vector pos, Vector size) {
-        this(scene,container,"",pos,size);
+    public ToggleUI(Scene scene, Container<Boolean> container, Vector pos, Vector size, ColorE color) {
+        this(scene,container,"",pos,size,color);
     }
 
+    
     @Override
     protected void drawWidget() {
-        new RectangleUI(getScene(),getPos(), getSize(), new ColorE(50, 50, 50, 200)).draw();
-        new RectangleUI(getScene(), getPos(), getSize(), new ColorE(0, 125, 200, (int) toggleFade)).draw();
-        //RenderUtils.drawText(stack, getSetting().getKey(), getPos().getAdded(new Vector(2, getSize().getY() / 2 - RenderUtils.getStringHeight(Minecraft.getInstance().font) / 2)), ColorE.WHITE);
+        new RectangleUI(getScene(),getPos(), getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
+        new RectangleUI(getScene(), getPos(), getSize(), new ColorE(getColor().getRed(), getColor().getGreen(), getColor().getBlue(), (int) toggleFade)).draw();
+
+        QuickDraw.drawTextCentered(getScene(),getTitle(),new Font("Arial",Font.PLAIN,(int) getSize().getY()),getPos(),getSize(),ColorE.WHITE);
     }
 
     @Override
@@ -56,7 +64,18 @@ public class ToggleUI extends WidgetUI {
         }
     }
 
+
+    public void setColor(ColorE color) {
+        this.color = color;
+    }
+
+
+    public ColorE getColor() {
+        return color;
+    }
+
     public Container<Boolean> getContainer() {
         return container;
     }
+
 }

@@ -1,17 +1,18 @@
 package com.ejo.glowui.scene.elements.widget;
 
-import com.ejo.glowui.event.events.MouseClickEvent;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowui.util.Mouse;
+import com.ejo.glowui.util.QuickDraw;
 import org.util.glowlib.math.Vector;
 import org.util.glowlib.misc.ColorE;
 import org.util.glowlib.util.NumberUtil;
 
+import java.awt.*;
+
 public class ButtonUI extends WidgetUI {
 
     private ColorE color;
-
     private ColorE baseColor;
 
     public ButtonUI(Scene scene, String title, Vector pos, Vector size, ColorE color, Runnable action) {
@@ -28,7 +29,7 @@ public class ButtonUI extends WidgetUI {
     @Override
     protected void drawWidget() {
         new RectangleUI(getScene(),getPos(),getSize(),getColor()).draw();
-        //Draw Name Here
+        QuickDraw.drawTextCentered(getScene(),getTitle(),new Font("Arial",Font.PLAIN,(int)(getSize().getY() / 2.5)),getPos(),getSize(),ColorE.WHITE);
     }
 
     @Override

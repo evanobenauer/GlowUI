@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
+import java.awt.image.DataBufferInt;
 import java.nio.ByteBuffer;
 
 public class TextUI extends ElementUI {
@@ -32,30 +33,27 @@ public class TextUI extends ElementUI {
         this.fontImageBuffer = createFontImageBuffer();
     }
 
-    public TextUI(Scene scene, String text, String font, int size, Vector pos, ColorE color) {
-        super(scene, pos, true,true);
-        this.font = new Font(font,Font.PLAIN,size);
-        this.text = text;
-        this.color = color;
+    public TextUI(Scene scene, String text, String font, int modifier, int height, Vector pos, ColorE color) {
+        this(scene, text, new Font(font,modifier,height),pos,color);
+    }
 
-        this.fontMetrics = createFontMetrics(this.font);
-        this.fontImageBuffer = createFontImageBuffer();
+    public TextUI(Scene scene, String text, String font, int height, Vector pos, ColorE color) {
+        this(scene, text, font, Font.PLAIN, height, pos,color);
     }
 
     @Override
     public void draw() {
         super.draw();
-        if (getText().equals("")) return;
         renderText(getPos().getX(), getPos().getY());
     }
 
     public void drawCentered(Vector size) {
         super.draw();
-        if (getText().equals("")) return;
-        renderText(getPos().getX() + size.getX() - getWidth()/2,getPos().getY() + size.getY() - getHeight()/2);
+        renderText(getPos().getX() + size.getX()/2 - getWidth()/2,getPos().getY() + size.getY()/2 - getHeight()/2 - 2);
     }
 
     private void renderText(double x, double y) {
+        if (getText().equals("")) return;
         GL.createCapabilities();
         GL11.glRasterPos2f((float)x, (float)y);
         GL11.glPixelZoom(1, -1);
@@ -64,16 +62,17 @@ public class TextUI extends ElementUI {
 
 
     private FontMetrics createFontMetrics(Font font) {
-        BufferedImage tempImage = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage tempImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         Graphics graphics = tempImage.getGraphics();
         graphics.setFont(font);
         return graphics.getFontMetrics();
     }
 
     private ByteBuffer createFontImageBuffer() {
+        if (text.equals("")) return null;
         int imgWidth = fontMetrics.stringWidth(getText());
         int imgHeight = fontMetrics.getHeight();
-        BufferedImage fontImage = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage fontImage = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
 
         Graphics graphics = fontImage.getGraphics();
         graphics.setFont(getFont());
@@ -81,10 +80,10 @@ public class TextUI extends ElementUI {
         graphics.drawString(getText(), 0, fontMetrics.getAscent());
 
         DataBuffer dataBuffer = fontImage.getRaster().getDataBuffer();
-        byte[] imageData = ((DataBufferByte) dataBuffer).getData();
+        int[] imageData = ((DataBufferInt) dataBuffer).getData();
         ByteBuffer buffer = BufferUtils.createByteBuffer(imageData.length * 4);
-        for (byte pixel : imageData) {
-            buffer.put(pixel);
+        for (int pixel : imageData) {
+            buffer.putInt(pixel);
         }
         buffer.flip();
         return buffer;
@@ -136,6 +135,14 @@ public class TextUI extends ElementUI {
         this.fontImageBuffer = createFontImageBuffer();
     }
 
+    public void setModifier(int modifier) {
+        String name = this.font.getName();
+        int size = this.font.getSize();
+        this.font = new Font(name,modifier,size);
+        this.fontMetrics = createFontMetrics(this.font);
+        this.fontImageBuffer = createFontImageBuffer();
+    }
+
     public void setText(String text) {
         this.text = text;
         this.fontImageBuffer = createFontImageBuffer();
@@ -143,6 +150,8 @@ public class TextUI extends ElementUI {
 
     public void setColor(ColorE color) {
         this.color = color;
+        this.fontMetrics = createFontMetrics(font);
+        this.fontImageBuffer = createFontImageBuffer();
     }
 
 }

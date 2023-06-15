@@ -3,6 +3,7 @@ package com.ejo.glowui.scene.elements.widget;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.TextUI;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
+import com.ejo.glowui.util.DrawUtil;
 import com.ejo.glowui.util.Mouse;
 import org.util.glowlib.math.MathE;
 import org.util.glowlib.math.Vector;
@@ -12,7 +13,6 @@ import org.util.glowlib.util.NumberUtil;
 
 import java.awt.*;
 
-//TODO Fix Colors on all widgets
 public class SliderUI<T extends Number> extends WidgetUI {
 
     public enum Type {
@@ -57,24 +57,25 @@ public class SliderUI<T extends Number> extends WidgetUI {
     }
 
 
+    //Recommended for width to be *8 height
     @Override
     protected void drawWidget() {
         //Draw Background
-        new RectangleUI(getScene(),getPos(),getSize(),new ColorE(50,50,50,200)).draw();
+        new RectangleUI(getScene(),getPos(),getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
 
         //Draw the slider fill
         int borderY = 10; //TODO Figure out scaling math for the borders
         int borderX = 10;
         double valueRange = getMax().doubleValue() - getMin().doubleValue();
         double sliderWidth = getSize().getX() / valueRange * (getContainer().get().doubleValue() - getMin().doubleValue());
-        new RectangleUI(getScene(),getPos().getAdded(new Vector(borderX,borderY)), new Vector(sliderWidth - borderX, getSize().getY() - borderY*2), new ColorE(0, 125, 200, 150)).draw();
+        new RectangleUI(getScene(),getPos().getAdded(new Vector(borderX,borderY)), new Vector(sliderWidth - borderX, getSize().getY() - borderY*2), new ColorE(getColor().getRed(), getColor().getGreen(), getColor().getBlue(), getColor().getAlpha() - 100)).draw();
 
         //Draw the slider node
         int nodeWidth = (int)(getSize().getY()/1.5f);
         double nodeX = sliderWidth - nodeWidth / 2f;
         if (nodeX + nodeWidth > getSize().getX()) nodeX = getSize().getX() - nodeWidth;
         if (nodeX < 0) nodeX = 0;
-        new RectangleUI(getScene(),getPos().getAdded(new Vector(nodeX,0)),new Vector(nodeWidth,getSize().getY()),new ColorE(0,125,200,255)).draw();
+        new RectangleUI(getScene(),getPos().getAdded(new Vector(nodeX,0)),new Vector(nodeWidth,getSize().getY()),getColor()).draw();
 
         //Draw the slider text
         String title;
@@ -89,7 +90,7 @@ public class SliderUI<T extends Number> extends WidgetUI {
         }
         //TODO: Fix text scaling
         TextUI text = new TextUI(getScene(),title,new Font("Arial", Font.PLAIN, (int)getSize().getY()),Vector.NULL,ColorE.WHITE);
-        text.setPos(getPos().getAdded(new Vector(2,-1 + getSize().getY() / 2 - text.getHeight() / 2)));
+        text.setPos(getPos().getAdded(new Vector(borderX + 2,-2 + getSize().getY() / 2 - text.getHeight() / 2)));
         text.draw();
     }
 

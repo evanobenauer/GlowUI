@@ -1,59 +1,130 @@
 package com.ejo.glowui.scene.elements.widget;
 
 import com.ejo.glowui.scene.Scene;
+import com.ejo.glowui.scene.elements.TextUI;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
+import com.ejo.glowui.util.DrawUtil;
+import com.ejo.glowui.util.QuickDraw;
+import org.lwjgl.glfw.GLFW;
 import org.util.glowlib.math.Vector;
 import org.util.glowlib.misc.ColorE;
+import org.util.glowlib.misc.Container;
+import org.util.glowlib.setting.Setting;
+import org.util.glowlib.time.StopWatch;
 
+import java.awt.*;
 
-//TODO: INCOMPLETE PLACEHOLDER
 public class TextFieldUI extends WidgetUI {
+
+    private final Container<String> container;
+
+    private final StopWatch cursorTimer = new StopWatch();
+    private boolean typing;
+    private String text;
 
     private ColorE color;
 
-    public RectangleUI baseRect;
-
-    public TextFieldUI(Scene scene, String title, Vector pos, Vector size, ColorE color, Runnable action) {
-        super(scene,title,pos,size,true,true,action);
+    public TextFieldUI(Scene scene, String title, Container<String> container, Vector pos, Vector size, ColorE color) {
+        super(scene,title,pos,size,true,true,null);
+        this.container = container;
+        this.text = container.get();
         this.color = color;
+
+        setAction(() -> container.set(text));
     }
 
-    public TextFieldUI(Scene scene, Vector pos, Vector size, ColorE color, Runnable action) {
-        this(scene,"",pos,size,color,action);
+    public TextFieldUI(Scene scene, Container<String> container, Vector pos, Vector size, ColorE color) {
+        this(scene,"",container,pos,size,color);
     }
 
     @Override
     protected void drawWidget() {
+        //Draw Background
+        new RectangleUI(getScene(),getPos(),getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
 
+        //TODO: Figure out text scaling; Experiment a little
+        // MAYBE use width scaling, when the text gets bigger than the width, make it smaller
+        int bufferX = 10;
+
+        //Define Text with title
+        String msg = (hasTitle() ? getTitle() + ": " : "") + getContainer().get();
+        TextUI text = new TextUI(getScene(),msg,"Arial",(int)(getSize().getY() / 1.33),getPos().getAdded(0,getSize().getY()/2),ColorE.WHITE);
+        text.setPos(text.getPos().getAdded(bufferX,-text.getHeight()/2 - 2));
+
+        //Draw Blinking Cursor
+        if (isTyping()) {
+            text.setColor(ColorE.GREEN);
+            cursorTimer.start();
+            if (cursorTimer.hasTimePassedS(1)) cursorTimer.restart();
+            int alpha = cursorTimer.hasTimePassedMS(500) ? 255 : 0;
+            double x = getPos().getX() + text.getWidth() + bufferX;
+            double y = getPos().getY() + 10;
+            QuickDraw.drawRect(getScene(),new Vector(x,y),new Vector(6,getSize().getY() - 20), new ColorE(255,255,255,alpha));
+        }
+
+        //Draw Text Object
+        text.draw();
     }
 
-    @Override
-    public void tick() {
-        baseRect = new RectangleUI(getScene(),getPos(),getSize(),getColor());
-        super.tick();
-    }
 
     @Override
     public void onKeyPress(int key, int scancode, int action, int mods) {
-        //TODO MAKE THIS TEXT FIELD
+        if (action == 0 || !isTyping()) return;
+        String buttonText = getContainer().get();
+        try {
+            if (isTyping()) {
+                if (key == GLFW.GLFW_KEY_ESCAPE || key == GLFW.GLFW_KEY_ENTER) {
+                    setTyping(false);
+                } else if (key == GLFW.GLFW_KEY_BACKSPACE) {
+                    if (buttonText.length() > 0) buttonText = buttonText.substring(0, buttonText.length() - 1);
+                } else if (key == GLFW.GLFW_KEY_SPACE) {
+                    if (isKeyNumber(getContainer(), key)) buttonText = buttonText + " ";
+                } else if (!GLFW.glfwGetKeyName(key, -1).equals("null")) {
+                    if (GLFW.glfwGetKey(getScene().getWindow().getWindowId(), GLFW.GLFW_KEY_LEFT_SHIFT) == 1 || GLFW.glfwGetKey(getScene().getWindow().getWindowId(), GLFW.GLFW_KEY_RIGHT_SHIFT) == 1) {
+                        buttonText = buttonText + GLFW.glfwGetKeyName(key, -1).toUpperCase();
+                    } else {
+                        if (isKeyNumber(getContainer(), key)) buttonText = buttonText + GLFW.glfwGetKeyName(key, -1);
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+
+        this.text = buttonText;
+
+        getAction().run();
     }
 
     @Override
     public void onMouseClick(int button, int action, int mods, Vector mousePos) {
-        if (isMouseOver()) {
-            if (action == 1) {
-                //activate text field
-            }
-        }  else {
-            //If the mouse is not over, unselect
+        if (button == 0 && action == 1) {
+            if (isTyping()) setTyping(false);
+            if (isMouseOver()) setTyping(true);
         }
+    }
+
+    public static boolean isKeyNumber(Container<String> setting, int key) {
+        //TODO: Add an option for numbers only
+        return true;
+    }
+
+    public void setTyping(boolean typing) {
+        this.typing = typing;
     }
 
     public void setColor(ColorE color) {
         this.color = color;
     }
 
+    public boolean isTyping() {
+        return typing;
+    }
+
     public ColorE getColor() {
         return color;
+    }
+
+    public Container<String> getContainer() {
+        return container;
     }
 }
