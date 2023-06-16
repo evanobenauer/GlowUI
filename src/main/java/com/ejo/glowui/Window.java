@@ -79,8 +79,8 @@ public class Window {
     public void startMaintenanceLoop() {
         Thread thread = new Thread(() -> {
             while (true) {
-                EventRegistry.EVENT_RUN_MAINTENANCE.post();
                 sleepThread(1);
+                EventRegistry.EVENT_RUN_MAINTENANCE.post();
             }
         });
         thread.setName("Maintenance Thread");

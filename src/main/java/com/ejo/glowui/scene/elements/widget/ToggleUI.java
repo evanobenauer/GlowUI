@@ -27,7 +27,7 @@ public class ToggleUI extends WidgetUI {
     public EventAction onMaintenance = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
         hoverWatch.start();
         if (hoverWatch.hasTimePassedMS(1)) {
-            toggleFade = (int) DrawUtil.getNextFade(getContainer().get(),toggleFade,0,150,1.75f);
+            toggleFade = (int) DrawUtil.getNextFade(getContainer().get(),toggleFade,0,150,2f);
             hoverWatch.restart();
         }
     });

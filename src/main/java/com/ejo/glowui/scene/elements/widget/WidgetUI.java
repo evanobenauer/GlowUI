@@ -29,7 +29,7 @@ public abstract class WidgetUI extends ElementUI {
     public EventAction onMaintenance = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
         hoverWatch.start();
         if (hoverWatch.hasTimePassedMS(1)) {
-            hoverFade = (int)DrawUtil.getNextFade(isMouseOver(),hoverFade,0,75,1.75f);
+            hoverFade = (int)DrawUtil.getNextFade(isMouseOver(),hoverFade,0,75,2f);
             hoverWatch.restart();
         }
     });
