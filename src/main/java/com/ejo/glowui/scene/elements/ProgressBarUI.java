@@ -41,10 +41,13 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
     @Override
     public void draw() {
         super.draw();
-        double barPercent = NumberUtil.getBoundValue(getContainer().get().doubleValue(), getMin(), getMax()).doubleValue() / getMax();
 
+        //Draw Background
         new RectangleUI(getScene(), getPos(), getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
-        int border = 10;
+
+        double barPercent = NumberUtil.getBoundValue(getContainer().get().doubleValue(), getMin(), getMax()).doubleValue() / getMax();
+        new RectangleUI(getScene(), getPos(), getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
+        int border = (int)getSize().getX()/40;
         new RectangleUI(
                 getScene(),
                 getPos().getAdded(new Vector(border, border)), new Vector(getSize().getX() * barPercent,

@@ -3,6 +3,7 @@ package com.ejo.glowui.scene.elements.widget;
 import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.ElementUI;
+import com.ejo.glowui.scene.elements.TextUI;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowui.util.DrawUtil;
 import org.util.glowlib.event.EventAction;
@@ -10,9 +11,12 @@ import org.util.glowlib.math.Vector;
 import org.util.glowlib.misc.ColorE;
 import org.util.glowlib.time.StopWatch;
 
+import java.awt.*;
+
 public abstract class WidgetUI extends ElementUI {
 
     private String title;
+    private final TextUI displayText;
 
     private RectangleUI baseRect;
     private Vector size;
@@ -37,6 +41,8 @@ public abstract class WidgetUI extends ElementUI {
     public WidgetUI(Scene scene, String title, Vector pos, Vector size, boolean shouldRender, boolean shouldTick, Runnable action) {
         super(scene, pos, shouldRender,shouldTick);
         this.title = title;
+        this.displayText = new TextUI(scene,title,new Font("Arial",Font.PLAIN,(int)size.getY()),pos,ColorE.WHITE);
+
         this.action = action;
         this.size = size;
         baseRect = new RectangleUI(scene,Vector.NULL,Vector.NULL,new ColorE(0,0,0,0));
@@ -100,6 +106,11 @@ public abstract class WidgetUI extends ElementUI {
 
     public Runnable getAction() {
         return action;
+    }
+
+
+    public TextUI getDisplayText() {
+        return displayText;
     }
 
     public RectangleUI getBaseRect() {

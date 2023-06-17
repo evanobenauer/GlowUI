@@ -54,10 +54,9 @@ public class TextUI extends ElementUI {
 
     private void renderText(double x, double y) {
         if (getText().equals("")) return;
-        GL.createCapabilities();
         GL11.glRasterPos2f((float)x, (float)y);
         GL11.glPixelZoom(1, -1);
-        GL11.glDrawPixels(fontMetrics.stringWidth(getText()), fontMetrics.getHeight(), GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, fontImageBuffer);
+        GL11.glDrawPixels((int)getWidth(), (int)getHeight(), GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, fontImageBuffer);
     }
 
 
@@ -69,7 +68,7 @@ public class TextUI extends ElementUI {
     }
 
     private ByteBuffer createFontImageBuffer() {
-        if (text.equals("")) return null;
+        if (getText().equals("")) return null;
         int imgWidth = fontMetrics.stringWidth(getText());
         int imgHeight = fontMetrics.getHeight();
         BufferedImage fontImage = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
@@ -116,12 +115,14 @@ public class TextUI extends ElementUI {
     }
 
     public void setFont(Font font) {
+        if (this.font.equals(font)) return;
         this.font = font;
         this.fontMetrics = createFontMetrics(font);
         this.fontImageBuffer = createFontImageBuffer();
     }
 
     public void setFont(String font) {
+        if (this.font.getName().equals(font)) return;
         int size = this.font.getSize();
         this.font = new Font(font,Font.PLAIN,size);
         this.fontMetrics = createFontMetrics(this.font);
@@ -129,6 +130,7 @@ public class TextUI extends ElementUI {
     }
 
     public void setSize(int size) {
+        if (this.font.getSize() == size) return;
         String name = this.font.getName();
         this.font = new Font(name,Font.PLAIN,size);
         this.fontMetrics = createFontMetrics(this.font);
@@ -136,6 +138,7 @@ public class TextUI extends ElementUI {
     }
 
     public void setModifier(int modifier) {
+        if (this.font.getStyle() == modifier) return;
         String name = this.font.getName();
         int size = this.font.getSize();
         this.font = new Font(name,modifier,size);
@@ -144,11 +147,13 @@ public class TextUI extends ElementUI {
     }
 
     public void setText(String text) {
+        if (this.text.equals(text)) return;
         this.text = text;
         this.fontImageBuffer = createFontImageBuffer();
     }
 
     public void setColor(ColorE color) {
+        if (this.color.equals(color)) return;
         this.color = color;
         this.fontMetrics = createFontMetrics(font);
         this.fontImageBuffer = createFontImageBuffer();

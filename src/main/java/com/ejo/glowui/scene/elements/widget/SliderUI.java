@@ -64,11 +64,10 @@ public class SliderUI<T extends Number> extends WidgetUI {
         new RectangleUI(getScene(),getPos(),getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
 
         //Draw the slider fill
-        int borderY = 10; //TODO Figure out scaling math for the borders
-        int borderX = 10;
+        int border = (int)getSize().getX()/40;
         double valueRange = getMax().doubleValue() - getMin().doubleValue();
-        double sliderWidth = getSize().getX() / valueRange * (getContainer().get().doubleValue() - getMin().doubleValue());
-        new RectangleUI(getScene(),getPos().getAdded(new Vector(borderX,borderY)), new Vector(sliderWidth - borderX, getSize().getY() - borderY*2), new ColorE(getColor().getRed(), getColor().getGreen(), getColor().getBlue(), getColor().getAlpha() - 100)).draw();
+        double sliderWidth = getSize().getX() / valueRange * (value.doubleValue() - getMin().doubleValue());
+        new RectangleUI(getScene(),getPos().getAdded(new Vector(border,border)), new Vector(sliderWidth - border, getSize().getY() - border*2), new ColorE(getColor().getRed(), getColor().getGreen(), getColor().getBlue(), getColor().getAlpha() - 100)).draw();
 
         //Draw the slider node
         int nodeWidth = (int)(getSize().getY()/1.5f);
@@ -81,17 +80,18 @@ public class SliderUI<T extends Number> extends WidgetUI {
         String title;
         if (shouldDisplayValue()) {
             if (getType().equals(Type.INTEGER)) {
-                title = (hasTitle() ? getTitle() + ": " : "") + getContainer().get().intValue();
+                title = (hasTitle() ? getTitle() + ": " : "") + value.intValue();
             } else {
-                title = (hasTitle() ? getTitle() + ": " : "") + MathE.roundDouble(getContainer().get().doubleValue(), 2);
+                title = (hasTitle() ? getTitle() + ": " : "") + MathE.roundDouble(value.doubleValue(), 2);
             }
         } else {
             title = getTitle();
         }
-        //TODO: Fix text scaling
-        TextUI text = new TextUI(getScene(),title,new Font("Arial", Font.PLAIN, (int)getSize().getY()),Vector.NULL,ColorE.WHITE);
-        text.setPos(getPos().getAdded(new Vector(borderX + 2,-2 + getSize().getY() / 2 - text.getHeight() / 2)));
-        text.draw();
+
+        getDisplayText().setText(title);
+        getDisplayText().setSize((int)getSize().getY());
+        getDisplayText().setPos(getPos().getAdded(new Vector(border + 2,-2 + getSize().getY() / 2 - getDisplayText().getHeight() / 2)));
+        getDisplayText().draw();
     }
 
     /**

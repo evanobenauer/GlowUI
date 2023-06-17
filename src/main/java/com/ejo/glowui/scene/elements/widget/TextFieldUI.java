@@ -48,22 +48,24 @@ public class TextFieldUI extends WidgetUI {
 
         //Define Text with title
         String msg = (hasTitle() ? getTitle() + ": " : "") + getContainer().get();
-        TextUI text = new TextUI(getScene(),msg,"Arial",(int)(getSize().getY() / 1.33),getPos().getAdded(0,getSize().getY()/2),ColorE.WHITE);
-        text.setPos(text.getPos().getAdded(bufferX,-text.getHeight()/2 - 2));
+        getDisplayText().setText(msg);
+        getDisplayText().setSize((int)(getSize().getY() / 1.33));
+        getDisplayText().setPos(getPos().getAdded(0,getSize().getY()/2).getAdded(bufferX,-getDisplayText().getHeight()/2 - 2));
+        getDisplayText().setColor(ColorE.WHITE);
 
         //Draw Blinking Cursor
         if (isTyping()) {
-            text.setColor(ColorE.GREEN);
+            getDisplayText().setColor(ColorE.GREEN);
             cursorTimer.start();
             if (cursorTimer.hasTimePassedS(1)) cursorTimer.restart();
             int alpha = cursorTimer.hasTimePassedMS(500) ? 255 : 0;
-            double x = getPos().getX() + text.getWidth() + bufferX;
+            double x = getPos().getX() + getDisplayText().getWidth() + bufferX;
             double y = getPos().getY() + 10;
             QuickDraw.drawRect(getScene(),new Vector(x,y),new Vector(6,getSize().getY() - 20), new ColorE(255,255,255,alpha));
         }
 
         //Draw Text Object
-        text.draw();
+        getDisplayText().draw();
     }
 
 
@@ -78,12 +80,12 @@ public class TextFieldUI extends WidgetUI {
                 } else if (key == GLFW.GLFW_KEY_BACKSPACE) {
                     if (buttonText.length() > 0) buttonText = buttonText.substring(0, buttonText.length() - 1);
                 } else if (key == GLFW.GLFW_KEY_SPACE) {
-                    if (isKeyNumber(getContainer(), key)) buttonText = buttonText + " ";
+                    if (isKeyNumber(false,key)) buttonText = buttonText + " ";
                 } else if (!GLFW.glfwGetKeyName(key, -1).equals("null")) {
                     if (GLFW.glfwGetKey(getScene().getWindow().getWindowId(), GLFW.GLFW_KEY_LEFT_SHIFT) == 1 || GLFW.glfwGetKey(getScene().getWindow().getWindowId(), GLFW.GLFW_KEY_RIGHT_SHIFT) == 1) {
                         buttonText = buttonText + GLFW.glfwGetKeyName(key, -1).toUpperCase();
                     } else {
-                        if (isKeyNumber(getContainer(), key)) buttonText = buttonText + GLFW.glfwGetKeyName(key, -1);
+                        if (isKeyNumber(false,key)) buttonText = buttonText + GLFW.glfwGetKeyName(key, -1);
                     }
                 }
             }
@@ -103,7 +105,7 @@ public class TextFieldUI extends WidgetUI {
         }
     }
 
-    public static boolean isKeyNumber(Container<String> setting, int key) {
+    public static boolean isKeyNumber(boolean numbersOnly, int key) {
         //TODO: Add an option for numbers only
         return true;
     }

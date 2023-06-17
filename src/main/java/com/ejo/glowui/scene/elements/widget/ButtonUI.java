@@ -29,7 +29,10 @@ public class ButtonUI extends WidgetUI {
     @Override
     protected void drawWidget() {
         new RectangleUI(getScene(),getPos(),getSize(),getColor()).draw();
-        QuickDraw.drawTextCentered(getScene(),getTitle(),new Font("Arial",Font.PLAIN,(int)(getSize().getY() / 2.5)),getPos(),getSize(),ColorE.WHITE);
+        getDisplayText().setText(getTitle());
+        getDisplayText().setSize((int)(getSize().getY() / 2.5));
+        getDisplayText().setPos(getPos());
+        getDisplayText().drawCentered(getSize());
     }
 
     @Override

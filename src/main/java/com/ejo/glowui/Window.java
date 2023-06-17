@@ -27,17 +27,19 @@ public class Window {
     private Vector pos;
     private Vector size;
     private int maxTPS;
+    private int maxFPS;
 
     public int ticks;
     public int frames;
 
     private Scene scene;
 
-    public Window(String title, Vector pos, Vector size, Scene startingScene, int maxTPS) {
+    public Window(String title, Vector pos, Vector size, Scene startingScene, int maxTPS, int maxFPS) {
         this.title = title;
         this.pos = pos;
         this.size = size;
         this.maxTPS = maxTPS;
+        this.maxFPS = maxFPS;
         this.scene = startingScene;
     }
 
@@ -96,16 +98,10 @@ public class Window {
      */
     public void startTickLoop() {
         Thread thread = new Thread(() -> {
-            StopWatch stopWatch = new StopWatch();
-            stopWatch.start();
-            while (!glfwWindowShouldClose(getWindowId())) { //While the window is open
-                sleepThread(1);
-                if (stopWatch.hasTimePassedMS(1000f/(getMaxTPS()))) {
-                    stopWatch.restart();
-                    tick();
-                    ticks++;
-                }
-            }
+            loopLimited(!glfwWindowShouldClose(getWindowId()),getMaxTPS(),() -> {
+                tick();
+                ticks++;
+            });
         });
         thread.setName("Tick Thread");
         thread.start();
@@ -117,10 +113,33 @@ public class Window {
      * In order to have consistently paced actions, use the tick loop
      */
     public void runRenderLoop() {
-        while (!glfwWindowShouldClose(getWindowId())) { //While the window is open
+        loopLimited(!glfwWindowShouldClose(getWindowId()),getMaxFPS(),() -> {
             updateWindow();
             draw();
             frames++;
+        });
+    }
+
+    /**
+     * This method will run a loop based off of any condition. The loop will run only so many loops per second if capable
+     * @param loopCondition
+     * @param maxLoopsPerSecond
+     * @param action
+     */
+    private void loopLimited(boolean loopCondition, int maxLoopsPerSecond, Runnable action) {
+        long minFrameTimeNS = 1000000000 / maxLoopsPerSecond; //Minimum frame time in NS
+        long lastUpdateTime = System.nanoTime();
+
+        while (loopCondition) {
+            long currentTimeNS = System.nanoTime();
+            long elapsedTimeNS = currentTimeNS - lastUpdateTime;
+
+            if (elapsedTimeNS >= minFrameTimeNS) {
+                action.run();
+                lastUpdateTime = currentTimeNS;
+            } else {
+                sleepThread((minFrameTimeNS - elapsedTimeNS) / 1000000); //Sleep thread in MS
+            }
         }
     }
 
@@ -131,6 +150,7 @@ public class Window {
             throw new RuntimeException(e);
         }
     }
+
 
     private void tick() {
         onKeyPress();
@@ -218,6 +238,10 @@ public class Window {
         this.maxTPS = maxTPS;
     }
 
+    public void setMaxFPS(int maxFPS) {
+        this.maxFPS = maxFPS;
+    }
+
     public Vector getMousePos() {
         DoubleBuffer buffer = BufferUtils.createDoubleBuffer(1);
         glfwGetCursorPos(getWindowId(), buffer, null);
@@ -249,6 +273,10 @@ public class Window {
 
     public int getMaxTPS() {
         return maxTPS;
+    }
+
+    public int getMaxFPS() {
+        return maxFPS;
     }
 
 }

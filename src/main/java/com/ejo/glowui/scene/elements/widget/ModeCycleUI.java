@@ -50,7 +50,6 @@ public class ModeCycleUI<T> extends WidgetUI {
 
     @Override
     protected void drawWidget() {
-        //TODO: Add arrows to each side that darken when clicked and then on release, proceed
         //Draw Background
         new RectangleUI(getScene(),getPos(),getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
 
@@ -59,9 +58,11 @@ public class ModeCycleUI<T> extends WidgetUI {
         QuickDraw.drawArrow(getScene(),getPos().getAdded(5,5).getAdded(getSize().getX() - 55 - 10,0),getColorR(),false);
 
         //Draw the slider text
-        String title = (hasTitle() ? getTitle() + ": " : "") + getContainer().get();
-        TextUI text = new TextUI(getScene(),title,new Font("Arial", Font.PLAIN, (int)getSize().getY()),getPos(),ColorE.WHITE);
-        text.drawCentered(getSize());
+        String text = (hasTitle() ? getTitle() + ": " : "") + mode;
+        getDisplayText().setText(text);
+        getDisplayText().setSize((int)getSize().getY());
+        getDisplayText().setPos(getPos());
+        getDisplayText().drawCentered(getSize());
     }
 
     @Override
@@ -69,8 +70,8 @@ public class ModeCycleUI<T> extends WidgetUI {
         super.onMouseClick(button, action, mods, mousePos);
         if (isMouseOver()) {
             if (action == 0) {
-                if (button == 0) {
-                    arrayNumber = getModes().indexOf(getContainer().get());
+                if (button == Mouse.BUTTON_RIGHT.getId()) {
+                    arrayNumber = getModes().indexOf(mode);
                     arrayNumber += 1;
                     if (arrayNumber != getModes().size()) {
                         mode = getModes().get(arrayNumber);
@@ -81,8 +82,8 @@ public class ModeCycleUI<T> extends WidgetUI {
                         getAction().run();
                     }
                 }
-                if (button == 1) {
-                    arrayNumber = getModes().indexOf(getContainer().get());
+                if (button == Mouse.BUTTON_LEFT.getId()) {
+                    arrayNumber = getModes().indexOf(mode);
                     arrayNumber -= 1;
                     if (arrayNumber != -1) {
                         mode = getModes().get(arrayNumber);
@@ -95,45 +96,48 @@ public class ModeCycleUI<T> extends WidgetUI {
                 }
             }
             if (action == Mouse.ACTION_CLICK) {
-                int[] colVal = {getBaseColor().getRed(),getBaseColor().getGreen(),getBaseColor().getBlue()};
+                int[] colVal = {getColor().getRed(),getColor().getGreen(),getColor().getBlue()};
                 for (int i = 0; i < colVal.length; i++) {
                     int col = colVal[i] - 50;
                     col = NumberUtil.getBoundValue(col,0,255).intValue();
                     colVal[i] = col;
                 }
-                if (button == 0) setColorR(new ColorE(colVal[0],colVal[1],colVal[2],getBaseColor().getAlpha()));
-                if (button == 1) setColorL(new ColorE(colVal[0],colVal[1],colVal[2],getBaseColor().getAlpha()));
+                if (button == Mouse.BUTTON_RIGHT.getId()) setColorR(new ColorE(colVal[0],colVal[1],colVal[2],getColor().getAlpha()));
+                if (button == Mouse.BUTTON_LEFT.getId()) setColorL(new ColorE(colVal[0],colVal[1],colVal[2],getColor().getAlpha()));
             }
-        }
-        if (action == Mouse.ACTION_RELEASE) {
-            setColorR(baseColor);
-            setColorL(baseColor);
+            if (action == Mouse.ACTION_RELEASE) {
+                if (button == Mouse.BUTTON_RIGHT.getId()) setColorR(baseColor);
+                if (button == Mouse.BUTTON_LEFT.getId()) setColorL(baseColor);
+            }
         }
     }
 
-    public void setBaseColor(ColorE baseColor) {
+
+    public void setColor(ColorE baseColor) {
         this.baseColor = baseColor;
     }
 
-    public void setColorR(ColorE colorR) {
+    private void setColorR(ColorE colorR) {
         this.colorR = colorR;
     }
 
-    public void setColorL(ColorE colorL) {
+    private void setColorL(ColorE colorL) {
         this.colorL = colorL;
     }
 
-    public ColorE getBaseColor() {
+
+    public ColorE getColor() {
         return baseColor;
     }
 
-    public ColorE getColorR() {
+    private ColorE getColorR() {
         return colorR;
     }
 
-    public ColorE getColorL() {
+    private ColorE getColorL() {
         return colorL;
     }
+
 
     public ArrayList<T> getModes() {
         return modes;
@@ -142,4 +146,5 @@ public class ModeCycleUI<T> extends WidgetUI {
     public Container<T> getContainer() {
         return container;
     }
+
 }
