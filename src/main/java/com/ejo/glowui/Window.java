@@ -13,6 +13,7 @@ import com.ejo.glowlib.time.StopWatch;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 import java.util.ConcurrentModificationException;
+import java.util.concurrent.locks.LockSupport;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -53,11 +54,12 @@ public class Window {
      */
     public void init() {
         final long NULL = 0L;
+        final int TRUE = 1;
         if (!glfwInit()) throw new IllegalStateException("Failed to init GLFW");
 
         //Creating the window
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-        windowId = glfwCreateWindow((int)getSize().getX(), (int)getSize().getY(), getTitle(), NULL, NULL);
+        windowId = glfwCreateWindow((int) getSize().getX(), (int) getSize().getY(), getTitle(), NULL, NULL);
         if (getWindowId() == NULL) throw new IllegalStateException("Window could not be created");
 
         //Creating the monitor
@@ -70,9 +72,9 @@ public class Window {
         //Sets the window context to display graphics
         glfwMakeContextCurrent(getWindowId());
         GL.createCapabilities();
-        GL11.glClearColor(0f,0f,0f,0f);
+        GL11.glClearColor(0f, 0f, 0f, 0f);
 
-        glfwSwapInterval(1);// Enable v-sync
+        glfwSwapInterval(TRUE);// Enable v-sync
 
         setScene(getScene());
     }
@@ -104,10 +106,16 @@ public class Window {
      */
     public void startTickLoop() {
         Thread thread = new Thread(() -> {
-            loopLimited(!glfwWindowShouldClose(getWindowId()),getMaxTPS(),() -> {
+            while (!glfwWindowShouldClose(getWindowId())) {
+                long startTimeNS = System.nanoTime();
                 tick();
                 ticks++;
-            });
+                long endTimeNS = System.nanoTime();
+
+                long tickTimeNS = endTimeNS - startTimeNS;
+                long sleepTimeNS = 1000000000 / getMaxTPS() - tickTimeNS;
+                if (sleepTimeNS > 0) sleepThread(sleepTimeNS / 1000000);
+            }
         });
         thread.setName("Tick Thread");
         thread.start();
@@ -119,36 +127,17 @@ public class Window {
      * In order to have consistently paced actions, use the tick loop. The render loop must be the final loop as it is
      * a part of the main thread
      */
-    public void runRenderLoop() {
-        loopLimited(!glfwWindowShouldClose(getWindowId()),getMaxFPS(),() -> {
+    public void runRenderLoop(boolean limit) {
+        while (!glfwWindowShouldClose(getWindowId())) {
+            long startTimeNS = System.nanoTime();
             updateWindow();
             draw();
             frames++;
-        });
-    }
+            long endTimeNS = System.nanoTime();
 
-    /**
-     * This method will run a loop based off of any condition. The loop will run only so many loops per second if capable
-     * @param loopCondition
-     * @param maxLoopsPerSecond
-     * @param action
-     */
-    //TODO: Method still is not perfect and will not consistently reach the max loops even if capable.
-    // It will often run around 2 loops behind per second, even causing inconsistencies with frame-rate
-    private void loopLimited(boolean loopCondition, int maxLoopsPerSecond, Runnable action) {
-        long minFrameTimeNS = 1000000000 / maxLoopsPerSecond; //Minimum frame time in NS
-        long lastUpdateTime = System.nanoTime();
-
-        while (loopCondition) {
-            long currentTimeNS = System.nanoTime();
-            long elapsedTimeNS = currentTimeNS - lastUpdateTime;
-
-            if (elapsedTimeNS >= minFrameTimeNS) {
-                action.run();
-                lastUpdateTime = currentTimeNS;
-            } else {
-                sleepThread((minFrameTimeNS - elapsedTimeNS) / 1000000); //Sleep thread in MS
-            }
+            long tickTimeNS = endTimeNS - startTimeNS;
+            long sleepTimeNS = (1000000000 / getMaxFPS() - tickTimeNS);
+            if (limit) if (sleepTimeNS > 0) sleepThread(sleepTimeNS / 1000000);
         }
     }
 
@@ -185,23 +174,23 @@ public class Window {
         double x = buffer.get(0);
         glfwGetWindowPos(getWindowId(), null, buffer);
         double y = buffer.get(0);
-        Vector pos = new Vector(x,y);
+        Vector pos = new Vector(x, y);
         setPos(pos);
 
         glfwGetWindowSize(getWindowId(), buffer, null);
         double w = buffer.get(0);
         glfwGetWindowSize(getWindowId(), null, buffer);
         double h = buffer.get(0);
-        Vector size = new Vector(w,h);
+        Vector size = new Vector(w, h);
         if (size.getMagnitude() != 0) setSize(size);
     }
 
     public void draw() {
         GL.createCapabilities();
-        GL11.glViewport(0, 0, (int)getSize().getX(), (int)getSize().getY());
+        GL11.glViewport(0, 0, (int) getSize().getX(), (int) getSize().getY());
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        GL11.glOrtho(0, getSize().getX(), getSize().getY(), 0,-1, 1);
+        GL11.glOrtho(0, getSize().getX(), getSize().getY(), 0, -1, 1);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
 
@@ -250,7 +239,7 @@ public class Window {
     }
 
     public void setSize(Vector size) {
-        glfwSetWindowSize(getWindowId(), (int)size.getX(), (int)size.getY());
+        glfwSetWindowSize(getWindowId(), (int) size.getX(), (int) size.getY());
         this.size = size;
     }
 
