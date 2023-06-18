@@ -12,7 +12,7 @@ public class PolygonUI extends ElementUI implements IShape {
     private ColorE color;
 
     public PolygonUI(Scene scene, Vector pos, ColorE color, Vector... vertices) {
-        super(scene,pos,true,false);
+        super(scene,pos,true,true);
         this.color = color;
         this.vertices = vertices;
     }

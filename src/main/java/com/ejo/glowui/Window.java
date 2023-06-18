@@ -30,8 +30,11 @@ public class Window {
     private int maxTPS;
     private int maxFPS;
 
-    public int ticks;
-    public int frames;
+    private int ticks;
+    private int frames;
+
+    private int tps;
+    private int fps;
 
     private Scene scene;
 
@@ -81,11 +84,13 @@ public class Window {
      */
     public void startMaintenanceLoop() {
         Thread thread = new Thread(() -> {
+            StopWatch stopWatch = new StopWatch();
             while (true) {
                 sleepThread(1); //This is a limitation that slows down the maintenance loop. I may plan to change this in the future
+                calculateFPSTPS(stopWatch); //TODO: This may cause lag; more testing is needed
                 try {
                     EventRegistry.EVENT_RUN_MAINTENANCE.post();
-                } catch (ConcurrentModificationException e) {
+                } catch (ConcurrentModificationException e) { //TODO: remove try-catch block when you update GlowLib as it contains this
                     e.printStackTrace();
                 }
             }
@@ -159,6 +164,17 @@ public class Window {
         }
     }
 
+
+    private void calculateFPSTPS(StopWatch stopWatch) {
+        stopWatch.start();
+        if (stopWatch.hasTimePassedS(1)) { //TPS-FPS Updater
+            fps = frames;
+            frames = 0;
+            tps = ticks;
+            ticks = 0;
+            stopWatch.restart();
+        }
+    }
 
     private void tick() {
         onKeyPress();
@@ -285,6 +301,14 @@ public class Window {
 
     public int getMaxFPS() {
         return maxFPS;
+    }
+
+    public int getTPS() {
+        return tps;
+    }
+
+    public int getFPS() {
+        return fps;
     }
 
 }
