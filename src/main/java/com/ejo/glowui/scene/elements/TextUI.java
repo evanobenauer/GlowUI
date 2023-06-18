@@ -94,24 +94,12 @@ public class TextUI extends ElementUI {
         return false;
     }
 
-    public Font getFont() {
-        return font;
-    }
 
-    public String getText() {
-        return text;
-    }
-
-    public ColorE getColor() {
-        return color;
-    }
-
-    public double getWidth() {
-        return fontMetrics.stringWidth(getText());
-    }
-
-    public double getHeight() {
-        return getFont().getSize();
+    public void setColor(ColorE color) {
+        if (this.color.equals(color)) return;
+        this.color = color;
+        this.fontMetrics = createFontMetrics(font);
+        this.fontImageBuffer = createFontImageBuffer();
     }
 
     public void setFont(Font font) {
@@ -152,11 +140,25 @@ public class TextUI extends ElementUI {
         this.fontImageBuffer = createFontImageBuffer();
     }
 
-    public void setColor(ColorE color) {
-        if (this.color.equals(color)) return;
-        this.color = color;
-        this.fontMetrics = createFontMetrics(font);
-        this.fontImageBuffer = createFontImageBuffer();
+
+    public ColorE getColor() {
+        return color;
+    }
+
+    public Font getFont() {
+        return font;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public double getWidth() {
+        return fontMetrics.stringWidth(getText());
+    }
+
+    public double getHeight() {
+        return getFont().getSize();
     }
 
 }

@@ -18,11 +18,11 @@ import java.awt.*;
 public class ToggleUI extends WidgetUI {
 
     private final Container<Boolean> container;
+
     private ColorE color;
 
-    private float toggleFade = 0;
-
     private final StopWatch hoverWatch = new StopWatch();
+    private float toggleFade = 0;
 
     public EventAction onMaintenance = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
         hoverWatch.start();
@@ -32,7 +32,7 @@ public class ToggleUI extends WidgetUI {
         }
     });
 
-    public ToggleUI(Scene scene, Container<Boolean> container, String title, Vector pos, Vector size, ColorE color) {
+    public ToggleUI(Scene scene, String title, Vector pos, Vector size, ColorE color, Container<Boolean> container) {
         super(scene, title, pos, size, true, true,null);
         this.container = container;
         this.color = color;
@@ -41,8 +41,8 @@ public class ToggleUI extends WidgetUI {
         onMaintenance.subscribe();
     }
 
-    public ToggleUI(Scene scene, Container<Boolean> container, Vector pos, Vector size, ColorE color) {
-        this(scene,container,"",pos,size,color);
+    public ToggleUI(Scene scene, Vector pos, Vector size, ColorE color, Container<Boolean> container) {
+        this(scene,"",pos,size,color,container);
     }
 
     

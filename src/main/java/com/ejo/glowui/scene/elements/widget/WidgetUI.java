@@ -108,7 +108,6 @@ public abstract class WidgetUI extends ElementUI {
         return action;
     }
 
-
     public TextUI getDisplayText() {
         return displayText;
     }

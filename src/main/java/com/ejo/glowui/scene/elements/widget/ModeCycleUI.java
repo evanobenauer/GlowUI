@@ -17,18 +17,19 @@ import java.util.Arrays;
 
 public class ModeCycleUI<T> extends WidgetUI {
 
+    private T mode;
+
     private final Container<T> container;
     private final ArrayList<T> modes;
+
     private ColorE baseColor;
     private ColorE colorR;
     private ColorE colorL;
 
-    private T mode;
-
     private static int arrayNumber;
 
     @SafeVarargs
-    public ModeCycleUI(Scene scene, String title, Container<T> container, Vector pos, Vector size, ColorE color, T... modes) {
+    public ModeCycleUI(Scene scene, String title, Vector pos, Vector size, ColorE color, Container<T> container, T... modes) {
         super(scene, title,pos, size, true, true,null);
         this.container = container;
         this.modes = new ArrayList<>(Arrays.asList(modes));
@@ -43,10 +44,9 @@ public class ModeCycleUI<T> extends WidgetUI {
     }
 
     @SafeVarargs
-    public ModeCycleUI(Scene scene, Container<T> container, Vector pos, Vector size, ColorE color, T... modes) {
-        this(scene,"",container,pos,size,color,modes);
+    public ModeCycleUI(Scene scene, Vector pos, Vector size, ColorE color, Container<T> container, T... modes) {
+        this(scene,"",pos,size,color,container,modes);
     }
-
 
     @Override
     protected void drawWidget() {
@@ -105,10 +105,10 @@ public class ModeCycleUI<T> extends WidgetUI {
                 if (button == Mouse.BUTTON_RIGHT.getId()) setColorR(new ColorE(colVal[0],colVal[1],colVal[2],getColor().getAlpha()));
                 if (button == Mouse.BUTTON_LEFT.getId()) setColorL(new ColorE(colVal[0],colVal[1],colVal[2],getColor().getAlpha()));
             }
-            if (action == Mouse.ACTION_RELEASE) {
-                if (button == Mouse.BUTTON_RIGHT.getId()) setColorR(baseColor);
-                if (button == Mouse.BUTTON_LEFT.getId()) setColorL(baseColor);
-            }
+        }
+        if (action == Mouse.ACTION_RELEASE) {
+            if (button == Mouse.BUTTON_RIGHT.getId()) setColorR(baseColor);
+            if (button == Mouse.BUTTON_LEFT.getId()) setColorL(baseColor);
         }
     }
 
@@ -139,12 +139,12 @@ public class ModeCycleUI<T> extends WidgetUI {
     }
 
 
-    public ArrayList<T> getModes() {
-        return modes;
-    }
-
     public Container<T> getContainer() {
         return container;
+    }
+
+    public ArrayList<T> getModes() {
+        return modes;
     }
 
 }

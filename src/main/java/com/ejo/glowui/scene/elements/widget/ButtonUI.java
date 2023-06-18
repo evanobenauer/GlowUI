@@ -12,8 +12,8 @@ import java.awt.*;
 
 public class ButtonUI extends WidgetUI {
 
-    private ColorE color;
     private ColorE baseColor;
+    private ColorE color;
 
     public ButtonUI(Scene scene, String title, Vector pos, Vector size, ColorE color, Runnable action) {
         super(scene,title,pos,size, true, true, action);

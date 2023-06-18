@@ -16,28 +16,31 @@ import java.awt.*;
 
 public class TextFieldUI extends WidgetUI {
 
-    private final Container<String> container;
-
-    private final StopWatch cursorTimer = new StopWatch();
-    private boolean typing;
     private String text;
+
+    private final Container<String> container;
+    private String hint;
 
     private ColorE color;
 
-    public TextFieldUI(Scene scene, String title, Container<String> container, Vector pos, Vector size, ColorE color) {
+    private final StopWatch cursorTimer = new StopWatch();
+    private boolean typing;
+
+    public TextFieldUI(Scene scene, String title, Vector pos, Vector size, ColorE color,Container<String> container, String hint) {
         super(scene,title,pos,size,true,true,null);
         this.container = container;
         this.text = container.get();
+        this.hint = hint;
         this.color = color;
 
         setAction(() -> container.set(text));
     }
 
-    public TextFieldUI(Scene scene, Container<String> container, Vector pos, Vector size, ColorE color) {
-        this(scene,"",container,pos,size,color);
+    public TextFieldUI(Scene scene, Vector pos, Vector size, ColorE color,Container<String> container, String hint) {
+        this(scene,"",pos,size,color,container,hint);
     }
 
-    @Override
+        @Override
     protected void drawWidget() {
         //Draw Background
         new RectangleUI(getScene(),getPos(),getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
@@ -47,7 +50,10 @@ public class TextFieldUI extends WidgetUI {
         int bufferX = 10;
 
         //Define Text with title
-        String msg = (hasTitle() ? getTitle() + ": " : "") + getContainer().get();
+        String msg = (hasTitle() ? getTitle() + ": " : "") + text;
+
+        if (text.equals("")) QuickDraw.drawText(getScene(),getHint(),new Font("Arial",Font.PLAIN,(int)(getSize().getY() / 1.33)),getPos().getAdded(0,getSize().getY()/2).getAdded(bufferX,-getDisplayText().getHeight()/2 - 2),ColorE.GRAY);
+
         getDisplayText().setText(msg);
         getDisplayText().setSize((int)(getSize().getY() / 1.33));
         getDisplayText().setPos(getPos().getAdded(0,getSize().getY()/2).getAdded(bufferX,-getDisplayText().getHeight()/2 - 2));
@@ -110,20 +116,29 @@ public class TextFieldUI extends WidgetUI {
         return true;
     }
 
-    public void setTyping(boolean typing) {
-        this.typing = typing;
-    }
-
     public void setColor(ColorE color) {
         this.color = color;
     }
 
-    public boolean isTyping() {
-        return typing;
+    public void setHint(String hint) {
+        this.hint = hint;
     }
+
+    public void setTyping(boolean typing) {
+        this.typing = typing;
+    }
+
 
     public ColorE getColor() {
         return color;
+    }
+
+    public String getHint() {
+        return hint;
+    }
+
+    public boolean isTyping() {
+        return typing;
     }
 
     public Container<String> getContainer() {

@@ -19,22 +19,20 @@ public class SliderUI<T extends Number> extends WidgetUI {
         INTEGER, FLOAT
     }
 
-    private final Container<T> container;
-
-    private final Type type;
-
-    private ColorE color;
-
     private T value;
+
+    private final Container<T> container;
     private final T min;
     private final T max;
     private final T step;
-
+    private final Type type;
     private boolean displayValue;
+
+    private ColorE color;
 
     private boolean sliding;
 
-    public SliderUI(Scene scene, Container<T> container, String title, T min, T max, T step, Vector pos, Vector size, ColorE color, Type type, boolean displayValue) {
+    public SliderUI(Scene scene, String title, Vector pos, Vector size, ColorE color, Container<T> container, T min, T max, T step, Type type, boolean displayValue) {
         super(scene,title,pos,size,true,true,null);
         this.container = container;
         this.type = type;
@@ -52,10 +50,9 @@ public class SliderUI<T extends Number> extends WidgetUI {
         setAction(() -> container.set(value));
     }
 
-    public SliderUI(Scene scene, Container<T> container, T min, T max, T step, Vector pos, Vector size, ColorE color,Type type,boolean displayValue) {
-        this(scene, container, "", min, max, step, pos, size, color,type,displayValue);
+    public SliderUI(Scene scene, Vector pos, Vector size, ColorE color, Container<T> container, T min, T max, T step, Type type, boolean displayValue) {
+        this(scene,"",pos,size,color,container,min,max,step,type,displayValue);
     }
-
 
     //Recommended for width to be *8 height
     @Override
@@ -131,14 +128,18 @@ public class SliderUI<T extends Number> extends WidgetUI {
         }
     }
 
-    public void setValueDisplayed(boolean displayValue) {
-        this.displayValue = displayValue;
-    }
-
     public void setColor(ColorE color) {
         this.color = color;
     }
 
+    public void setValueDisplayed(boolean displayValue) {
+        this.displayValue = displayValue;
+    }
+
+
+    public ColorE getColor() {
+        return color;
+    }
 
     public boolean shouldDisplayValue() {
         return displayValue;
@@ -148,20 +149,16 @@ public class SliderUI<T extends Number> extends WidgetUI {
         return type;
     }
 
-    public ColorE getColor() {
-        return color;
-    }
-
-    public T getMin() {
-        return min;
+    public T getStep() {
+        return step;
     }
 
     public T getMax() {
         return max;
     }
 
-    public T getStep() {
-        return step;
+    public T getMin() {
+        return min;
     }
 
     public Container<T> getContainer() {

@@ -12,6 +12,7 @@ import org.util.glowlib.time.StopWatch;
 
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
+import java.util.ConcurrentModificationException;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -81,8 +82,12 @@ public class Window {
     public void startMaintenanceLoop() {
         Thread thread = new Thread(() -> {
             while (true) {
-                sleepThread(1);
-                EventRegistry.EVENT_RUN_MAINTENANCE.post();
+                sleepThread(1); //This is a limitation that slows down the maintenance loop. I may plan to change this in the future
+                try {
+                    EventRegistry.EVENT_RUN_MAINTENANCE.post();
+                } catch (ConcurrentModificationException e) {
+                    e.printStackTrace();
+                }
             }
         });
         thread.setName("Maintenance Thread");
@@ -110,7 +115,8 @@ public class Window {
     /**
      * The RenderLoop is the final instantiated loop. It is a part of the main thread alongside the window instantiation.
      * Its goal is to strictly have render items placed in it. The loop will update at the refresh rate of the monitor.
-     * In order to have consistently paced actions, use the tick loop
+     * In order to have consistently paced actions, use the tick loop. The render loop must be the final loop as it is
+     * a part of the main thread
      */
     public void runRenderLoop() {
         loopLimited(!glfwWindowShouldClose(getWindowId()),getMaxFPS(),() -> {
@@ -126,6 +132,8 @@ public class Window {
      * @param maxLoopsPerSecond
      * @param action
      */
+    //TODO: Method still is not perfect and will not consistently reach the max loops even if capable.
+    // It will often run around 2 loops behind per second, even causing inconsistencies with frame-rate
     private void loopLimited(boolean loopCondition, int maxLoopsPerSecond, Runnable action) {
         long minFrameTimeNS = 1000000000 / maxLoopsPerSecond; //Minimum frame time in NS
         long lastUpdateTime = System.nanoTime();
