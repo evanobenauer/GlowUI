@@ -4,7 +4,6 @@ import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.TextUI;
 import com.ejo.glowui.scene.elements.shape.PolygonUI;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
-import com.ejo.glowui.test.GlowUI;
 import org.util.glowlib.math.Vector;
 import org.util.glowlib.misc.ColorE;
 
@@ -38,7 +37,7 @@ public class QuickDraw {
     }
 
     public static void drawFPSTPS(Scene scene, Vector pos, int size, boolean label) {
-        QuickDraw.drawText(scene,(label ? "FPS: " : "") + GlowUI.getWindow().getFPS(),new Font("Arial",Font.PLAIN,size),pos,ColorE.WHITE);
-        QuickDraw.drawText(scene, (label ? "TPS: " : "") + GlowUI.getWindow().getTPS(),new Font("Arial",Font.PLAIN,size),pos.getAdded(0,size + size/5),ColorE.WHITE);
+        QuickDraw.drawText(scene,(label ? "FPS: " : "") + scene.getWindow().getFPS(),new Font("Arial",Font.PLAIN,size),pos,ColorE.WHITE);
+        QuickDraw.drawText(scene, (label ? "TPS: " : "") + scene.getWindow().getTPS(),new Font("Arial",Font.PLAIN,size),pos.getAdded(0,size + size/5),ColorE.WHITE);
     }
 }
