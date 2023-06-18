@@ -2,7 +2,7 @@ package com.ejo.glowui.scene;
 
 import com.ejo.glowui.scene.elements.ElementUI;
 import com.ejo.glowui.Window;
-import org.util.glowlib.math.Vector;
+import com.ejo.glowlib.math.Vector;
 
 import java.util.ArrayList;
 

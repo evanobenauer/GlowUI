@@ -4,8 +4,8 @@ import com.ejo.glowui.scene.Scene;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import org.util.glowlib.math.Vector;
-import org.util.glowlib.misc.ColorE;
+import com.ejo.glowlib.math.Vector;
+import com.ejo.glowlib.misc.ColorE;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

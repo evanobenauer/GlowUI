@@ -2,7 +2,7 @@ package com.ejo.glowui.event.events;
 
 import com.ejo.glowui.Window;
 import com.ejo.glowui.scene.Scene;
-import org.util.glowlib.event.EventE;
+import com.ejo.glowlib.event.EventE;
 
 public class RenderEvent extends EventE {
 

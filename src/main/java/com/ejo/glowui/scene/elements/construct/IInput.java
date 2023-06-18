@@ -1,6 +1,6 @@
 package com.ejo.glowui.scene.elements.construct;
 
-import org.util.glowlib.math.Vector;
+import com.ejo.glowlib.math.Vector;
 
 public interface IInput {
 

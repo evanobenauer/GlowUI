@@ -4,7 +4,7 @@ import com.ejo.glowui.event.events.KeyPressEvent;
 import com.ejo.glowui.event.events.MouseClickEvent;
 import com.ejo.glowui.event.events.RenderEvent;
 import com.ejo.glowui.event.events.TickEvent;
-import org.util.glowlib.event.EventE;
+import com.ejo.glowlib.event.EventE;
 
 /**
  * GlowUI takes advantage of the GlowLib Event System. This system allows these select events to be called and acted upon in different

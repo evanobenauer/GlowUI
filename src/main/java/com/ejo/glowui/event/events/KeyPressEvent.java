@@ -1,6 +1,6 @@
 package com.ejo.glowui.event.events;
 
-import org.util.glowlib.event.EventE;
+import com.ejo.glowlib.event.EventE;
 
 public class KeyPressEvent extends EventE {
 

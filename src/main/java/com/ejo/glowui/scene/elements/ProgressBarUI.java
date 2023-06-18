@@ -4,10 +4,10 @@ import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowui.util.DrawUtil;
 import com.ejo.glowui.util.QuickDraw;
-import org.util.glowlib.math.Vector;
-import org.util.glowlib.misc.ColorE;
-import org.util.glowlib.misc.Container;
-import org.util.glowlib.util.NumberUtil;
+import com.ejo.glowlib.math.Vector;
+import com.ejo.glowlib.misc.ColorE;
+import com.ejo.glowlib.misc.Container;
+import com.ejo.glowlib.util.NumberUtil;
 
 import java.awt.*;
 

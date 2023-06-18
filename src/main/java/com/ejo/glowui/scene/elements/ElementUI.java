@@ -5,7 +5,7 @@ import com.ejo.glowui.scene.elements.construct.IDrawable;
 import com.ejo.glowui.scene.elements.construct.IInput;
 import com.ejo.glowui.scene.elements.construct.IComponent;
 import com.ejo.glowui.scene.elements.construct.ITick;
-import org.util.glowlib.math.Vector;
+import com.ejo.glowlib.math.Vector;
 
 public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput {
 

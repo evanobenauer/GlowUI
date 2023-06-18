@@ -3,8 +3,8 @@ package com.ejo.glowui.scene.elements.shape;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.ElementUI;
 import org.lwjgl.opengl.GL11;
-import org.util.glowlib.math.Vector;
-import org.util.glowlib.misc.ColorE;
+import com.ejo.glowlib.math.Vector;
+import com.ejo.glowlib.misc.ColorE;
 
 public class PolygonUI extends ElementUI implements IShape {
 

@@ -1,7 +1,7 @@
 package com.ejo.glowui.event.events;
 
-import org.util.glowlib.event.EventE;
-import org.util.glowlib.math.Vector;
+import com.ejo.glowlib.event.EventE;
+import com.ejo.glowlib.math.Vector;
 
 public class MouseClickEvent extends EventE {
 

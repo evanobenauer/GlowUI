@@ -7,11 +7,11 @@ import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowui.util.DrawUtil;
 import com.ejo.glowui.util.Mouse;
 import com.ejo.glowui.util.QuickDraw;
-import org.util.glowlib.event.EventAction;
-import org.util.glowlib.math.Vector;
-import org.util.glowlib.misc.ColorE;
-import org.util.glowlib.misc.Container;
-import org.util.glowlib.time.StopWatch;
+import com.ejo.glowlib.event.EventAction;
+import com.ejo.glowlib.math.Vector;
+import com.ejo.glowlib.misc.ColorE;
+import com.ejo.glowlib.misc.Container;
+import com.ejo.glowlib.time.StopWatch;
 
 import java.awt.*;
 

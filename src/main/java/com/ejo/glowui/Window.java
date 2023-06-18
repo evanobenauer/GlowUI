@@ -7,8 +7,8 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import org.util.glowlib.math.Vector;
-import org.util.glowlib.time.StopWatch;
+import com.ejo.glowlib.math.Vector;
+import com.ejo.glowlib.time.StopWatch;
 
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
@@ -87,12 +87,8 @@ public class Window {
             StopWatch stopWatch = new StopWatch();
             while (true) {
                 sleepThread(1); //This is a limitation that slows down the maintenance loop. I may plan to change this in the future
-                calculateFPSTPS(stopWatch); //TODO: This may cause lag; more testing is needed
-                try {
-                    EventRegistry.EVENT_RUN_MAINTENANCE.post();
-                } catch (ConcurrentModificationException e) { //TODO: remove try-catch block when you update GlowLib as it contains this
-                    e.printStackTrace();
-                }
+                calculateFPSTPS(stopWatch);
+                EventRegistry.EVENT_RUN_MAINTENANCE.post();
             }
         });
         thread.setName("Maintenance Thread");

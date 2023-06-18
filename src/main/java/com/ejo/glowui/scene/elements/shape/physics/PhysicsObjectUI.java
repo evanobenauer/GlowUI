@@ -3,8 +3,8 @@ package com.ejo.glowui.scene.elements.shape.physics;
 import com.ejo.glowui.scene.elements.ElementUI;
 import com.ejo.glowui.scene.elements.shape.IShape;
 import com.ejo.glowui.scene.elements.shape.PolygonUI;
-import org.util.glowlib.math.Vector;
-import org.util.glowlib.misc.ColorE;
+import com.ejo.glowlib.math.Vector;
+import com.ejo.glowlib.misc.ColorE;
 
 /**
  * The PhysicsObject class is a container for any shape. The class uses the data from the shape and calculates kinematics to move

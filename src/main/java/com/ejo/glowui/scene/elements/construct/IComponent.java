@@ -1,7 +1,7 @@
 package com.ejo.glowui.scene.elements.construct;
 
 import com.ejo.glowui.scene.Scene;
-import org.util.glowlib.math.Vector;
+import com.ejo.glowlib.math.Vector;
 
 public interface IComponent {
 

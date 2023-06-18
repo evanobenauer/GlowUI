@@ -3,7 +3,7 @@ package com.ejo.glowui.util;
 import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.event.events.MouseClickEvent;
 import org.lwjgl.glfw.GLFW;
-import org.util.glowlib.event.EventAction;
+import com.ejo.glowlib.event.EventAction;
 
 import java.util.HashMap;
 

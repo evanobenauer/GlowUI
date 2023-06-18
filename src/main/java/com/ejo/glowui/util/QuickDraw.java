@@ -4,8 +4,8 @@ import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.TextUI;
 import com.ejo.glowui.scene.elements.shape.PolygonUI;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
-import org.util.glowlib.math.Vector;
-import org.util.glowlib.misc.ColorE;
+import com.ejo.glowlib.math.Vector;
+import com.ejo.glowlib.misc.ColorE;
 
 import java.awt.*;
 

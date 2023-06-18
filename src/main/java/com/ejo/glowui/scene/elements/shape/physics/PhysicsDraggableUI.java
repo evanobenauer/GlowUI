@@ -1,7 +1,7 @@
 package com.ejo.glowui.scene.elements.shape.physics;
 
 import com.ejo.glowui.scene.elements.shape.IShape;
-import org.util.glowlib.math.Vector;
+import com.ejo.glowlib.math.Vector;
 
 public class PhysicsDraggableUI extends PhysicsObjectUI {
 

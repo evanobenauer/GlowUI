@@ -1,7 +1,7 @@
 package com.ejo.glowui.util;
 
-import org.util.glowlib.misc.ColorE;
-import org.util.glowlib.util.NumberUtil;
+import com.ejo.glowlib.misc.ColorE;
+import com.ejo.glowlib.util.NumberUtil;
 
 public class DrawUtil {
 

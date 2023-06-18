@@ -2,7 +2,7 @@ package com.ejo.glowui.scene.elements.shape.physics;
 
 import com.ejo.glowui.scene.elements.shape.IShape;
 import com.ejo.glowui.util.Key;
-import org.util.glowlib.math.Vector;
+import com.ejo.glowlib.math.Vector;
 
 @Deprecated
 public class PhysicsControllableUI extends PhysicsObjectUI {

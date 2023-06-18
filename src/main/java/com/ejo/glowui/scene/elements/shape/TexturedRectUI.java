@@ -1,8 +1,8 @@
 package com.ejo.glowui.scene.elements.shape;
 
 import com.ejo.glowui.scene.Scene;
-import org.util.glowlib.math.Vector;
-import org.util.glowlib.misc.ColorE;
+import com.ejo.glowlib.math.Vector;
+import com.ejo.glowlib.misc.ColorE;
 
 public class TexturedRectUI extends RectangleUI {
 
