@@ -12,8 +12,6 @@ import com.ejo.glowlib.time.StopWatch;
 
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
-import java.util.ConcurrentModificationException;
-import java.util.concurrent.locks.LockSupport;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -28,6 +26,7 @@ public class Window {
     private String title;
     private Vector pos;
     private Vector size;
+
     private int maxTPS;
     private int maxFPS;
 
@@ -127,7 +126,7 @@ public class Window {
      * In order to have consistently paced actions, use the tick loop. The render loop must be the final loop as it is
      * a part of the main thread
      */
-    public void runRenderLoop(boolean limit) {
+    public void runRenderLoop(boolean vSync) {
         while (!glfwWindowShouldClose(getWindowId())) {
             long startTimeNS = System.nanoTime();
             updateWindow();
@@ -137,7 +136,7 @@ public class Window {
 
             long tickTimeNS = endTimeNS - startTimeNS;
             long sleepTimeNS = (1000000000 / getMaxFPS() - tickTimeNS);
-            if (limit) if (sleepTimeNS > 0) sleepThread(sleepTimeNS / 1000000);
+            if (!vSync) if (sleepTimeNS > 0) sleepThread(sleepTimeNS / 1000000);
         }
     }
 
