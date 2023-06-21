@@ -11,6 +11,7 @@ import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.misc.Container;
 import com.ejo.glowlib.setting.Setting;
 import com.ejo.glowlib.time.StopWatch;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
@@ -26,8 +27,8 @@ public class TextFieldUI extends WidgetUI {
     private final StopWatch cursorTimer = new StopWatch();
     private boolean typing;
 
-    public TextFieldUI(Scene scene, String title, Vector pos, Vector size, ColorE color,Container<String> container, String hint) {
-        super(scene,title,pos,size,true,true,null);
+    public TextFieldUI(Scene scene, String title, Vector pos, Vector size, ColorE color, Container<String> container, String hint) {
+        super(scene, title, pos, size, true, true, null);
         this.container = container;
         this.text = container.get();
         this.hint = hint;
@@ -36,28 +37,29 @@ public class TextFieldUI extends WidgetUI {
         setAction(() -> container.set(text));
     }
 
-    public TextFieldUI(Scene scene, Vector pos, Vector size, ColorE color,Container<String> container, String hint) {
-        this(scene,"",pos,size,color,container,hint);
+    public TextFieldUI(Scene scene, Vector pos, Vector size, ColorE color, Container<String> container, String hint) {
+        this(scene, "", pos, size, color, container, hint);
     }
 
-        @Override
+    @Override
     protected void drawWidget() {
         //Draw Background
-        new RectangleUI(getScene(),getPos(),getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
+        new RectangleUI(getScene(), getPos(), getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
 
-        //TODO: Figure out text scaling; Experiment a little
-        // MAYBE use width scaling, when the text gets bigger than the width, make it smaller
-        int bufferX = 10;
+        double border = getSize().getY()/5;
 
-        //Define Text with title
+        //Prepare Text
         String msg = (hasTitle() ? getTitle() + ": " : "") + text;
-
-        if (text.equals("")) QuickDraw.drawText(getScene(),getHint(),new Font("Arial",Font.PLAIN,(int)(getSize().getY() / 1.33)),getPos().getAdded(0,getSize().getY()/2).getAdded(bufferX,-getDisplayText().getHeight()/2 - 2),ColorE.GRAY);
-
-        getDisplayText().setText(msg);
-        getDisplayText().setSize((int)(getSize().getY() / 1.33));
-        getDisplayText().setPos(getPos().getAdded(0,getSize().getY()/2).getAdded(bufferX,-getDisplayText().getHeight()/2 - 2));
+        int size = (int) (getSize().getY() / 1.5);
+        setUpDisplayText(msg,border,size);
+        getDisplayText().setPos(getPos().getAdded(border, -2 + getSize().getY() / 2 - getDisplayText().getHeight() / 2));
         getDisplayText().setColor(ColorE.WHITE);
+
+        //Draw Hint
+        if (text.equals(""))
+            QuickDraw.drawText(getScene(), getHint(), new Font("Arial", Font.PLAIN, size), getPos()
+                    .getAdded(border + getDisplayText().getWidth(), -2 + getSize().getY() / 2 - getDisplayText().getHeight() / 2)
+                    , ColorE.GRAY);
 
         //Draw Blinking Cursor
         if (isTyping()) {
@@ -65,15 +67,20 @@ public class TextFieldUI extends WidgetUI {
             cursorTimer.start();
             if (cursorTimer.hasTimePassedS(1)) cursorTimer.restart();
             int alpha = cursorTimer.hasTimePassedMS(500) ? 255 : 0;
-            double x = getPos().getX() + getDisplayText().getWidth() + bufferX;
-            double y = getPos().getY() + 10;
-            QuickDraw.drawRect(getScene(),new Vector(x,y),new Vector(6,getSize().getY() - 20), new ColorE(255,255,255,alpha));
+            double x = getPos().getX() + getDisplayText().getWidth() + border;
+            double y = getPos().getY() + border;
+            QuickDraw.drawRect(getScene(), new Vector(x, y), new Vector(2, getSize().getY() - 2 * border), new ColorE(255, 255, 255, alpha));
         }
 
         //Draw Text Object
         getDisplayText().draw();
     }
 
+    @Override
+    public void tick() {
+        super.tick();
+        this.text = getContainer().get(); //Consistently sync the value of the container and the value of the widget
+    }
 
     @Override
     public void onKeyPress(int key, int scancode, int action, int mods) {
@@ -86,12 +93,12 @@ public class TextFieldUI extends WidgetUI {
                 } else if (key == GLFW.GLFW_KEY_BACKSPACE) {
                     if (buttonText.length() > 0) buttonText = buttonText.substring(0, buttonText.length() - 1);
                 } else if (key == GLFW.GLFW_KEY_SPACE) {
-                    if (isKeyNumber(false,key)) buttonText = buttonText + " ";
+                    if (isKeyNumber(false, key)) buttonText = buttonText + " ";
                 } else if (!GLFW.glfwGetKeyName(key, -1).equals("null")) {
                     if (GLFW.glfwGetKey(getScene().getWindow().getWindowId(), GLFW.GLFW_KEY_LEFT_SHIFT) == 1 || GLFW.glfwGetKey(getScene().getWindow().getWindowId(), GLFW.GLFW_KEY_RIGHT_SHIFT) == 1) {
                         buttonText = buttonText + GLFW.glfwGetKeyName(key, -1).toUpperCase();
                     } else {
-                        if (isKeyNumber(false,key)) buttonText = buttonText + GLFW.glfwGetKeyName(key, -1);
+                        if (isKeyNumber(false, key)) buttonText = buttonText + GLFW.glfwGetKeyName(key, -1);
                     }
                 }
             }

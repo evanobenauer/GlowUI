@@ -53,16 +53,24 @@ public class ModeCycleUI<T> extends WidgetUI {
         //Draw Background
         new RectangleUI(getScene(),getPos(),getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
 
-        //Draw Mode Arrows
-        QuickDraw.drawArrow(getScene(),getPos().getAdded(5 + 55,5),getColorL(),true);
-        QuickDraw.drawArrow(getScene(),getPos().getAdded(5,5).getAdded(getSize().getX() - 55 - 10,0),getColorR(),false);
+        double border = getSize().getY()/5;
 
-        //Draw the slider text
+        //Draw Mode Arrows
+        double borderArrow = border/2;
+        QuickDraw.drawArrow(getScene(),getPos().getAdded(borderArrow,borderArrow),getColorL(),getSize().getY()-2*borderArrow,true);
+        QuickDraw.drawArrow(getScene(),getPos().getAdded(borderArrow,borderArrow).getAdded(getSize().getX() - getSize().getY() - 2*borderArrow,0),getColorR(),getSize().getY()-2*borderArrow,false);
+
+        //Draw Text
         String text = (hasTitle() ? getTitle() + ": " : "") + mode;
-        getDisplayText().setText(text);
-        getDisplayText().setSize((int)getSize().getY());
-        getDisplayText().setPos(getPos());
-        getDisplayText().drawCentered(getSize());
+        int fontSize = (int)getSize().getY();
+        setUpDisplayText(text,border,fontSize);
+        getDisplayText().drawCentered(getSize().getAdded(-border*2-getSize().getX()/50,-border*2));
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        this.mode = getContainer().get(); //Consistently sync the value of the container and the value of the widget
     }
 
     @Override

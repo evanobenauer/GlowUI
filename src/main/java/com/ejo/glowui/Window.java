@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.time.StopWatch;
+import org.lwjgl.opengl.GL13;
 
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
@@ -58,6 +59,7 @@ public class Window {
 
         //Creating the window
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+        GLFW.glfwWindowHint(GLFW_SAMPLES, 4); //Enable Anti-Aliasing 4X. TODO make this optional
         windowId = glfwCreateWindow((int) getSize().getX(), (int) getSize().getY(), getTitle(), NULL, NULL);
         if (getWindowId() == NULL) throw new IllegalStateException("Window could not be created");
 
@@ -257,6 +259,11 @@ public class Window {
         glfwGetCursorPos(getWindowId(), null, buffer);
         double mouseY = buffer.get(0);
         return new Vector(mouseX, mouseY);
+    }
+
+    public void close() {
+        GLFW.glfwDestroyWindow(getWindowId());
+        GLFW.glfwTerminate();
     }
 
     public long getWindowId() {

@@ -15,7 +15,7 @@ public class QuickDraw {
         new RectangleUI(scene,pos,size,color).draw();
     }
 
-    //TODO: Calling on this method may cause unneeded lad from constantly regenerating a texture for the text. Optimize in the future
+    //TODO: Calling on this method may cause unneeded lag from constantly regenerating a texture for the text. Optimize in the future
     public static void drawText(Scene scene, String text, Font font, Vector pos, ColorE color) {
         if (text.equals("")) return;
         new TextUI(scene,text,font,pos,color).draw();
@@ -26,13 +26,13 @@ public class QuickDraw {
         new TextUI(scene,text,font,pos,color).drawCentered(size);
     }
 
-    public static void drawArrow(Scene scene, Vector pos, ColorE color, boolean back) {
+    public static void drawArrow(Scene scene, Vector pos, ColorE color, double size, boolean back) {
         if (back) {
-            new PolygonUI(scene, pos, color, new Vector(0, 0), new Vector(-30, 0), new Vector(-55, 25), new Vector(-25, 25)).draw();
-            new PolygonUI(scene, pos, color, new Vector(0, 50), new Vector(-30, 50), new Vector(-55, 25), new Vector(-25, 25)).draw();
+            new PolygonUI(scene, pos.getAdded(size,0).getAdded(size/10,0), color, new Vector(0, 0), new Vector(-(size/2 + size/10), 0), new Vector(-(size + size/10), size/2), new Vector(-size/2, size/2)).draw();
+            new PolygonUI(scene, pos.getAdded(size,0).getAdded(size/10,0), color, new Vector(0, size), new Vector(-(size/2 + size/10), size), new Vector(-(size + size/10), size/2), new Vector(-size/2, size/2)).draw();
         } else {
-            new PolygonUI(scene, pos, color, new Vector(0, 0), new Vector(30, 0), new Vector(55, 25), new Vector(25, 25)).draw();
-            new PolygonUI(scene, pos, color, new Vector(0, 50), new Vector(30, 50), new Vector(55, 25), new Vector(25, 25)).draw();
+            new PolygonUI(scene, pos, color, new Vector(0, 0), new Vector(size/2 + size/10, 0), new Vector(size + size/10, size/2), new Vector(size/2, size/2)).draw();
+            new PolygonUI(scene, pos, color, new Vector(0, size), new Vector(size/2 + size/10, size), new Vector(size + size/10, size/2), new Vector(size/2, size/2)).draw();
         }
     }
 

@@ -22,10 +22,10 @@ public class SliderUI<T extends Number> extends WidgetUI {
     private T value;
 
     private final Container<T> container;
-    private final T min;
-    private final T max;
-    private final T step;
-    private final Type type;
+    private T min;
+    private T max;
+    private T step;
+    private Type type;
     private boolean displayValue;
 
     private ColorE color;
@@ -60,8 +60,9 @@ public class SliderUI<T extends Number> extends WidgetUI {
         //Draw Background
         new RectangleUI(getScene(),getPos(),getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
 
+        double border = getSize().getY()/5;
+
         //Draw the slider fill
-        int border = (int)getSize().getX()/40;
         double valueRange = getMax().doubleValue() - getMin().doubleValue();
         double sliderWidth = getSize().getX() / valueRange * (value.doubleValue() - getMin().doubleValue());
         new RectangleUI(getScene(),getPos().getAdded(new Vector(border,border)), new Vector(sliderWidth - border, getSize().getY() - border*2), new ColorE(getColor().getRed(), getColor().getGreen(), getColor().getBlue(), getColor().getAlpha() - 100)).draw();
@@ -73,7 +74,7 @@ public class SliderUI<T extends Number> extends WidgetUI {
         if (nodeX < 0) nodeX = 0;
         new RectangleUI(getScene(),getPos().getAdded(new Vector(nodeX,0)),new Vector(nodeWidth,getSize().getY()),getColor()).draw();
 
-        //Draw the slider text
+        //Draw Text
         String title;
         if (shouldDisplayValue()) {
             if (getType().equals(Type.INTEGER)) {
@@ -84,10 +85,9 @@ public class SliderUI<T extends Number> extends WidgetUI {
         } else {
             title = getTitle();
         }
-
-        getDisplayText().setText(title);
-        getDisplayText().setSize((int)getSize().getY());
-        getDisplayText().setPos(getPos().getAdded(new Vector(border + 2,-2 + getSize().getY() / 2 - getDisplayText().getHeight() / 2)));
+        int size = (int)getSize().getY();
+        setUpDisplayText(title,border,size);
+        getDisplayText().setPos(getPos().getAdded(new Vector(border + border/5,-2 + getSize().getY() / 2 - getDisplayText().getHeight() / 2)));
         getDisplayText().draw();
     }
 
@@ -97,6 +97,8 @@ public class SliderUI<T extends Number> extends WidgetUI {
     @Override
     public void tick() {
         super.tick();
+        this.value = getContainer().get(); //Consistently sync the value of the container and the value of the widget
+
         if (sliding) { //Updates the value of the setting based off of the current width of the slider
             double valueRange = getMax().doubleValue() - getMin().doubleValue();
             double sliderWidth = getScene().getWindow().getMousePos().getX() - getPos().getX();
@@ -134,6 +136,22 @@ public class SliderUI<T extends Number> extends WidgetUI {
 
     public void setValueDisplayed(boolean displayValue) {
         this.displayValue = displayValue;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public void setStep(T step) {
+        this.step = step;
+    }
+
+    public void setMax(T max) {
+        this.max = max;
+    }
+
+    public void setMin(T min) {
+        this.min = min;
     }
 
 

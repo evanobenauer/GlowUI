@@ -74,6 +74,15 @@ public abstract class WidgetUI extends ElementUI {
         return baseRect.updateMouseOver(mousePos);
     }
 
+    public void setUpDisplayText(String text, double border, int textSize) {
+        getDisplayText().setText(text);
+        getDisplayText().setSize(textSize);
+        getDisplayText().setScale(1);
+        if (getDisplayText().getWidth() > getSize().getX() - border * 2) {
+            getDisplayText().setScale((getSize().getX() - border*2) / getDisplayText().getWidth());
+        }
+        getDisplayText().setPos(getPos().getAdded(border,border));
+    }
 
     public void removeTitle() {
         setTitle("");

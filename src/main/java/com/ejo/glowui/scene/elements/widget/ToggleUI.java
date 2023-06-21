@@ -51,11 +51,12 @@ public class ToggleUI extends WidgetUI {
         new RectangleUI(getScene(),getPos(), getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
         new RectangleUI(getScene(), getPos(), getSize(), new ColorE(getColor().getRed(), getColor().getGreen(), getColor().getBlue(), (int) toggleFade)).draw();
 
+        double border = getSize().getY()/5;
+
         //Draw Text
-        getDisplayText().setText(getTitle());
-        getDisplayText().setSize((int) getSize().getY());
-        getDisplayText().setPos(getPos());
-        getDisplayText().drawCentered(getSize());
+        int size = (int)getSize().getY();
+        setUpDisplayText(getTitle(),border,size);
+        getDisplayText().drawCentered(getSize().getAdded(-border*2,-border*2).getAdded(-getSize().getX()/50,0));
     }
 
     @Override
