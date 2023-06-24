@@ -1,7 +1,6 @@
 package com.ejo.glowui.util;
 
 import com.ejo.glowui.event.EventRegistry;
-import com.ejo.glowui.event.events.MouseClickEvent;
 import org.lwjgl.glfw.GLFW;
 import com.ejo.glowlib.event.EventAction;
 
@@ -36,7 +35,7 @@ public class Mouse {
     //------------------------------------------
 
     private final int id;
-    private boolean isKeyDown;
+    private boolean isButtonDown;
 
     public Mouse(int id) {
         this.id = id;
@@ -50,12 +49,12 @@ public class Mouse {
         }
     }
 
-    public void setButtonDown(boolean keyDown) {
-        isKeyDown = keyDown;
+    public void setButtonDown(boolean buttonDown) {
+        isButtonDown = buttonDown;
     }
 
     public boolean isButtonDown() {
-        return isKeyDown;
+        return isButtonDown;
     }
 
     public int getId() {

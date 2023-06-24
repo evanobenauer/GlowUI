@@ -119,6 +119,7 @@ public class Window {
             }
         });
         thread.setName("Tick Thread");
+        thread.setDaemon(true);
         thread.start();
     }
 
@@ -186,8 +187,8 @@ public class Window {
         if (size.getMagnitude() != 0) setSize(size);
     }
 
-    //TODO: Optimize draw method, maybe put all the GL calls outside of the loop
     public void draw() {
+        GL.createCapabilities();
         GL11.glViewport(0, 0, (int) getSize().getX(), (int) getSize().getY());
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
@@ -260,10 +261,19 @@ public class Window {
         return new Vector(mouseX, mouseY);
     }
 
+
+    public void run() {
+        init();
+        startMaintenanceLoop();
+        startTickLoop();
+        runRenderLoop(true);
+    }
+
     public void close() {
         GLFW.glfwDestroyWindow(getWindowId());
         GLFW.glfwTerminate();
     }
+
 
     public long getWindowId() {
         return windowId;

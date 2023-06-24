@@ -58,7 +58,7 @@ public class ModeCycleUI<T> extends WidgetUI {
         //Draw Mode Arrows
         double borderArrow = border/2;
         QuickDraw.drawArrow(getScene(),getPos().getAdded(borderArrow,borderArrow),getColorL(),getSize().getY()-2*borderArrow,true);
-        QuickDraw.drawArrow(getScene(),getPos().getAdded(borderArrow,borderArrow).getAdded(getSize().getX() - getSize().getY() - 2*borderArrow,0),getColorR(),getSize().getY()-2*borderArrow,false);
+        QuickDraw.drawArrow(getScene(),getPos().getAdded(borderArrow,borderArrow).getAdded(getSize().getX() - getSize().getY() - borderArrow,0),getColorR(),getSize().getY()-2*borderArrow,false);
 
         //Draw Text
         String text = (hasTitle() ? getTitle() + ": " : "") + mode;
