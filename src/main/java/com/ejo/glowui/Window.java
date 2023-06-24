@@ -186,8 +186,8 @@ public class Window {
         if (size.getMagnitude() != 0) setSize(size);
     }
 
+    //TODO: Optimize draw method, maybe put all the GL calls outside of the loop
     public void draw() {
-        GL.createCapabilities();
         GL11.glViewport(0, 0, (int) getSize().getX(), (int) getSize().getY());
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
@@ -198,7 +198,6 @@ public class Window {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
         this.getScene().draw(); //Draw the screen
