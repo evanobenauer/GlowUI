@@ -103,6 +103,9 @@ public class Key {
     public static Key KEY_BACKSPACE = new Key(GLFW.GLFW_KEY_BACKSPACE);
     public static Key KEY_ENTER = new Key(GLFW.GLFW_KEY_ENTER);
 
+    public static Key KEY_PLUS = new Key(GLFW.GLFW_KEY_EQUAL);
+    public static Key KEY_MINUS = new Key(GLFW.GLFW_KEY_MINUS);
+
     public static Key KEY_WINDOWS = new Key(343);
 
     public static Key KEY_UP = new Key(GLFW.GLFW_KEY_UP);
