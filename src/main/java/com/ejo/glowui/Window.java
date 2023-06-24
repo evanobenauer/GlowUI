@@ -17,7 +17,7 @@ import java.nio.IntBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 
 /**
- * The Window class is a container class for the LWJGL3 WindowID. It incorporates GLFW methods in an easy to use object oriented
+ * The Window class is a container class for the LWJGL3 WindowID. It incorporates GLFW methods in an easy-to-use object-oriented
  * fashion for the window.
  */
 public class Window {
@@ -27,6 +27,10 @@ public class Window {
     private String title;
     private Vector pos;
     private Vector size;
+
+    private int antiAliasing;
+
+    private boolean vSync;
 
     private int maxTPS;
     private int maxFPS;
@@ -39,10 +43,12 @@ public class Window {
 
     private Scene scene;
 
-    public Window(String title, Vector pos, Vector size, Scene startingScene, int maxTPS, int maxFPS) {
+    public Window(String title, Vector pos, Vector size, Scene startingScene, boolean vSync, int antiAliasing, int maxTPS, int maxFPS) {
         this.title = title;
         this.pos = pos;
         this.size = size;
+        this.vSync = vSync;
+        this.antiAliasing = antiAliasing;
         this.maxTPS = maxTPS;
         this.maxFPS = maxFPS;
         this.scene = startingScene;
@@ -54,17 +60,17 @@ public class Window {
      */
     public void init() {
         final long NULL = 0L;
-        final int TRUE = 1;
         if (!glfwInit()) throw new IllegalStateException("Failed to init GLFW");
+
+        setAntiAliasing(getAntiAliasing());
 
         //Creating the window
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-        GLFW.glfwWindowHint(GLFW_SAMPLES, 4); //Enable Anti-Aliasing 4X. TODO make this optional
         windowId = glfwCreateWindow((int) getSize().getX(), (int) getSize().getY(), getTitle(), NULL, NULL);
         if (getWindowId() == NULL) throw new IllegalStateException("Window could not be created");
 
         //Creating the monitor
-        GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        glfwGetVideoMode(glfwGetPrimaryMonitor());
 
         //Show the window
         setPos(getPos());
@@ -75,7 +81,7 @@ public class Window {
         GL.createCapabilities();
         GL11.glClearColor(0f, 0f, 0f, 0f);
 
-        glfwSwapInterval(TRUE);// Enable v-sync
+        setVSync(getVSync());
 
         setScene(getScene());
     }
@@ -129,7 +135,7 @@ public class Window {
      * In order to have consistently paced actions, use the tick loop. The render loop must be the final loop as it is
      * a part of the main thread
      */
-    public void runRenderLoop(boolean vSync) {
+    public void runRenderLoop() {
         while (!glfwWindowShouldClose(getWindowId())) {
             long startTimeNS = System.nanoTime();
             updateWindow();
@@ -139,7 +145,7 @@ public class Window {
 
             long tickTimeNS = endTimeNS - startTimeNS;
             long sleepTimeNS = (1000000000 / getMaxFPS() - tickTimeNS);
-            if (!vSync) if (sleepTimeNS > 0) sleepThread(sleepTimeNS / 1000000);
+            if (!getVSync()) if (sleepTimeNS > 0) sleepThread(sleepTimeNS / 1000000);
         }
     }
 
@@ -224,6 +230,19 @@ public class Window {
     }
 
 
+    public void run() {
+        init();
+        startMaintenanceLoop();
+        startTickLoop();
+        runRenderLoop();
+    }
+
+    public void close() {
+        GLFW.glfwDestroyWindow(getWindowId());
+        GLFW.glfwTerminate();
+    }
+
+
     public void setScene(Scene scene) {
         scene.setWindow(this);
         this.scene = scene;
@@ -244,6 +263,16 @@ public class Window {
         this.size = size;
     }
 
+    public void setVSync(boolean vSync) {
+        glfwSwapInterval(vSync ? 1 : 0);
+        this.vSync = vSync;
+    }
+
+    public void setAntiAliasing(int level) {
+        if (getAntiAliasing() > 0) GLFW.glfwWindowHint(GLFW_SAMPLES, level);
+        this.antiAliasing = level;
+    }
+
     public void setMaxTPS(int maxTPS) {
         this.maxTPS = maxTPS;
     }
@@ -251,6 +280,7 @@ public class Window {
     public void setMaxFPS(int maxFPS) {
         this.maxFPS = maxFPS;
     }
+
 
     public Vector getMousePos() {
         DoubleBuffer buffer = BufferUtils.createDoubleBuffer(1);
@@ -260,20 +290,6 @@ public class Window {
         double mouseY = buffer.get(0);
         return new Vector(mouseX, mouseY);
     }
-
-
-    public void run() {
-        init();
-        startMaintenanceLoop();
-        startTickLoop();
-        runRenderLoop(true);
-    }
-
-    public void close() {
-        GLFW.glfwDestroyWindow(getWindowId());
-        GLFW.glfwTerminate();
-    }
-
 
     public long getWindowId() {
         return windowId;
@@ -293,6 +309,14 @@ public class Window {
 
     public Vector getSize() {
         return size;
+    }
+
+    public boolean getVSync() {
+        return vSync;
+    }
+
+    public int getAntiAliasing() {
+        return antiAliasing;
     }
 
     public int getMaxTPS() {
