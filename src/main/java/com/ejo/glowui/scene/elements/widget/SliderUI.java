@@ -13,6 +13,8 @@ import com.ejo.glowlib.util.NumberUtil;
 
 import java.awt.*;
 
+
+//TODO: remove either generics or the type parameter?
 public class SliderUI<T extends Number> extends WidgetUI {
 
     public enum Type {

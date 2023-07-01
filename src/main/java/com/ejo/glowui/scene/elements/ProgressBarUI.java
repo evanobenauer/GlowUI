@@ -45,16 +45,14 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
         //Draw Background
         new RectangleUI(getScene(), getPos(), getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
 
-        double barPercent = NumberUtil.getBoundValue(getContainer().get().doubleValue(), getMin(), getMax()).doubleValue() / getMax();
-        new RectangleUI(getScene(), getPos(), getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
         int border = (int)getSize().getX()/40;
-        new RectangleUI(
-                getScene(),
-                getPos().getAdded(new Vector(border, border)), new Vector(getSize().getX() * barPercent,
-                getSize().getY()).getAdded(new Vector(getContainer().get().doubleValue() == getMin() ? 2 : -2 * border, -2 * border)),
-                getColor())
-                .draw();
 
+        //Draw Bar Fill
+        double barPercent = NumberUtil.getBoundValue(getContainer().get().doubleValue(), getMin(), getMax()).doubleValue() / getMax();
+        QuickDraw.drawRect(getScene(),getPos().getAdded(border,border),new Vector((getSize().getX() - 2 * border) * barPercent,getSize().getY() - 2*border)
+                .getAdded(new Vector(getContainer().get().doubleValue() == getMin() ? 2 : 0, 0)),getColor());
+
+        //Draw Title
         QuickDraw.drawText(getScene(), getTitle(), new Font("Arial", Font.PLAIN, 20), getPos().getAdded(2, 2), ColorE.WHITE);
     }
 

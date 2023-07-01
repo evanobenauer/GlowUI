@@ -10,6 +10,7 @@ public class TexturedRectUI extends RectangleUI {
         super(scene, pos, size, color);
     }
 
+    //TODO: Add textured rectangles then finally create a release
     @Override
     public void draw() {
         super.draw();

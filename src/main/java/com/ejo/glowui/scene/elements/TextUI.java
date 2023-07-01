@@ -113,6 +113,10 @@ public class TextUI extends ElementUI {
     }
 
 
+    public Vector getSize() {
+        return new Vector(getWidth(),getFont().getSize());
+    }
+
     public void setColor(ColorE color) {
         if (this.color.equals(color)) return;
         this.color = color;

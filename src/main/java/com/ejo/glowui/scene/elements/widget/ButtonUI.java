@@ -3,12 +3,9 @@ package com.ejo.glowui.scene.elements.widget;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowui.util.Mouse;
-import com.ejo.glowui.util.QuickDraw;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.util.NumberUtil;
-
-import java.awt.*;
 
 public class ButtonUI extends WidgetUI {
 
@@ -28,9 +25,10 @@ public class ButtonUI extends WidgetUI {
 
     @Override
     protected void drawWidget() {
+        //Draw Background Color
         new RectangleUI(getScene(),getPos(),getSize(),getColor()).draw();
 
-        double border = getSize().getY()/5;
+        double border = getSize().getY()/40;
 
         //Draw Text
         int fontSize = (int)(getSize().getY() / 2.5);
