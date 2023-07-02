@@ -5,6 +5,7 @@ import com.ejo.glowui.Window;
 import com.ejo.glowlib.math.Vector;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 /**
  * The screen class is basically complete. Don't touch it
@@ -29,26 +30,42 @@ public abstract class Scene {
 
 
     public void draw() {
-        for (ElementUI element : getElements()) {
-            element.draw();
+        try {
+            for (ElementUI element : getElements()) {
+                element.draw();
+            }
+        } catch (ConcurrentModificationException e) {
+            e.printStackTrace();
         }
     }
 
     public void tick() {
-        for (ElementUI element : getElements()) {
-            element.tick();
+        try {
+            for (ElementUI element : getElements()) {
+                element.tick();
+            }
+        } catch (ConcurrentModificationException e) {
+            e.printStackTrace();
         }
     }
 
     public void onKeyPress(int key, int scancode, int action, int mods) {
-        for (ElementUI element : getElements()) {
-            element.onKeyPress(key,scancode,action,mods);
+        try {
+            for (ElementUI element : getElements()) {
+                element.onKeyPress(key, scancode, action, mods);
+            }
+        } catch (ConcurrentModificationException e) {
+            e.printStackTrace();
         }
     }
 
     public void onMouseClick(int button, int action, int mods, Vector mousePos) {
-        for (ElementUI element : getElements()) {
-            element.onMouseClick(button,action,mods,mousePos);
+        try {
+            for (ElementUI element : getElements()) {
+                element.onMouseClick(button, action, mods, mousePos);
+            }
+        } catch (ConcurrentModificationException e) {
+            e.printStackTrace();
         }
     }
 
