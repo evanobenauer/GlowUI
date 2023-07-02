@@ -1,4 +1,5 @@
 # GlowUI
+[![](https://jitpack.io/v/evanobenauer/GlowUI.svg)](https://jitpack.io/#evanobenauer/GlowUI)
 GlowUI is a User Interface library coded in Java using LWJGL3 and GlowLib.
 
 The library contains easy-to-use drawing tools, modification tools, and more.
