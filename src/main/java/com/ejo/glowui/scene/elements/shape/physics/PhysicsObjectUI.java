@@ -157,4 +157,10 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
     public ColorE getColor() {
         return shape.getColor();
     }
+
+
+    public IShape getShape() {
+        return shape;
+    }
+
 }
