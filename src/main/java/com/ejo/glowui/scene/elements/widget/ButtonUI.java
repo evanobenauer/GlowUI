@@ -28,12 +28,12 @@ public class ButtonUI extends WidgetUI {
         //Draw Background Color
         new RectangleUI(getScene(),getPos(),getSize(),getColor()).draw();
 
-        double border = getSize().getY()/40;
+        double border = getSize().getY() / 5;
 
         //Draw Text
-        int fontSize = (int)(getSize().getY() / 2.5);
+        int fontSize = (int)(getSize().getY());
         setUpDisplayText(getTitle(),border,fontSize);
-        getDisplayText().drawCentered(getSize().getAdded(-border*2,-border*2).getAdded(-getSize().getX()/50,0));
+        getDisplayText().drawCentered(getSize().getAdded(-border*2,-border*2));
     }
 
     @Override

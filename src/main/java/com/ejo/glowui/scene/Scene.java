@@ -84,6 +84,10 @@ public abstract class Scene {
         }
     }
 
+    public Vector getSize() {
+        return getWindow().getSize();
+    }
+
     public Window getWindow() {
         return window;
     }

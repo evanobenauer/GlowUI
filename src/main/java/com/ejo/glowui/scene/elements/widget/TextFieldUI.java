@@ -1,7 +1,6 @@
 package com.ejo.glowui.scene.elements.widget;
 
 import com.ejo.glowui.scene.Scene;
-import com.ejo.glowui.scene.elements.TextUI;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowui.util.DrawUtil;
 import com.ejo.glowui.util.QuickDraw;
@@ -9,9 +8,7 @@ import org.lwjgl.glfw.GLFW;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.misc.Container;
-import com.ejo.glowlib.setting.Setting;
 import com.ejo.glowlib.time.StopWatch;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
@@ -21,24 +18,26 @@ public class TextFieldUI extends WidgetUI {
 
     private final Container<String> container;
     private String hint;
+    private boolean numbersOnly;
 
     private ColorE color;
 
     private final StopWatch cursorTimer = new StopWatch();
     private boolean typing;
 
-    public TextFieldUI(Scene scene, String title, Vector pos, Vector size, ColorE color, Container<String> container, String hint) {
+    public TextFieldUI(Scene scene, String title, Vector pos, Vector size, ColorE color, Container<String> container, String hint, boolean numbersOnly) {
         super(scene, title, pos, size, true, true, null);
         this.container = container;
         this.text = container.get();
         this.hint = hint;
+        this.numbersOnly = numbersOnly;
         this.color = color;
 
         setAction(() -> container.set(text));
     }
 
-    public TextFieldUI(Scene scene, Vector pos, Vector size, ColorE color, Container<String> container, String hint) {
-        this(scene, "", pos, size, color, container, hint);
+    public TextFieldUI(Scene scene, Vector pos, Vector size, ColorE color, Container<String> container, String hint, boolean numbersOnly) {
+        this(scene, "", pos, size, color, container, hint, numbersOnly);
     }
 
     @Override
@@ -93,12 +92,12 @@ public class TextFieldUI extends WidgetUI {
                 } else if (key == GLFW.GLFW_KEY_BACKSPACE) {
                     if (buttonText.length() > 0) buttonText = buttonText.substring(0, buttonText.length() - 1);
                 } else if (key == GLFW.GLFW_KEY_SPACE) {
-                    if (isKeyNumber(false, key)) buttonText = buttonText + " ";
+                    if (shouldEnterKey(key)) buttonText = buttonText + " ";
                 } else if (!GLFW.glfwGetKeyName(key, -1).equals("null")) {
                     if (GLFW.glfwGetKey(getScene().getWindow().getWindowId(), GLFW.GLFW_KEY_LEFT_SHIFT) == 1 || GLFW.glfwGetKey(getScene().getWindow().getWindowId(), GLFW.GLFW_KEY_RIGHT_SHIFT) == 1) {
                         buttonText = buttonText + GLFW.glfwGetKeyName(key, -1).toUpperCase();
                     } else {
-                        if (isKeyNumber(false, key)) buttonText = buttonText + GLFW.glfwGetKeyName(key, -1);
+                        if (shouldEnterKey(key)) buttonText = buttonText + GLFW.glfwGetKeyName(key, -1);
                     }
                 }
             }
@@ -118,9 +117,34 @@ public class TextFieldUI extends WidgetUI {
         }
     }
 
-    public static boolean isKeyNumber(boolean numbersOnly, int key) {
-        //TODO: Add an option for numbers only
-        return true;
+    public boolean shouldEnterKey(int key) {
+        if (isNumbersOnly()) {
+            return key == GLFW.GLFW_KEY_PERIOD ||
+                    key == GLFW.GLFW_KEY_KP_SUBTRACT ||
+                    key == GLFW.GLFW_KEY_MINUS ||
+                    key == GLFW.GLFW_KEY_0 ||
+                    key == GLFW.GLFW_KEY_1 ||
+                    key == GLFW.GLFW_KEY_2 ||
+                    key == GLFW.GLFW_KEY_3 ||
+                    key == GLFW.GLFW_KEY_4 ||
+                    key == GLFW.GLFW_KEY_5 ||
+                    key == GLFW.GLFW_KEY_6 ||
+                    key == GLFW.GLFW_KEY_7 ||
+                    key == GLFW.GLFW_KEY_8 ||
+                    key == GLFW.GLFW_KEY_9 ||
+                    key == GLFW.GLFW_KEY_KP_0 ||
+                    key == GLFW.GLFW_KEY_KP_1 ||
+                    key == GLFW.GLFW_KEY_KP_2 ||
+                    key == GLFW.GLFW_KEY_KP_3 ||
+                    key == GLFW.GLFW_KEY_KP_4 ||
+                    key == GLFW.GLFW_KEY_KP_5 ||
+                    key == GLFW.GLFW_KEY_KP_6 ||
+                    key == GLFW.GLFW_KEY_KP_7 ||
+                    key == GLFW.GLFW_KEY_KP_8 ||
+                    key == GLFW.GLFW_KEY_KP_9;
+        } else {
+            return true;
+        }
     }
 
     public void setColor(ColorE color) {
@@ -135,6 +159,10 @@ public class TextFieldUI extends WidgetUI {
         this.typing = typing;
     }
 
+    public void setNumbersOnly(boolean numbersOnly) {
+        this.numbersOnly = numbersOnly;
+    }
+
 
     public ColorE getColor() {
         return color;
@@ -146,6 +174,10 @@ public class TextFieldUI extends WidgetUI {
 
     public boolean isTyping() {
         return typing;
+    }
+
+    public boolean isNumbersOnly() {
+        return numbersOnly;
     }
 
     public Container<String> getContainer() {

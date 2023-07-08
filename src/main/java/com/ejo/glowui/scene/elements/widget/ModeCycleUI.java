@@ -64,7 +64,7 @@ public class ModeCycleUI<T> extends WidgetUI {
         String text = (hasTitle() ? getTitle() + ": " : "") + mode;
         int fontSize = (int)getSize().getY();
         setUpDisplayText(text,border,fontSize);
-        getDisplayText().drawCentered(getSize().getAdded(-border*2-getSize().getX()/50,-border*2));
+        getDisplayText().drawCentered(getSize().getAdded(-border*2,-border*2));
     }
 
     @Override

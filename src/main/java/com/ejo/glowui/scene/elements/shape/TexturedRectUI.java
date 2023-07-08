@@ -3,6 +3,7 @@ package com.ejo.glowui.scene.elements.shape;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
+import org.lwjgl.opengl.GL11;
 
 public class TexturedRectUI extends RectangleUI {
 
@@ -15,6 +16,13 @@ public class TexturedRectUI extends RectangleUI {
     public void draw() {
         super.draw();
         //Add texture code here
+    }
+
+
+    private void drawTexturedRectangle() {
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
     }
 
 }
