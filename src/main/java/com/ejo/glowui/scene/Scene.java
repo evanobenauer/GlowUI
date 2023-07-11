@@ -14,7 +14,7 @@ import java.util.ConcurrentModificationException;
  * The screen is the whiteboard of GlowUI. It is the canvas to which elements are drawn on and interacted with. The window can contain one screen at a time. Screens can be swapped
  * and set containing a different arrangement of components
  */
-public abstract class Scene implements IDrawable, IInput, ITick {
+public abstract class Scene {
 
     //TODO: Create special abstract screen types
     // Create bordered screen type that is its own screen that can in case a screen in a border. The border will have action buttons and the inner screen can be swapped
@@ -31,30 +31,27 @@ public abstract class Scene implements IDrawable, IInput, ITick {
     }
 
 
-    @Override
-    public void draw(Scene scene, Vector mousePos) {
+    public void draw() {
         try {
             for (ElementUI element : getElements()) {
-                element.draw(this, mousePos);
+                element.draw(this, getWindow().getScaledMousePos());
             }
         } catch (ConcurrentModificationException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void tick(Scene scene, Vector mousePos) {
+    public void tick() {
         try {
             for (ElementUI element : getElements()) {
-                element.tick(this, mousePos);
+                element.tick(this, getWindow().getScaledMousePos());
             }
         } catch (ConcurrentModificationException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
+    public void onKeyPress(int key, int scancode, int action, int mods) {
         try {
             for (ElementUI element : getElements()) {
                 element.onKeyPress(this, key, scancode, action, mods);
@@ -64,8 +61,7 @@ public abstract class Scene implements IDrawable, IInput, ITick {
         }
     }
 
-    @Override
-    public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
+    public void onMouseClick(int button, int action, int mods, Vector mousePos) {
         try {
             for (ElementUI element : getElements()) {
                 element.onMouseClick(this, button, action, mods, mousePos);
@@ -73,36 +69,6 @@ public abstract class Scene implements IDrawable, IInput, ITick {
         } catch (ConcurrentModificationException e) {
             e.printStackTrace();
         }
-    }
-
-
-    @Override
-    public boolean updateMouseOver(Vector mousePos) {
-        return false;
-    }
-
-    @Override
-    public boolean isMouseOver() {
-        return true;
-    }
-
-    @Override
-    public void setTicking(boolean shouldTick) {
-    }
-
-    @Override
-    public boolean shouldTick() {
-        return false;
-    }
-
-    @Override
-    public void setRendered(boolean shouldRender) {
-
-    }
-
-    @Override
-    public boolean shouldRender() {
-        return true;
     }
 
 

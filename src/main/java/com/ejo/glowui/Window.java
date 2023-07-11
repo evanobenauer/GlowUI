@@ -177,8 +177,8 @@ public class Window {
         GLManager.scale(getUIScale()); //Shape Scale
         GLManager.textureScale(getUIScale()); //Texture Scale
 
-        this.getScene().draw(getScene(),getScaledMousePos()); //Draw the screen
-        EventRegistry.EVENT_RENDER.post(this, getScaledMousePos()); //Render event after drawing the screen
+        this.getScene().draw(); //Draw the screen
+        EventRegistry.EVENT_RENDER.post(this); //Render event after drawing the screen
 
         glfwSwapBuffers(getWindowId()); //Finish Drawing here
         GLFW.glfwPollEvents();
@@ -187,20 +187,20 @@ public class Window {
     private void tick() {
         onKeyPress();
         onMouseClick();
-        getScene().tick(getScene(),getScaledMousePos());
-        EventRegistry.EVENT_TICK.post(this, getScaledMousePos());
+        getScene().tick();
+        EventRegistry.EVENT_TICK.post(this);
     }
 
     private void onKeyPress() {
         glfwSetKeyCallback(getWindowId(), (window, key, scancode, action, mods) -> {
-            this.getScene().onKeyPress(getScene(), key, scancode, action, mods);
+            this.getScene().onKeyPress(key, scancode, action, mods);
             EventRegistry.EVENT_KEY_PRESS.post(window, key, scancode, action, mods); //Key Event to be used outside of class
         });
     }
 
     private void onMouseClick() {
         glfwSetMouseButtonCallback(getWindowId(), (window, button, action, mods) -> {
-            this.getScene().onMouseClick(getScene(), button, action, mods, getScaledMousePos());
+            this.getScene().onMouseClick(button, action, mods, getScaledMousePos());
             EventRegistry.EVENT_MOUSE_CLICK.post(window, button, action, mods, getScaledMousePos()); //Mouse click event to be used outside of class
         });
     }

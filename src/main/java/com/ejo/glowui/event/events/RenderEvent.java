@@ -8,21 +8,15 @@ import com.ejo.glowlib.event.EventE;
 public class RenderEvent extends EventE {
 
     Window window;
-    Vector mousePos;
 
     @Override
     public void post(Object... args) {
         this.window = (Window) args[0];
-        this.mousePos = (Vector) args[1];
         super.post(args);
     }
 
     public Window getWindow() {
         return window;
-    }
-
-    public Vector getMousePos() {
-        return mousePos;
     }
 
 }
