@@ -32,8 +32,8 @@ public class ToggleUI extends WidgetUI {
         }
     });
 
-    public ToggleUI(Scene scene, String title, Vector pos, Vector size, ColorE color, Container<Boolean> container) {
-        super(scene, title, pos, size, true, true,null);
+    public ToggleUI(String title, Vector pos, Vector size, ColorE color, Container<Boolean> container) {
+        super(title, pos, size, true, true,null);
         this.container = container;
         this.color = color;
 
@@ -41,27 +41,27 @@ public class ToggleUI extends WidgetUI {
         onMaintenance.subscribe();
     }
 
-    public ToggleUI(Scene scene, Vector pos, Vector size, ColorE color, Container<Boolean> container) {
-        this(scene,"",pos,size,color,container);
+    public ToggleUI(Vector pos, Vector size, ColorE color, Container<Boolean> container) {
+        this("",pos,size,color,container);
     }
 
     
     @Override
-    protected void drawWidget() {
-        new RectangleUI(getScene(),getPos(), getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
-        new RectangleUI(getScene(), getPos(), getSize(), new ColorE(getColor().getRed(), getColor().getGreen(), getColor().getBlue(), (int) toggleFade)).draw();
+    protected void drawWidget(Scene scene, Vector mousePos) {
+        QuickDraw.drawRect(getPos(),getSize(),DrawUtil.WIDGET_BACKGROUND);
+        QuickDraw.drawRect(getPos(), getSize(), new ColorE(getColor().getRed(), getColor().getGreen(), getColor().getBlue(), (int) toggleFade));
 
         double border = getSize().getY()/5;
 
         //Draw Text
         int size = (int)getSize().getY();
         setUpDisplayText(getTitle(),border,size);
-        getDisplayText().drawCentered(getSize().getAdded(-border*2,-border*2).getAdded(-getSize().getX()/50,0));
+        getDisplayText().drawCentered(scene, mousePos, getSize().getAdded(-border*2,-border*2).getAdded(-getSize().getX()/50,0));
     }
 
     @Override
-    public void onMouseClick(int button, int action, int mods, Vector mousePos) {
-        super.onMouseClick(button, action, mods, mousePos);
+    public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
+        super.onMouseClick(scene, button, action, mods, mousePos);
         if (isMouseOver()) {
             if (button == Mouse.BUTTON_LEFT.getId() && action == Mouse.ACTION_RELEASE) {
                 getAction().run();

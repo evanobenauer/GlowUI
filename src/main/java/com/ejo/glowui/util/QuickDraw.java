@@ -11,32 +11,34 @@ import java.awt.*;
 
 public class QuickDraw {
 
-    public static void drawRect(Scene scene, Vector pos, Vector size, ColorE color) {
-        new RectangleUI(scene,pos,size,color).draw();
+    private static final Vector NULL_POS = new Vector(-1,-1);
+
+    public static void drawRect(Vector pos, Vector size, ColorE color) {
+        new RectangleUI(pos,size,color).draw(null, NULL_POS);
     }
 
-    public static void drawText(Scene scene, String text, Font font, Vector pos, ColorE color) {
+    public static void drawText(String text, Font font, Vector pos, ColorE color) {
         if (text.equals("")) return;
-        new TextUI(scene,text,font,pos,color).draw();
+        new TextUI(text,font,pos,color).draw(null, NULL_POS);
     }
 
-    public static void drawTextCentered(Scene scene, String text, Font font, Vector pos, Vector size, ColorE color) {
+    public static void drawTextCentered(String text, Font font, Vector pos, Vector size, ColorE color) {
         if (text.equals("")) return;
-        new TextUI(scene,text,font,pos,color).drawCentered(size);
+        new TextUI(text,font,pos,color).drawCentered(null, NULL_POS, size);
     }
 
-    public static void drawArrow(Scene scene, Vector pos, ColorE color, double size, boolean back) {
+    public static void drawArrow(Vector pos, ColorE color, double size, boolean back) {
         if (back) {
-            new PolygonUI(scene, pos.getAdded(size,0).getAdded(size/10,0), color, new Vector(0, 0), new Vector(-(size/2 + size/10), 0), new Vector(-(size + size/10), size/2), new Vector(-size/2, size/2)).draw();
-            new PolygonUI(scene, pos.getAdded(size,0).getAdded(size/10,0), color, new Vector(0, size), new Vector(-(size/2 + size/10), size), new Vector(-(size + size/10), size/2), new Vector(-size/2, size/2)).draw();
+            new PolygonUI(pos.getAdded(size,0).getAdded(size/10,0), color, new Vector(0, 0), new Vector(-(size/2 + size/10), 0), new Vector(-(size + size/10), size/2), new Vector(-size/2, size/2)).draw(null, NULL_POS);
+            new PolygonUI(pos.getAdded(size,0).getAdded(size/10,0), color, new Vector(0, size), new Vector(-(size/2 + size/10), size), new Vector(-(size + size/10), size/2), new Vector(-size/2, size/2)).draw(null, NULL_POS);
         } else {
-            new PolygonUI(scene, pos, color, new Vector(0, 0), new Vector(size/2 + size/10, 0), new Vector(size + size/10, size/2), new Vector(size/2, size/2)).draw();
-            new PolygonUI(scene, pos, color, new Vector(0, size), new Vector(size/2 + size/10, size), new Vector(size + size/10, size/2), new Vector(size/2, size/2)).draw();
+            new PolygonUI(pos, color, new Vector(0, 0), new Vector(size/2 + size/10, 0), new Vector(size + size/10, size/2), new Vector(size/2, size/2)).draw(null, NULL_POS);
+            new PolygonUI(pos, color, new Vector(0, size), new Vector(size/2 + size/10, size), new Vector(size + size/10, size/2), new Vector(size/2, size/2)).draw(null, NULL_POS);
         }
     }
 
     public static void drawFPSTPS(Scene scene, Vector pos, int size, boolean label) {
-        QuickDraw.drawText(scene,(label ? "FPS: " : "") + scene.getWindow().getFPS(),new Font("Arial",Font.PLAIN,size),pos,ColorE.WHITE);
-        QuickDraw.drawText(scene, (label ? "TPS: " : "") + scene.getWindow().getTPS(),new Font("Arial",Font.PLAIN,size),pos.getAdded(0,size + size/5),ColorE.WHITE);
+        QuickDraw.drawText((label ? "FPS: " : "") + scene.getWindow().getFPS(),new Font("Arial",Font.PLAIN,size),pos,ColorE.WHITE);
+        QuickDraw.drawText((label ? "TPS: " : "") + scene.getWindow().getTPS(),new Font("Arial",Font.PLAIN,size),pos.getAdded(0,size + size/5),ColorE.WHITE);
     }
 }

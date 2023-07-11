@@ -24,8 +24,8 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
 
     private ColorE color;
 
-    public ProgressBarUI(Scene scene, String title, Vector pos, Vector size, Container<T> container, double min, double max, ColorE color) {
-        super(scene, pos, true, true);
+    public ProgressBarUI(String title, Vector pos, Vector size, ColorE color, Container<T> container, double min, double max) {
+        super(pos, true, true);
         this.title = title;
         this.size = size;
         this.container = container;
@@ -34,26 +34,26 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
         this.color = color;
     }
 
-    public ProgressBarUI(Scene scene, Vector pos, Vector size, Container<T> container, double min, double max, ColorE color) {
-        this(scene, "", pos, size, container, min, max,color);
+    public ProgressBarUI(Vector pos, Vector size, ColorE color, Container<T> container, double min, double max) {
+        this("", pos, size, color, container, min, max);
     }
 
     @Override
-    public void draw() {
-        super.draw();
+    public void draw(Scene scene, Vector mousePos) {
+        super.draw(scene, mousePos);
 
         //Draw Background
-        new RectangleUI(getScene(), getPos(), getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
+        QuickDraw.drawRect(getPos(),getSize(),DrawUtil.WIDGET_BACKGROUND);
 
         int border = (int)getSize().getY()/5;
 
         //Draw Bar Fill
         double barPercent = NumberUtil.getBoundValue(getContainer().get().doubleValue(), getMin(), getMax()).doubleValue() / getMax();
-        QuickDraw.drawRect(getScene(),getPos().getAdded(border,border),new Vector((getSize().getX() - 2 * border) * barPercent,getSize().getY() - 2*border)
+        QuickDraw.drawRect(getPos().getAdded(border,border),new Vector((getSize().getX() - 2 * border) * barPercent,getSize().getY() - 2*border)
                 .getAdded(new Vector(getContainer().get().doubleValue() == getMin() ? 2 : 0, 0)),getColor());
 
         //Draw Title
-        QuickDraw.drawText(getScene(), getTitle(), new Font("Arial", Font.PLAIN, 20), getPos().getAdded(2, 2), ColorE.WHITE);
+        QuickDraw.drawText(getTitle(), new Font("Arial", Font.PLAIN, 20), getPos().getAdded(2, 2), ColorE.WHITE);
     }
 
     @Override

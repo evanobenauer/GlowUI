@@ -13,8 +13,8 @@ public class LineUI extends ElementUI implements IShape {
     private Type type;
     private ColorE colorE;
 
-    public LineUI(Scene scene, Vector pos1, Vector pos2, double width, ColorE color, Type type) {
-        super(scene, pos1, true, true);
+    public LineUI(Vector pos1, Vector pos2, ColorE color, Type type, double width) {
+        super(pos1, true, true);
         this.pos2 = pos2;
         this.width = width;
         this.type = type;
@@ -22,8 +22,8 @@ public class LineUI extends ElementUI implements IShape {
     }
 
     @Override
-    public void draw() {
-        super.draw();
+    public void draw(Scene scene, Vector mousePos) {
+        super.draw(scene, mousePos);
         GL11.glLineWidth((float)getWidth());
 
         switch(getType()) {
@@ -63,7 +63,7 @@ public class LineUI extends ElementUI implements IShape {
     }
 
     public Vector setCenter(Vector pos) {
-        return null ;//TODO FINISH
+        return null; //Center is un-settable due to 2 point system
     }
 
     public void setWidth(double width) {
@@ -88,7 +88,7 @@ public class LineUI extends ElementUI implements IShape {
     }
 
     public Vector getCenter() {
-        return getPos2().getAdded(getPos1().getMultiplied(-1)).getMultiplied(.5);
+        return getPos1().getAdded(getPos2().getAdded(getPos1().getMultiplied(-1)).getMultiplied(.5));
     }
 
     public double getWidth() {

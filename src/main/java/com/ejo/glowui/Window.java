@@ -2,14 +2,13 @@ package com.ejo.glowui;
 
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.event.EventRegistry;
+import com.ejo.glowui.util.GLManager;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.time.StopWatch;
-import org.lwjgl.opengl.GL13;
 
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
@@ -41,6 +40,8 @@ public class Window {
     private int tps;
     private int fps;
 
+    private double uiScale;
+
     private Scene scene;
 
     public Window(String title, Vector pos, Vector size, Scene startingScene, boolean vSync, int antiAliasing, int maxTPS, int maxFPS) {
@@ -51,6 +52,7 @@ public class Window {
         this.antiAliasing = antiAliasing;
         this.maxTPS = maxTPS;
         this.maxFPS = maxFPS;
+        this.uiScale = 1;
         this.scene = startingScene;
     }
 
@@ -158,22 +160,49 @@ public class Window {
     }
 
 
-    private void calculateFPSTPS(StopWatch stopWatch) {
-        stopWatch.start();
-        if (stopWatch.hasTimePassedS(1)) { //TPS-FPS Updater
-            fps = frames;
-            frames = 0;
-            tps = ticks;
-            ticks = 0;
-            stopWatch.restart();
-        }
+    public void draw() {
+        GL.createCapabilities();
+        GL11.glViewport(0, 0, (int) getSize().getX(), (int) getSize().getY());
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        GL11.glOrtho(0, getSize().getX(), getSize().getY(), 0, -1, 1);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glLoadIdentity();
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+
+        GLManager.scale(getUIScale()); //Shape Scale
+        GLManager.textureScale(getUIScale()); //Texture Scale
+
+        this.getScene().draw(getScene(),getScaledMousePos()); //Draw the screen
+        EventRegistry.EVENT_RENDER.post(this, getScaledMousePos()); //Render event after drawing the screen
+
+        glfwSwapBuffers(getWindowId()); //Finish Drawing here
+        GLFW.glfwPollEvents();
     }
 
     private void tick() {
         onKeyPress();
         onMouseClick();
-        getScene().tick();
-        EventRegistry.EVENT_TICK.post(this, getScene());
+        getScene().tick(getScene(),getScaledMousePos());
+        EventRegistry.EVENT_TICK.post(this, getScaledMousePos());
+    }
+
+    private void onKeyPress() {
+        glfwSetKeyCallback(getWindowId(), (window, key, scancode, action, mods) -> {
+            this.getScene().onKeyPress(getScene(), key, scancode, action, mods);
+            EventRegistry.EVENT_KEY_PRESS.post(window, key, scancode, action, mods); //Key Event to be used outside of class
+        });
+    }
+
+    private void onMouseClick() {
+        glfwSetMouseButtonCallback(getWindowId(), (window, button, action, mods) -> {
+            this.getScene().onMouseClick(getScene(), button, action, mods, getScaledMousePos());
+            EventRegistry.EVENT_MOUSE_CLICK.post(window, button, action, mods, getScaledMousePos()); //Mouse click event to be used outside of class
+        });
     }
 
     private void updateWindow() {
@@ -193,40 +222,15 @@ public class Window {
         if (size.getMagnitude() != 0) setSize(size);
     }
 
-    public void draw() {
-        GL.createCapabilities();
-        GL11.glViewport(0, 0, (int) getSize().getX(), (int) getSize().getY());
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
-        GL11.glOrtho(0, getSize().getX(), getSize().getY(), 0, -1, 1);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glLoadIdentity();
-
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-
-        this.getScene().draw(); //Draw the screen
-        EventRegistry.EVENT_RENDER.post(this, getScene()); //Render event after drawing the screen
-
-        glfwSwapBuffers(getWindowId()); //Finish Drawing here
-        GLFW.glfwPollEvents();
-    }
-
-
-    private void onKeyPress() {
-        glfwSetKeyCallback(getWindowId(), (window, key, scancode, action, mods) -> {
-            this.getScene().onKeyPress(key, scancode, action, mods);
-            EventRegistry.EVENT_KEY_PRESS.post(window, key, scancode, action, mods); //Key Event to be used outside of class
-        });
-    }
-
-    private void onMouseClick() {
-        glfwSetMouseButtonCallback(getWindowId(), (window, button, action, mods) -> {
-            this.getScene().onMouseClick(button, action, mods, getMousePos());
-            EventRegistry.EVENT_MOUSE_CLICK.post(window, button, action, mods, getMousePos()); //Mouse click event to be used outside of class
-        });
+    private void calculateFPSTPS(StopWatch stopWatch) {
+        stopWatch.start();
+        if (stopWatch.hasTimePassedS(1)) { //TPS-FPS Updater
+            fps = frames;
+            frames = 0;
+            tps = ticks;
+            ticks = 0;
+            stopWatch.restart();
+        }
     }
 
 
@@ -273,6 +277,10 @@ public class Window {
         this.antiAliasing = level;
     }
 
+    public void setUIScale(double uiScale) {
+        this.uiScale = uiScale;
+    }
+
     public void setMaxTPS(int maxTPS) {
         this.maxTPS = maxTPS;
     }
@@ -281,15 +289,6 @@ public class Window {
         this.maxFPS = maxFPS;
     }
 
-
-    public Vector getMousePos() {
-        DoubleBuffer buffer = BufferUtils.createDoubleBuffer(1);
-        glfwGetCursorPos(getWindowId(), buffer, null);
-        double mouseX = buffer.get(0);
-        glfwGetCursorPos(getWindowId(), null, buffer);
-        double mouseY = buffer.get(0);
-        return new Vector(mouseX, mouseY);
-    }
 
     public long getWindowId() {
         return windowId;
@@ -311,12 +310,33 @@ public class Window {
         return size;
     }
 
+    public Vector getScaledSize() {
+        return getSize().getMultiplied(1/getUIScale());
+    }
+
+    public Vector getMousePos() {
+        DoubleBuffer buffer = BufferUtils.createDoubleBuffer(1);
+        glfwGetCursorPos(getWindowId(), buffer, null);
+        double mouseX = buffer.get(0);
+        glfwGetCursorPos(getWindowId(), null, buffer);
+        double mouseY = buffer.get(0);
+        return new Vector(mouseX, mouseY);
+    }
+
+    public Vector getScaledMousePos() {
+        return getMousePos().getMultiplied(1/getUIScale());
+    }
+
     public boolean getVSync() {
         return vSync;
     }
 
     public int getAntiAliasing() {
         return antiAliasing;
+    }
+
+    public double getUIScale() {
+        return uiScale;
     }
 
     public int getMaxTPS() {

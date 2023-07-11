@@ -29,8 +29,8 @@ public class ModeCycleUI<T> extends WidgetUI {
     private static int arrayNumber;
 
     @SafeVarargs
-    public ModeCycleUI(Scene scene, String title, Vector pos, Vector size, ColorE color, Container<T> container, T... modes) {
-        super(scene, title,pos, size, true, true,null);
+    public ModeCycleUI(String title, Vector pos, Vector size, ColorE color, Container<T> container, T... modes) {
+        super(title,pos, size, true, true,null);
         this.container = container;
         this.modes = new ArrayList<>(Arrays.asList(modes));
 
@@ -44,38 +44,38 @@ public class ModeCycleUI<T> extends WidgetUI {
     }
 
     @SafeVarargs
-    public ModeCycleUI(Scene scene, Vector pos, Vector size, ColorE color, Container<T> container, T... modes) {
-        this(scene,"",pos,size,color,container,modes);
+    public ModeCycleUI(Vector pos, Vector size, ColorE color, Container<T> container, T... modes) {
+        this("",pos,size,color,container,modes);
     }
 
     @Override
-    protected void drawWidget() {
+    protected void drawWidget(Scene scene, Vector mousePos) {
         //Draw Background
-        new RectangleUI(getScene(),getPos(),getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
+        QuickDraw.drawRect(getPos(),getSize(),DrawUtil.WIDGET_BACKGROUND);
 
         double border = getSize().getY()/5;
 
         //Draw Mode Arrows
         double borderArrow = border/2;
-        QuickDraw.drawArrow(getScene(),getPos().getAdded(borderArrow,borderArrow),getColorL(),getSize().getY()-2*borderArrow,true);
-        QuickDraw.drawArrow(getScene(),getPos().getAdded(borderArrow,borderArrow).getAdded(getSize().getX() - getSize().getY() - borderArrow,0),getColorR(),getSize().getY()-2*borderArrow,false);
+        QuickDraw.drawArrow(getPos().getAdded(borderArrow,borderArrow),getColorL(),getSize().getY()-2*borderArrow,true);
+        QuickDraw.drawArrow(getPos().getAdded(borderArrow,borderArrow).getAdded(getSize().getX() - getSize().getY() - borderArrow,0),getColorR(),getSize().getY()-2*borderArrow,false);
 
         //Draw Text
         String text = (hasTitle() ? getTitle() + ": " : "") + mode;
         int fontSize = (int)getSize().getY();
         setUpDisplayText(text,border,fontSize);
-        getDisplayText().drawCentered(getSize().getAdded(-border*2,-border*2));
+        getDisplayText().drawCentered(scene, mousePos, getSize().getAdded(-border*2,-border*2));
     }
 
     @Override
-    public void tick() {
-        super.tick();
+    public void tick(Scene scene, Vector mousePos) {
+        super.tick(scene, mousePos);
         this.mode = getContainer().get(); //Consistently sync the value of the container and the value of the widget
     }
 
     @Override
-    public void onMouseClick(int button, int action, int mods, Vector mousePos) {
-        super.onMouseClick(button, action, mods, mousePos);
+    public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
+        super.onMouseClick(scene, button, action, mods, mousePos);
         if (isMouseOver()) {
             if (action == 0) {
                 if (button == Mouse.BUTTON_RIGHT.getId()) {

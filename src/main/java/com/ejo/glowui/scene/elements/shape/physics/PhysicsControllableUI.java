@@ -1,5 +1,6 @@
 package com.ejo.glowui.scene.elements.shape.physics;
 
+import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.shape.IShape;
 import com.ejo.glowui.util.Key;
 import com.ejo.glowlib.math.Vector;
@@ -15,8 +16,8 @@ public class PhysicsControllableUI extends PhysicsObjectUI {
     }
 
     @Override
-    public void tick() {
-        super.tick();
+    public void tick(Scene scene, Vector mousePos) {
+        super.tick(scene, mousePos);
         if (Key.KEY_RIGHT.isKeyDown()) setPos(getPos().getAdded(Vector.I.getMultiplied(getControlSpeed())));
         if (Key.KEY_LEFT.isKeyDown()) setPos(getPos().getAdded(Vector.I.getMultiplied(-getControlSpeed())));
         if (Key.KEY_UP.isKeyDown()) setPos(getPos().getAdded(Vector.J.getMultiplied(-getControlSpeed())));

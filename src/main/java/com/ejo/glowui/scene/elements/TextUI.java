@@ -32,8 +32,8 @@ public class TextUI extends ElementUI {
     private FontMetrics fontMetrics;
     private ByteBuffer fontImageBuffer;
 
-    public TextUI(Scene scene, String text, Font font, Vector pos, ColorE color) {
-        super(scene, pos, true,true);
+    public TextUI(String text, Font font, Vector pos, ColorE color) {
+        super(pos, true,true);
         this.font = font;
         this.text = text;
         this.color = color;
@@ -42,29 +42,29 @@ public class TextUI extends ElementUI {
         this.fontImageBuffer = createFontImageBuffer();
     }
 
-    public TextUI(Scene scene, String text, String font, int modifier, int height, Vector pos, ColorE color) {
-        this(scene, text, new Font(font,modifier,height),pos,color);
+    public TextUI(String text, String font, int modifier, int height, Vector pos, ColorE color) {
+        this(text, new Font(font,modifier,height),pos,color);
     }
 
-    public TextUI(Scene scene, String text, String font, int height, Vector pos, ColorE color) {
-        this(scene, text, font, Font.PLAIN, height, pos,color);
+    public TextUI(String text, String font, int height, Vector pos, ColorE color) {
+        this(text, font, Font.PLAIN, height, pos,color);
     }
 
     @Override
-    public void draw() {
-        super.draw();
-        renderText(getPos().getX(), getPos().getY());
+    public void draw(Scene scene, Vector mousePos) {
+        super.draw(scene, mousePos);
+        renderText(scene, getPos().getX(), getPos().getY());
     }
 
-    public void drawCentered(Vector size) {
-        super.draw();
-        renderText(getPos().getX() + size.getX()/2 - getWidth()/2,getPos().getY() + size.getY()/2 - getHeight()/2 - 2);
+    public void drawCentered(Scene scene, Vector mousePos, Vector size) {
+        super.draw(scene, mousePos);
+        renderText(scene, getPos().getX() + size.getX()/2 - getWidth()/2,getPos().getY() + size.getY()/2 - getHeight()/2 - 2);
     }
 
-    private void renderText(double x, double y) {
+    private void renderText(Scene scene, double x, double y) {
         if (getText().equals("")) return;
         GL11.glRasterPos2f((float)x, (float)y);
-        GL11.glPixelZoom(1, -1);
+        //GL11.glPixelZoom(1, -1); //Disabled due to text scaling in Window draw
         int imgWidth = fontMetrics.stringWidth(getText()) + 4;
         int imgHeight = fontMetrics.getHeight() + 4;
         GL11.glDrawPixels(imgWidth,imgHeight, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, fontImageBuffer);

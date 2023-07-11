@@ -1,5 +1,6 @@
 package com.ejo.glowui.scene.elements.shape.physics;
 
+import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.ElementUI;
 import com.ejo.glowui.scene.elements.shape.IShape;
 import com.ejo.glowui.scene.elements.shape.PolygonUI;
@@ -24,7 +25,7 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
     private boolean disabled;
 
     public PhysicsObjectUI(IShape shape, double mass, Vector velocity, Vector acceleration) {
-        super(shape.getScene(), shape.getPos(), shape.shouldRender(),true);
+        super(shape.getPos(), shape.shouldRender(),true);
         this.shape = shape;
         this.mass = mass;
         this.velocity = velocity;
@@ -35,14 +36,14 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
     }
 
     @Override
-    public void draw() {
-        super.draw();
-        shape.draw();
+    public void draw(Scene scene, Vector mousePos) {
+        super.draw(scene, mousePos);
+        shape.draw(scene, mousePos);
     }
 
     @Override
-    public void tick() {
-        super.tick();
+    public void tick(Scene scene, Vector mousePos) {
+        super.tick(scene, mousePos);
         if (!isDisabled()) {
             updateAccForce();
             updateKinematics();

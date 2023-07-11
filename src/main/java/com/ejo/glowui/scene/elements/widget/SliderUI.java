@@ -1,7 +1,6 @@
 package com.ejo.glowui.scene.elements.widget;
 
 import com.ejo.glowui.scene.Scene;
-import com.ejo.glowui.scene.elements.TextUI;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowui.util.DrawUtil;
 import com.ejo.glowui.util.Mouse;
@@ -10,16 +9,11 @@ import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.misc.Container;
 import com.ejo.glowlib.util.NumberUtil;
+import com.ejo.glowui.util.QuickDraw;
 
 import java.awt.*;
 
-
-//TODO: remove either generics or the type parameter?
 public class SliderUI<T extends Number> extends WidgetUI {
-
-    public enum Type {
-        INTEGER, FLOAT
-    }
 
     private T value;
 
@@ -34,8 +28,8 @@ public class SliderUI<T extends Number> extends WidgetUI {
 
     private boolean sliding;
 
-    public SliderUI(Scene scene, String title, Vector pos, Vector size, ColorE color, Container<T> container, T min, T max, T step, Type type, boolean displayValue) {
-        super(scene,title,pos,size,true,true,null);
+    public SliderUI(String title, Vector pos, Vector size, ColorE color, Container<T> container, T min, T max, T step, Type type, boolean displayValue) {
+        super(title,pos,size,true,true,null);
         this.container = container;
         this.type = type;
 
@@ -52,29 +46,29 @@ public class SliderUI<T extends Number> extends WidgetUI {
         setAction(() -> container.set(value));
     }
 
-    public SliderUI(Scene scene, Vector pos, Vector size, ColorE color, Container<T> container, T min, T max, T step, Type type, boolean displayValue) {
-        this(scene,"",pos,size,color,container,min,max,step,type,displayValue);
+    public SliderUI(Vector pos, Vector size, ColorE color, Container<T> container, T min, T max, T step, Type type, boolean displayValue) {
+        this("",pos,size,color,container,min,max,step,type,displayValue);
     }
 
     //Recommended for width to be *8 height
     @Override
-    protected void drawWidget() {
+    protected void drawWidget(Scene scene, Vector mousePos) {
         //Draw Background
-        new RectangleUI(getScene(),getPos(),getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
+        QuickDraw.drawRect(getPos(),getSize(),DrawUtil.WIDGET_BACKGROUND);
 
         double border = getSize().getY()/5;
 
         //Draw the slider fill
         double valueRange = getMax().doubleValue() - getMin().doubleValue();
         double sliderWidth = getSize().getX() / valueRange * (value.doubleValue() - getMin().doubleValue());
-        new RectangleUI(getScene(),getPos().getAdded(new Vector(border,border)), new Vector(sliderWidth - border, getSize().getY() - border*2), new ColorE(getColor().getRed(), getColor().getGreen(), getColor().getBlue(), getColor().getAlpha() - 100)).draw();
+        QuickDraw.drawRect(getPos().getAdded(new Vector(border,border)), new Vector(sliderWidth - border, getSize().getY() - border*2), new ColorE(getColor().getRed(), getColor().getGreen(), getColor().getBlue(), getColor().getAlpha() - 100));
 
         //Draw the slider node
         int nodeWidth = (int)(getSize().getY()/1.5f);
         double nodeX = sliderWidth - nodeWidth / 2f;
         if (nodeX + nodeWidth > getSize().getX()) nodeX = getSize().getX() - nodeWidth;
         if (nodeX < 0) nodeX = 0;
-        new RectangleUI(getScene(),getPos().getAdded(new Vector(nodeX,0)),new Vector(nodeWidth,getSize().getY()),getColor()).draw();
+        QuickDraw.drawRect(getPos().getAdded(new Vector(nodeX,0)),new Vector(nodeWidth,getSize().getY()),getColor());
 
         //Draw Text
         String title;
@@ -90,20 +84,20 @@ public class SliderUI<T extends Number> extends WidgetUI {
         int size = (int)getSize().getY();
         setUpDisplayText(title,border,size);
         getDisplayText().setPos(getPos().getAdded(new Vector(border + border/5,-2 + getSize().getY() / 2 - getDisplayText().getHeight() / 2)));
-        getDisplayText().draw();
+        getDisplayText().draw(scene, mousePos);
     }
 
     /**
      * Updates the value of the slider per every tick based off if the slider is sliding
      */
     @Override
-    public void tick() {
-        super.tick();
+    public void tick(Scene scene, Vector mousePos) {
+        super.tick(scene, mousePos);
         this.value = getContainer().get(); //Consistently sync the value of the container and the value of the widget
 
         if (sliding) { //Updates the value of the setting based off of the current width of the slider
             double valueRange = getMax().doubleValue() - getMin().doubleValue();
-            double sliderWidth = getScene().getWindow().getMousePos().getX() - getPos().getX();
+            double sliderWidth = mousePos.getX() - getPos().getX();
             double sliderPercent = NumberUtil.getBoundValue(sliderWidth,0,getSize().getX()).doubleValue() / getSize().getX();
             double calculatedValue = sliderPercent * valueRange + getMin().doubleValue();
 
@@ -119,11 +113,12 @@ public class SliderUI<T extends Number> extends WidgetUI {
      * The mouse click sets the slider to be sliding for value setting
      */
     @Override
-    public void onMouseClick(int button, int action, int mods, Vector mousePos) {
-        super.onMouseClick(button, action, mods, mousePos);
-        if (action == Mouse.ACTION_CLICK)
+    public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
+        super.onMouseClick(scene, button, action, mods, mousePos);
+        if (action == Mouse.ACTION_CLICK) {
             if (isMouseOver() && button == Mouse.BUTTON_LEFT.getId()) {
                 sliding = true;
+            }
         }
         if (action == Mouse.ACTION_RELEASE) {
             if (button == Mouse.BUTTON_LEFT.getId()) {
@@ -183,6 +178,11 @@ public class SliderUI<T extends Number> extends WidgetUI {
 
     public Container<T> getContainer() {
         return container;
+    }
+
+
+    public enum Type {
+        INTEGER, FLOAT
     }
 
 }

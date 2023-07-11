@@ -1,6 +1,5 @@
 package com.ejo.glowui.scene.elements.construct;
 
-import com.ejo.glowui.scene.Scene;
 import com.ejo.glowlib.math.Vector;
 
 public interface IComponent {
@@ -13,5 +12,4 @@ public interface IComponent {
 
     boolean isMouseOver();
 
-    Scene getScene();
 }

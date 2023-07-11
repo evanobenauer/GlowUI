@@ -6,41 +6,42 @@ import com.ejo.glowui.util.Mouse;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.util.NumberUtil;
+import com.ejo.glowui.util.QuickDraw;
 
 public class ButtonUI extends WidgetUI {
 
     private ColorE baseColor;
     private ColorE color;
 
-    public ButtonUI(Scene scene, String title, Vector pos, Vector size, ColorE color, Runnable action) {
-        super(scene,title,pos,size, true, true, action);
-        this.color = color;
-
+    public ButtonUI(String title, Vector pos, Vector size, ColorE color, Runnable action) {
+        super(title,pos,size, true, true, action);
         this.baseColor = color;
+        this.color = color;
     }
 
-    public ButtonUI(Scene scene, Vector pos, Vector size, ColorE color, Runnable action) {
-        this(scene,"",pos,size,color,action);
+    public ButtonUI(Vector pos, Vector size, ColorE color, Runnable action) {
+        this("",pos,size,color,action);
     }
 
     @Override
-    protected void drawWidget() {
+    protected void drawWidget(Scene scene, Vector mousePos) {
         //Draw Background Color
-        new RectangleUI(getScene(),getPos(),getSize(),getColor()).draw();
+        QuickDraw.drawRect(getPos(),getSize(),getColor());
 
         double border = getSize().getY() / 5;
 
         //Draw Text
         int fontSize = (int)(getSize().getY());
         setUpDisplayText(getTitle(),border,fontSize);
-        getDisplayText().drawCentered(getSize().getAdded(-border*2,-border*2));
+        getDisplayText().drawCentered(scene, mousePos, getSize().getAdded(-border*2,-border*2));
     }
 
     @Override
-    public void onMouseClick(int button, int action, int mods, Vector mousePos) {
-        super.onMouseClick(button, action, mods, mousePos);
+    public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
+        super.onMouseClick(scene, button, action, mods, mousePos);
         if (button == Mouse.BUTTON_LEFT.getId()) {
             if (action == Mouse.ACTION_CLICK) this.baseColor = getColor();
+
             if (isMouseOver()) {
                 if (action == Mouse.ACTION_CLICK) {
                     int[] colVal = {getColor().getRed(),getColor().getGreen(),getColor().getBlue()};
@@ -50,15 +51,11 @@ public class ButtonUI extends WidgetUI {
                         colVal[i] = col;
                     }
                     setColor(new ColorE(colVal[0],colVal[1],colVal[2],getColor().getAlpha()));
+                }
+                if (action == Mouse.ACTION_RELEASE) getAction().run();
+            }
 
-                }
-                if (action == Mouse.ACTION_RELEASE) {
-                    getAction().run();
-                }
-            }
-            if (action == Mouse.ACTION_RELEASE) {
-                setColor(baseColor);
-            }
+            if (action == Mouse.ACTION_RELEASE) setColor(baseColor);
         }
     }
 
@@ -66,7 +63,6 @@ public class ButtonUI extends WidgetUI {
     public void setColor(ColorE color) {
         this.color = color;
     }
-
 
     public ColorE getColor() {
         return color;

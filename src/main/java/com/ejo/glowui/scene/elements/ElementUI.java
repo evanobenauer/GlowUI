@@ -9,15 +9,13 @@ import com.ejo.glowlib.math.Vector;
 
 public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput {
 
-    private final Scene scene;
     private Vector pos;
 
     private boolean rendered;
     private boolean ticking;
     protected boolean mouseOver;
 
-    public ElementUI(Scene scene, Vector pos, boolean shouldRender, boolean shouldTick) {
-        this.scene = scene;
+    public ElementUI(Vector pos, boolean shouldRender, boolean shouldTick) {
         this.pos = pos;
         this.rendered = shouldRender;
         this.ticking = shouldTick;
@@ -28,7 +26,7 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
      * The draw method will draw the attributes of the UI element. In every extension of the element, make sure the super comes first
      */
     @Override
-    public void draw() {
+    public void draw(Scene scene, Vector mousePos) {
         if (!shouldRender()) return;
     }
 
@@ -36,16 +34,16 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
      * Make sure that for every implementation of the tick method in different elements, you supersede the code with the super
      */
     @Override
-    public void tick() {
+    public void tick(Scene scene, Vector mousePos) {
         if (!shouldTick()) return;
-        mouseOver = updateMouseOver(getScene().getWindow().getMousePos());
+        mouseOver = updateMouseOver(mousePos);
     }
 
     /**
      * Make sure that for every implementation of the tick method in different elements, you supersede the code with the super
      */
     @Override
-    public void onKeyPress(int key, int scancode, int action, int mods) {
+    public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
         if (!shouldTick()) return;
     }
 
@@ -53,7 +51,7 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
      * Make sure that for every implementation of the tick method in different elements, you supersede the code with the super
      */
     @Override
-    public void onMouseClick(int button, int action, int mods, Vector mousePos) {
+    public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
         if (!shouldTick()) return;
     }
 
@@ -97,11 +95,6 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
 
     public Vector getPos() {
         return this.pos;
-    }
-
-
-    public Scene getScene() {
-        return this.scene;
     }
 
 }

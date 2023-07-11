@@ -38,14 +38,14 @@ public abstract class WidgetUI extends ElementUI {
         }
     });
 
-    public WidgetUI(Scene scene, String title, Vector pos, Vector size, boolean shouldRender, boolean shouldTick, Runnable action) {
-        super(scene, pos, shouldRender,shouldTick);
+    public WidgetUI(String title, Vector pos, Vector size, boolean shouldRender, boolean shouldTick, Runnable action) {
+        super(pos, shouldRender,shouldTick);
         this.title = title;
-        this.displayText = new TextUI(scene,title,new Font("Arial",Font.PLAIN,(int)size.getY()),pos,ColorE.WHITE);
+        this.displayText = new TextUI(title,new Font("Arial",Font.PLAIN,(int)size.getY()),pos,ColorE.WHITE);
 
         this.action = action;
         this.size = size;
-        baseRect = new RectangleUI(scene,Vector.NULL,Vector.NULL,new ColorE(0,0,0,0));
+        baseRect = new RectangleUI(Vector.NULL,Vector.NULL,new ColorE(0,0,0,0));
         onMaintenance.subscribe();
     }
 
@@ -54,19 +54,19 @@ public abstract class WidgetUI extends ElementUI {
      * interactable inside the draw method
      */
     @Override
-    public void draw() {
-        super.draw();
-        drawWidget();
-        new RectangleUI(getScene(), getBaseRect().getPos(), getBaseRect().getSize(), new ColorE(255, 255, 255, hoverFade)).draw();
+    public void draw(Scene scene, Vector mousePos) {
+        super.draw(scene, mousePos);
+        drawWidget(scene, mousePos);
+        new RectangleUI(getBaseRect().getPos(), getBaseRect().getSize(), new ColorE(255, 255, 255, hoverFade)).draw(scene, mousePos);
     }
 
-    protected abstract void drawWidget();
+    protected abstract void drawWidget(Scene scene, Vector mousePos);
 
     @Override
-    public void tick() {
+    public void tick(Scene scene, Vector mousePos) {
         if (!shouldTick()) return;
-        baseRect = new RectangleUI(getScene(),getPos(),getSize(),new ColorE(0,0,0,0));
-        super.tick();
+        baseRect = new RectangleUI(getPos(),getSize(),new ColorE(0,0,0,0));
+        super.tick(scene, mousePos);
     }
 
     @Override

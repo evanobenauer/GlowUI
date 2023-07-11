@@ -9,9 +9,9 @@ public interface IShape extends IComponent, IDrawable {
 
     Vector setCenter(Vector pos);
 
-    Vector getCenter();
-
     void setColor(ColorE color);
+
+    Vector getCenter();
 
     ColorE getColor();
 

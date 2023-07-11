@@ -9,17 +9,17 @@ public class RectangleUI extends PolygonUI implements IShape {
 
     private Vector size;
 
-    public RectangleUI(Scene scene, Vector pos, Vector size, ColorE color) {
-        super(scene,pos,color, new Vector(0,0),new Vector(0,size.getY()),size,new Vector(size.getX(),0));
+    public RectangleUI(Vector pos, Vector size, ColorE color) {
+        super(pos,color, new Vector(0,0),new Vector(0,size.getY()),size,new Vector(size.getX(),0));
         this.size = size;
     }
 
     @Override
-    public void draw() {
+    public void draw(Scene scene, Vector mousePos) {
         vertices[1] = new Vector(0,getSize().getY());
         vertices[2] = getSize();
         vertices[3] = new Vector(getSize().getX(),0);
-        super.draw();
+        super.draw(scene, mousePos);
     }
 
     @Override

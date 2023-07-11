@@ -11,15 +11,15 @@ public class PolygonUI extends ElementUI implements IShape {
     protected Vector[] vertices;
     private ColorE color;
 
-    public PolygonUI(Scene scene, Vector pos, ColorE color, Vector... vertices) {
-        super(scene,pos,true,true);
+    public PolygonUI(Vector pos, ColorE color, Vector... vertices) {
+        super(pos,true,true);
         this.color = color;
         this.vertices = vertices;
     }
 
     @Override
-    public void draw() {
-        super.draw();
+    public void draw(Scene scene, Vector mousePos) {
+        super.draw(scene, mousePos);
         GL11.glColor4f(getColor().getRed() / 255f, getColor().getGreen() / 255f, getColor().getBlue() / 255f, getColor().getAlpha() / 255f);
         GL11.glBegin(GL11.GL_POLYGON);
         for (Vector vert : getVertices()) GL11.glVertex2f((float) getPos().getX() + (float)vert.getX(), (float) getPos().getY() + (float) vert.getY());

@@ -7,14 +7,14 @@ import org.lwjgl.opengl.GL11;
 
 public class TexturedRectUI extends RectangleUI {
 
-    public TexturedRectUI(Scene scene, Vector pos, Vector size, ColorE color) {
-        super(scene, pos, size, color);
+    public TexturedRectUI(Vector pos, Vector size, ColorE color) {
+        super(pos, size, color);
     }
 
     //TODO: Add textured rectangles then finally create a release
     @Override
-    public void draw() {
-        super.draw();
+    public void draw(Scene scene, Vector mousePos) {
+        super.draw(scene, mousePos);
         //Add texture code here
     }
 

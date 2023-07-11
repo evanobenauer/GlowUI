@@ -25,8 +25,8 @@ public class TextFieldUI extends WidgetUI {
     private final StopWatch cursorTimer = new StopWatch();
     private boolean typing;
 
-    public TextFieldUI(Scene scene, String title, Vector pos, Vector size, ColorE color, Container<String> container, String hint, boolean numbersOnly) {
-        super(scene, title, pos, size, true, true, null);
+    public TextFieldUI(String title, Vector pos, Vector size, ColorE color, Container<String> container, String hint, boolean numbersOnly) {
+        super(title, pos, size, true, true, null);
         this.container = container;
         this.text = container.get();
         this.hint = hint;
@@ -36,14 +36,14 @@ public class TextFieldUI extends WidgetUI {
         setAction(() -> container.set(text));
     }
 
-    public TextFieldUI(Scene scene, Vector pos, Vector size, ColorE color, Container<String> container, String hint, boolean numbersOnly) {
-        this(scene, "", pos, size, color, container, hint, numbersOnly);
+    public TextFieldUI(Vector pos, Vector size, ColorE color, Container<String> container, String hint, boolean numbersOnly) {
+        this("", pos, size, color, container, hint, numbersOnly);
     }
 
     @Override
-    protected void drawWidget() {
+    protected void drawWidget(Scene scene, Vector mousePos) {
         //Draw Background
-        new RectangleUI(getScene(), getPos(), getSize(), DrawUtil.WIDGET_BACKGROUND).draw();
+        QuickDraw.drawRect(getPos(),getSize(),DrawUtil.WIDGET_BACKGROUND);
 
         double border = getSize().getY()/5;
 
@@ -56,7 +56,7 @@ public class TextFieldUI extends WidgetUI {
 
         //Draw Hint
         if (text.equals(""))
-            QuickDraw.drawText(getScene(), getHint(), new Font("Arial", Font.PLAIN, size), getPos()
+            QuickDraw.drawText(getHint(), new Font("Arial", Font.PLAIN, size), getPos()
                     .getAdded(border + getDisplayText().getWidth(), -2 + getSize().getY() / 2 - getDisplayText().getHeight() / 2)
                     , ColorE.GRAY);
 
@@ -68,21 +68,21 @@ public class TextFieldUI extends WidgetUI {
             int alpha = cursorTimer.hasTimePassedMS(500) ? 255 : 0;
             double x = getPos().getX() + getDisplayText().getWidth() + border;
             double y = getPos().getY() + border;
-            QuickDraw.drawRect(getScene(), new Vector(x, y), new Vector(2, getSize().getY() - 2 * border), new ColorE(255, 255, 255, alpha));
+            QuickDraw.drawRect(new Vector(x, y), new Vector(2, getSize().getY() - 2 * border), new ColorE(255, 255, 255, alpha));
         }
 
         //Draw Text Object
-        getDisplayText().draw();
+        getDisplayText().draw(scene, mousePos);
     }
 
     @Override
-    public void tick() {
-        super.tick();
+    public void tick(Scene scene, Vector mousePos) {
+        super.tick(scene, mousePos);
         this.text = getContainer().get(); //Consistently sync the value of the container and the value of the widget
     }
 
     @Override
-    public void onKeyPress(int key, int scancode, int action, int mods) {
+    public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
         if (action == 0 || !isTyping()) return;
         String buttonText = getContainer().get();
         try {
@@ -94,7 +94,7 @@ public class TextFieldUI extends WidgetUI {
                 } else if (key == GLFW.GLFW_KEY_SPACE) {
                     if (shouldEnterKey(key)) buttonText = buttonText + " ";
                 } else if (!GLFW.glfwGetKeyName(key, -1).equals("null")) {
-                    if (GLFW.glfwGetKey(getScene().getWindow().getWindowId(), GLFW.GLFW_KEY_LEFT_SHIFT) == 1 || GLFW.glfwGetKey(getScene().getWindow().getWindowId(), GLFW.GLFW_KEY_RIGHT_SHIFT) == 1) {
+                    if (GLFW.glfwGetKey(scene.getWindow().getWindowId(), GLFW.GLFW_KEY_LEFT_SHIFT) == 1 || GLFW.glfwGetKey(scene.getWindow().getWindowId(), GLFW.GLFW_KEY_RIGHT_SHIFT) == 1) {
                         buttonText = buttonText + GLFW.glfwGetKeyName(key, -1).toUpperCase();
                     } else {
                         if (shouldEnterKey(key)) buttonText = buttonText + GLFW.glfwGetKeyName(key, -1);
@@ -110,7 +110,7 @@ public class TextFieldUI extends WidgetUI {
     }
 
     @Override
-    public void onMouseClick(int button, int action, int mods, Vector mousePos) {
+    public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
         if (button == 0 && action == 1) {
             if (isTyping()) setTyping(false);
             if (isMouseOver()) setTyping(true);
