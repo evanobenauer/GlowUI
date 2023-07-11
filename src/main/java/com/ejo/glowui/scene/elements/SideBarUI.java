@@ -12,6 +12,7 @@ import com.ejo.glowui.util.GLManager;
 import com.ejo.glowui.util.QuickDraw;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -59,6 +60,10 @@ public class SideBarUI extends ElementUI {
         onMaintenance.subscribe();
     }
 
+    public SideBarUI(ColorE color, Type type, double width, boolean open, ElementUI... elements) {
+        this("",color,type,width,open,elements);
+    }
+
     @Override
     public void draw(Scene scene, Vector mousePos) {
         //Sets the position of the sidebar
@@ -71,7 +76,6 @@ public class SideBarUI extends ElementUI {
 
         super.draw(scene, mousePos);
 
-        //TODO: Draw Title
 
         updateButton(scene);
         buttonUI.draw(scene, mousePos);
@@ -87,6 +91,10 @@ public class SideBarUI extends ElementUI {
                 QuickDraw.drawRect(getButtonPos().getAdded(border,getButtonSize().getY() - 2*border - size),new Vector(getButtonSize().getX() - 2*border,size),ColorE.WHITE);
                 //Background
                 QuickDraw.drawRect(getBarPos(),new Vector(scene.getSize().getX(),getWidth()),getColor());
+                //Title
+                GLManager.translate(getBarPos());
+                QuickDraw.drawTextCentered(getTitle(),new Font("Arial",Font.PLAIN,20),new Vector(0,14),new Vector(scene.getSize().getX(),0),ColorE.WHITE);
+                GLManager.translate(getBarPos().getMultiplied(-1));
             }
             case LEFT, RIGHT -> {
                 //Button Lines
@@ -95,6 +103,10 @@ public class SideBarUI extends ElementUI {
                 QuickDraw.drawRect(getButtonPos().getAdded(getButtonSize().getX() - 2*border - size,border),new Vector(size,getButtonSize().getY() - 2*border),ColorE.WHITE);
                 //Background
                 QuickDraw.drawRect(getBarPos(),new Vector(getWidth(),scene.getSize().getY()),getColor());
+                //Title
+                GLManager.translate(getBarPos());
+                QuickDraw.drawTextCentered(getTitle(),new Font("Arial",Font.PLAIN,20),new Vector(0,14),new Vector(getWidth(),0),ColorE.WHITE);
+                GLManager.translate(getBarPos().getMultiplied(-1));
             }
         }
 
