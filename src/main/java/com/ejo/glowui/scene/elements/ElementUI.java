@@ -30,6 +30,14 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
         if (!shouldRender()) return;
     }
 
+    public void quickDraw(Scene scene) {
+        draw(scene,scene.getWindow().getScaledMousePos());
+    }
+
+    public void quickDraw() {
+        draw(null,new Vector(-1,-1));
+    }
+
     /**
      * Make sure that for every implementation of the tick method in different elements, you supersede the code with the super
      */
@@ -37,6 +45,14 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
     public void tick(Scene scene, Vector mousePos) {
         if (!shouldTick()) return;
         mouseOver = updateMouseOver(mousePos);
+    }
+
+    public void quickTick(Scene scene) {
+        tick(scene,scene.getWindow().getScaledMousePos());
+    }
+
+    public void quickTick() {
+        draw(null,new Vector(-1,-1));
     }
 
     /**

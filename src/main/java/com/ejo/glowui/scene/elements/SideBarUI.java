@@ -20,17 +20,15 @@ public class SideBarUI extends ElementUI {
 
     private final ArrayList<ElementUI> elementList = new ArrayList<>();
 
-    //TODO: Maybe have the button centered and move with the animation
     private final ButtonUI buttonUI;
 
     private String title;
     private Type type;
     private double width;
+    private boolean open;
     private ColorE color;
 
     private Vector barPos;
-
-    private boolean open;
 
     private final StopWatch stopWatch = new StopWatch();
     protected int openPercent = 0;
@@ -43,7 +41,7 @@ public class SideBarUI extends ElementUI {
         }
     });
 
-    public SideBarUI(String title, ColorE color, Type type, double width, boolean open, ElementUI... elements) {
+    public SideBarUI(String title, Type type, double width, boolean open, ColorE color, ElementUI... elements) {
         super(Vector.NULL, true, true);
         this.title = title;
         this.type = type;
@@ -60,8 +58,8 @@ public class SideBarUI extends ElementUI {
         onMaintenance.subscribe();
     }
 
-    public SideBarUI(ColorE color, Type type, double width, boolean open, ElementUI... elements) {
-        this("",color,type,width,open,elements);
+    public SideBarUI(Type type, double width, boolean open, ColorE color,  ElementUI... elements) {
+        this("",type,width,open,color,elements);
     }
 
     @Override
@@ -75,7 +73,6 @@ public class SideBarUI extends ElementUI {
         });
 
         super.draw(scene, mousePos);
-
 
         updateButton(scene);
         buttonUI.draw(scene, mousePos);
@@ -153,19 +150,19 @@ public class SideBarUI extends ElementUI {
         int length = 120;
         switch (getType()) {
             case TOP -> {
-                buttonUI.setPos(barPos.getAdded(new Vector(scene.getSize().getX()/2 - getButtonSize().getX()/2,getWidth())));
+                buttonUI.setPos(getBarPos().getAdded(new Vector(scene.getSize().getX()/2 - getButtonSize().getX()/2,getWidth())));
                 buttonUI.setSize(new Vector(length,height));
             }
             case BOTTOM -> {
-                buttonUI.setPos(barPos.getAdded(new Vector(scene.getSize().getX()/2 - getButtonSize().getX()/2,-getButtonSize().getY())));
+                buttonUI.setPos(getBarPos().getAdded(new Vector(scene.getSize().getX()/2 - getButtonSize().getX()/2,-getButtonSize().getY())));
                 buttonUI.setSize(new Vector(length,height));
             }
             case LEFT -> {
-                buttonUI.setPos(barPos.getAdded(new Vector(getWidth(),scene.getSize().getY()/2 - getButtonSize().getY()/2)));
+                buttonUI.setPos(getBarPos().getAdded(new Vector(getWidth(),scene.getSize().getY()/2 - getButtonSize().getY()/2)));
                 buttonUI.setSize(new Vector(height,length));
             }
             case RIGHT -> {
-                buttonUI.setPos(barPos.getAdded(new Vector(-getButtonSize().getX(),scene.getSize().getY()/2 - getButtonSize().getY()/2)));
+                buttonUI.setPos(getBarPos().getAdded(new Vector(-getButtonSize().getX(),scene.getSize().getY()/2 - getButtonSize().getY()/2)));
                 buttonUI.setSize(new Vector(height,length));
             }
         }
@@ -241,7 +238,7 @@ public class SideBarUI extends ElementUI {
     public String getTitle() {
         return title;
     }
-    
+
 
     private void addElements(ElementUI... elementUI) {
         elementList.addAll(Arrays.asList(elementUI));
