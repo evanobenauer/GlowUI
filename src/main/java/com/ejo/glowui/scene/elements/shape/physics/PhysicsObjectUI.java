@@ -36,14 +36,13 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
     }
 
     @Override
-    public void draw(Scene scene, Vector mousePos) {
-        super.draw(scene, mousePos);
+    protected void drawElement(Scene scene, Vector mousePos) {
+        if (!shouldRender()) return;
         shape.draw(scene, mousePos);
     }
 
     @Override
-    public void tick(Scene scene, Vector mousePos) {
-        super.tick(scene, mousePos);
+    protected void tickElement(Scene scene, Vector mousePos) {
         if (!isDisabled()) {
             updateAccForce();
             updateKinematics();

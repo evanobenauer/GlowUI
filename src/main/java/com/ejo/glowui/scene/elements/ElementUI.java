@@ -22,12 +22,10 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
         this.mouseOver = false;
     }
 
-    /**
-     * The draw method will draw the attributes of the UI element. In every extension of the element, make sure the super comes first
-     */
     @Override
     public void draw(Scene scene, Vector mousePos) {
         if (!shouldRender()) return;
+        drawElement(scene,mousePos);
     }
 
     public void quickDraw(Scene scene) {
@@ -39,12 +37,20 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
     }
 
     /**
+     * This is the method that the element will have its contents drawn in. This method is called whenever draw() is called
+     * @param scene
+     * @param mousePos
+     */
+    protected abstract void drawElement(Scene scene, Vector mousePos);
+
+    /**
      * Make sure that for every implementation of the tick method in different elements, you supersede the code with the super
      */
     @Override
     public void tick(Scene scene, Vector mousePos) {
         if (!shouldTick()) return;
         mouseOver = updateMouseOver(mousePos);
+        tickElement(scene,mousePos);
     }
 
     public void quickTick(Scene scene) {
@@ -52,15 +58,22 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
     }
 
     public void quickTick() {
-        draw(null,new Vector(-1,-1));
+        tick(null,new Vector(-1,-1));
     }
+
+    /**
+     * This is the method that the element will have its contents ticked in. This method is called whenever tick() is called
+     * @param scene
+     * @param mousePos
+     */
+    protected abstract void tickElement(Scene scene, Vector mousePos);
 
     /**
      * Make sure that for every implementation of the tick method in different elements, you supersede the code with the super
      */
     @Override
     public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
-        if (!shouldTick()) return;
+        //TODO: Add onKeyPressElement method, same for mouse
     }
 
     /**
@@ -68,7 +81,6 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
      */
     @Override
     public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
-        if (!shouldTick()) return;
     }
 
 
@@ -78,8 +90,8 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
      * @param disabled
      */
     public void disable(boolean disabled) {
-        setRendered(false);
-        setTicking(false);
+        setRendered(!disabled);
+        setTicking(!disabled);
     }
 
     public abstract boolean updateMouseOver(Vector mousePos);

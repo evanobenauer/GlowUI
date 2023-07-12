@@ -18,13 +18,18 @@ public class PolygonUI extends ElementUI implements IShape {
     }
 
     @Override
-    public void draw(Scene scene, Vector mousePos) {
-        super.draw(scene, mousePos);
+    public void drawElement(Scene scene, Vector mousePos) {
+        if (!shouldRender()) return;
         GL11.glColor4f(getColor().getRed() / 255f, getColor().getGreen() / 255f, getColor().getBlue() / 255f, getColor().getAlpha() / 255f);
         GL11.glBegin(GL11.GL_POLYGON);
         for (Vector vert : getVertices()) GL11.glVertex2f((float) getPos().getX() + (float)vert.getX(), (float) getPos().getY() + (float) vert.getY());
         GL11.glEnd();
         GL11.glColor4f(1, 1, 1, 1);
+    }
+
+    @Override
+    protected void tickElement(Scene scene, Vector mousePos) {
+
     }
 
     @Override

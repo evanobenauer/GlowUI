@@ -51,13 +51,12 @@ public class TextUI extends ElementUI {
     }
 
     @Override
-    public void draw(Scene scene, Vector mousePos) {
-        super.draw(scene, mousePos);
+    protected void drawElement(Scene scene, Vector mousePos) {
         renderText(scene, getPos().getX(), getPos().getY());
     }
 
     public void drawCentered(Scene scene, Vector mousePos, Vector size) {
-        super.draw(scene, mousePos);
+        if (!shouldRender()) return;
         renderText(scene, getPos().getX() + size.getX()/2 - getWidth()/2,getPos().getY() + size.getY()/2 - getHeight()/2 - 2);
     }
 
@@ -68,6 +67,10 @@ public class TextUI extends ElementUI {
         int imgWidth = fontMetrics.stringWidth(getText()) + 4;
         int imgHeight = fontMetrics.getHeight() + 4;
         GL11.glDrawPixels(imgWidth,imgHeight, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, fontImageBuffer);
+    }
+
+    @Override
+    protected void tickElement(Scene scene, Vector mousePos) {
     }
 
 

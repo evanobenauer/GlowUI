@@ -63,7 +63,7 @@ public class SideBarUI extends ElementUI {
     }
 
     @Override
-    public void draw(Scene scene, Vector mousePos) {
+    protected void drawElement(Scene scene, Vector mousePos) {
         //Sets the position of the sidebar
         setBarPos(switch(getType()) {
             case TOP -> new Vector(0,0 - getWidth() * (100 - openPercent)/100);
@@ -72,7 +72,6 @@ public class SideBarUI extends ElementUI {
             case RIGHT -> new Vector(scene.getSize().getX() - getWidth() * openPercent/100,0);
         });
 
-        super.draw(scene, mousePos);
 
         updateButton(scene);
         buttonUI.draw(scene, mousePos);
@@ -116,8 +115,7 @@ public class SideBarUI extends ElementUI {
     }
 
     @Override
-    public void tick(Scene scene, Vector mousePos) {
-        super.tick(scene, mousePos);
+    public void tickElement(Scene scene, Vector mousePos) {
         this.buttonUI.tick(scene, mousePos);
 
         //Tick Elements
@@ -128,7 +126,6 @@ public class SideBarUI extends ElementUI {
 
     @Override
     public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
-        super.onMouseClick(scene, button, action, mods, mousePos);
         this.buttonUI.onMouseClick(scene, button,action,mods,mousePos);
 
         for (ElementUI elementUI : getElementList()) {
@@ -138,8 +135,6 @@ public class SideBarUI extends ElementUI {
 
     @Override
     public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
-        super.onKeyPress(scene, key, scancode, action, mods);
-
         for (ElementUI elementUI : getElementList()) {
             elementUI.onKeyPress(scene, key, scancode, action, mods);
         }

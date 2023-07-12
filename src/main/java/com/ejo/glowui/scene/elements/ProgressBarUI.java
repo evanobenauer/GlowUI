@@ -39,9 +39,7 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
     }
 
     @Override
-    public void draw(Scene scene, Vector mousePos) {
-        super.draw(scene, mousePos);
-
+    protected void drawElement(Scene scene, Vector mousePos) {
         //Draw Background
         QuickDraw.drawRect(getPos(),getSize(),DrawUtil.WIDGET_BACKGROUND);
 
@@ -54,6 +52,10 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
 
         //Draw Title
         QuickDraw.drawText(getTitle(), new Font("Arial", Font.PLAIN, 20), getPos().getAdded(2, 2), ColorE.WHITE);
+    }
+
+    @Override
+    protected void tickElement(Scene scene, Vector mousePos) {
     }
 
     @Override

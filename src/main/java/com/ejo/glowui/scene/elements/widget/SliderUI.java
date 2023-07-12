@@ -91,8 +91,7 @@ public class SliderUI<T extends Number> extends WidgetUI {
      * Updates the value of the slider per every tick based off if the slider is sliding
      */
     @Override
-    public void tick(Scene scene, Vector mousePos) {
-        super.tick(scene, mousePos);
+    public void tickWidget(Scene scene, Vector mousePos) {
         this.value = getContainer().get(); //Consistently sync the value of the container and the value of the widget
 
         if (sliding) { //Updates the value of the setting based off of the current width of the slider
@@ -114,7 +113,6 @@ public class SliderUI<T extends Number> extends WidgetUI {
      */
     @Override
     public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
-        super.onMouseClick(scene, button, action, mods, mousePos);
         if (action == Mouse.ACTION_CLICK) {
             if (isMouseOver() && button == Mouse.BUTTON_LEFT.getId()) {
                 sliding = true;

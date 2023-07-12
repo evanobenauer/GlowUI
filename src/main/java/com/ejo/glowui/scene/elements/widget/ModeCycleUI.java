@@ -68,14 +68,12 @@ public class ModeCycleUI<T> extends WidgetUI {
     }
 
     @Override
-    public void tick(Scene scene, Vector mousePos) {
-        super.tick(scene, mousePos);
+    public void tickWidget(Scene scene, Vector mousePos) {
         this.mode = getContainer().get(); //Consistently sync the value of the container and the value of the widget
     }
 
     @Override
     public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
-        super.onMouseClick(scene, button, action, mods, mousePos);
         if (isMouseOver()) {
             if (action == 0) {
                 if (button == Mouse.BUTTON_RIGHT.getId()) {

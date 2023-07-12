@@ -54,8 +54,7 @@ public abstract class WidgetUI extends ElementUI {
      * interactable inside the draw method
      */
     @Override
-    public void draw(Scene scene, Vector mousePos) {
-        super.draw(scene, mousePos);
+    protected void drawElement(Scene scene, Vector mousePos) {
         drawWidget(scene, mousePos);
         new RectangleUI(getBaseRect().getPos(), getBaseRect().getSize(), new ColorE(255, 255, 255, hoverFade)).draw(scene, mousePos);
     }
@@ -63,11 +62,12 @@ public abstract class WidgetUI extends ElementUI {
     protected abstract void drawWidget(Scene scene, Vector mousePos);
 
     @Override
-    public void tick(Scene scene, Vector mousePos) {
-        if (!shouldTick()) return;
+    public void tickElement(Scene scene, Vector mousePos) {
         baseRect = new RectangleUI(getPos(),getSize(),new ColorE(0,0,0,0));
-        super.tick(scene, mousePos);
+        tickWidget(scene,mousePos);
     }
+
+    protected abstract void tickWidget(Scene scene, Vector mousePos);
 
     @Override
     public boolean updateMouseOver(Vector mousePos) {

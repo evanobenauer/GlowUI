@@ -22,8 +22,7 @@ public class LineUI extends ElementUI implements IShape {
     }
 
     @Override
-    public void draw(Scene scene, Vector mousePos) {
-        super.draw(scene, mousePos);
+    protected void drawElement(Scene scene, Vector mousePos) {
         GL11.glLineWidth((float)getWidth());
 
         switch(getType()) {
@@ -46,6 +45,11 @@ public class LineUI extends ElementUI implements IShape {
         GL11.glVertex2d(getPos1().getX(), getPos1().getY());
         GL11.glVertex2d(getPos2().getX(), getPos2().getY());
         GL11.glEnd();
+    }
+
+    @Override
+    protected void tickElement(Scene scene, Vector mousePos) {
+
     }
 
     @Override

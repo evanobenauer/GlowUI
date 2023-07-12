@@ -60,8 +60,12 @@ public class ToggleUI extends WidgetUI {
     }
 
     @Override
+    protected void tickWidget(Scene scene, Vector mousePos) {
+
+    }
+
+    @Override
     public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
-        super.onMouseClick(scene, button, action, mods, mousePos);
         if (isMouseOver()) {
             if (button == Mouse.BUTTON_LEFT.getId() && action == Mouse.ACTION_RELEASE) {
                 getAction().run();

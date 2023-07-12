@@ -15,8 +15,7 @@ public class PhysicsDraggableUI extends PhysicsObjectUI {
     }
 
     @Override
-    public void tick(Scene scene, Vector mousePos) {
-        super.tick(scene, mousePos);
+    public void tickElement(Scene scene, Vector mousePos) {
         if (isDragging()) {
             resetMovement();
             setPos(scene.getWindow().getScaledMousePos().getAdded(dragPos.getMultiplied(-1)));
@@ -27,7 +26,6 @@ public class PhysicsDraggableUI extends PhysicsObjectUI {
 
     @Override
     public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
-        super.onMouseClick(scene, button, action, mods, mousePos);
         if (button == 0 && action == 0) dragging = false;
         if (isMouseOver()) if (button == 0 && action == 1) dragging = true;
     }

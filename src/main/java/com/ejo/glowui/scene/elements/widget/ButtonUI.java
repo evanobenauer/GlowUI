@@ -37,8 +37,12 @@ public class ButtonUI extends WidgetUI {
     }
 
     @Override
+    protected void tickWidget(Scene scene, Vector mousePos) {
+
+    }
+
+    @Override
     public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
-        super.onMouseClick(scene, button, action, mods, mousePos);
         if (button == Mouse.BUTTON_LEFT.getId()) {
             if (action == Mouse.ACTION_CLICK) this.baseColor = getColor();
 

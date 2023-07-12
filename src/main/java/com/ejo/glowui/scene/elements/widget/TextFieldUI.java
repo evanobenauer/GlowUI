@@ -76,8 +76,7 @@ public class TextFieldUI extends WidgetUI {
     }
 
     @Override
-    public void tick(Scene scene, Vector mousePos) {
-        super.tick(scene, mousePos);
+    public void tickWidget(Scene scene, Vector mousePos) {
         this.text = getContainer().get(); //Consistently sync the value of the container and the value of the widget
     }
 
