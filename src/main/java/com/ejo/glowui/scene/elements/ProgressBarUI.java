@@ -59,6 +59,15 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
     }
 
     @Override
+    public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
+    }
+
+    @Override
+    public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
+    }
+
+
+    @Override
     public boolean updateMouseOver(Vector mousePos) {
         return false;
     }

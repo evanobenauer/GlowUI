@@ -72,16 +72,13 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
      * Make sure that for every implementation of the tick method in different elements, you supersede the code with the super
      */
     @Override
-    public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
-        //TODO: Add onKeyPressElement method, same for mouse
-    }
+    public abstract void onKeyPress(Scene scene, int key, int scancode, int action, int mods);
 
     /**
      * Make sure that for every implementation of the tick method in different elements, you supersede the code with the super
      */
     @Override
-    public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
-    }
+    public abstract void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos);
 
 
     /**

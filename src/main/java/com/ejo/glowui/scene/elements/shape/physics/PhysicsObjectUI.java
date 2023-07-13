@@ -3,6 +3,7 @@ package com.ejo.glowui.scene.elements.shape.physics;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.ElementUI;
 import com.ejo.glowui.scene.elements.shape.IShape;
+import com.ejo.glowui.scene.elements.shape.LineUI;
 import com.ejo.glowui.scene.elements.shape.PolygonUI;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
@@ -50,6 +51,15 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
         }
     }
 
+    @Override
+    public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
+    }
+
+    @Override
+    public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
+    }
+
+
     public void updateKinematics() {
         setVelocity(getVelocity().getAdded(getAcceleration().getMultiplied(getDeltaT())));
         setCenter(getCenter().getAdded(getVelocity().getMultiplied(getDeltaT())));
@@ -72,11 +82,11 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
         }
         return false;
     }
-    /*
-    public boolean isColliding(BoundingBox.Line line) {
+
+    public boolean isColliding(LineUI line) {
         return false;
     }
-     */
+
 
     @Override
     public boolean updateMouseOver(Vector mousePos) {

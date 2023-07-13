@@ -28,8 +28,16 @@ public class PolygonUI extends ElementUI implements IShape {
 
     @Override
     protected void tickElement(Scene scene, Vector mousePos) {
-
     }
+
+    @Override
+    public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
+    }
+
+    @Override
+    public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
+    }
+
 
     @Override
     public boolean updateMouseOver(Vector mousePos) {

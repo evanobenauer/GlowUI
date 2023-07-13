@@ -49,10 +49,7 @@ public abstract class WidgetUI extends ElementUI {
         onMaintenance.subscribe();
     }
 
-    /**
-     * Always make sure when creating a child class of an interactable that you re-instantiate the baseRect with the stats of your
-     * interactable inside the draw method
-     */
+
     @Override
     protected void drawElement(Scene scene, Vector mousePos) {
         drawWidget(scene, mousePos);
@@ -68,6 +65,7 @@ public abstract class WidgetUI extends ElementUI {
     }
 
     protected abstract void tickWidget(Scene scene, Vector mousePos);
+
 
     @Override
     public boolean updateMouseOver(Vector mousePos) {

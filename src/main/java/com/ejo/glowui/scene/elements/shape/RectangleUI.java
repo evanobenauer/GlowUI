@@ -19,7 +19,7 @@ public class RectangleUI extends PolygonUI implements IShape {
         vertices[1] = new Vector(0,getSize().getY());
         vertices[2] = getSize();
         vertices[3] = new Vector(getSize().getX(),0);
-        super.draw(scene, mousePos);
+        super.drawElement(scene, mousePos);
     }
 
     @Override

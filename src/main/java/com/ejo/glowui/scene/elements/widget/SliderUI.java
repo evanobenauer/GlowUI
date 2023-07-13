@@ -108,6 +108,10 @@ public class SliderUI<T extends Number> extends WidgetUI {
         }
     }
 
+    @Override
+    public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
+    }
+
     /**
      * The mouse click sets the slider to be sliding for value setting
      */

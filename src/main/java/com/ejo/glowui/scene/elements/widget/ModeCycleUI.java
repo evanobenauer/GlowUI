@@ -73,6 +73,10 @@ public class ModeCycleUI<T> extends WidgetUI {
     }
 
     @Override
+    public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
+    }
+
+    @Override
     public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
         if (isMouseOver()) {
             if (action == 0) {

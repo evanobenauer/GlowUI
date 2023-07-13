@@ -42,6 +42,10 @@ public class ButtonUI extends WidgetUI {
     }
 
     @Override
+    public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
+    }
+
+    @Override
     public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
         if (button == Mouse.BUTTON_LEFT.getId()) {
             if (action == Mouse.ACTION_CLICK) this.baseColor = getColor();

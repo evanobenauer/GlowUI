@@ -34,6 +34,7 @@ public abstract class Scene {
     public void draw() {
         try {
             for (ElementUI element : getElements()) {
+                if (!element.shouldRender()) continue;
                 element.draw(this, getWindow().getScaledMousePos());
             }
         } catch (ConcurrentModificationException e) {
@@ -44,6 +45,7 @@ public abstract class Scene {
     public void tick() {
         try {
             for (ElementUI element : getElements()) {
+                if (!element.shouldTick()) continue;
                 element.tick(this, getWindow().getScaledMousePos());
             }
         } catch (ConcurrentModificationException e) {
@@ -54,6 +56,7 @@ public abstract class Scene {
     public void onKeyPress(int key, int scancode, int action, int mods) {
         try {
             for (ElementUI element : getElements()) {
+                if (!element.shouldTick()) continue;
                 element.onKeyPress(this, key, scancode, action, mods);
             }
         } catch (ConcurrentModificationException e) {
@@ -64,6 +67,7 @@ public abstract class Scene {
     public void onMouseClick(int button, int action, int mods, Vector mousePos) {
         try {
             for (ElementUI element : getElements()) {
+                if (!element.shouldTick()) continue;
                 element.onMouseClick(this, button, action, mods, mousePos);
             }
         } catch (ConcurrentModificationException e) {
