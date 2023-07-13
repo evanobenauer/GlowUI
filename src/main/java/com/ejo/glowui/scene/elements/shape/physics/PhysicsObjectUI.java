@@ -37,7 +37,6 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
 
     @Override
     protected void drawElement(Scene scene, Vector mousePos) {
-        if (!shouldRender()) return;
         shape.draw(scene, mousePos);
     }
 

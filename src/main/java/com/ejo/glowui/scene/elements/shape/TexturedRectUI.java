@@ -13,7 +13,7 @@ public class TexturedRectUI extends RectangleUI {
 
     //TODO: Add textured rectangles then finally create a release
     @Override
-    public void draw(Scene scene, Vector mousePos) {
+    public void drawElement(Scene scene, Vector mousePos) {
         super.draw(scene, mousePos);
         //Add texture code here
     }
