@@ -29,6 +29,7 @@ public class RectangleUI extends PolygonUI implements IShape {
         return mouseOver = mouseOverX && mouseOverY;
     }
 
+
     public Vector getSize() {
         return size;
     }

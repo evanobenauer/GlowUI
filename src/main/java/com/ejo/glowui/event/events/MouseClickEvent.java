@@ -5,11 +5,11 @@ import com.ejo.glowlib.math.Vector;
 
 public class MouseClickEvent extends EventE {
 
-    long window;
-    int button;
-    int action;
-    int mods;
-    Vector mousePos;
+    private long window;
+    private int button;
+    private int action;
+    private int mods;
+    private Vector mousePos;
 
     @Override
     public void post(Object... args) {

@@ -52,11 +52,8 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
     }
 
     @Override
-    public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
-    }
-
-    @Override
-    public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
+    public boolean updateMouseOver(Vector mousePos) {
+        return shape.updateMouseOver(mousePos);
     }
 
 
@@ -76,21 +73,13 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
         setVelocity(Vector.NULL);
     }
 
+    //TODO: Add collisions with shapes and lines here
     public boolean isColliding(IShape object) {
-        if (shape instanceof PolygonUI && object instanceof PolygonUI) {
-            //TODO: Add code here
-        }
         return false;
     }
 
     public boolean isColliding(LineUI line) {
         return false;
-    }
-
-
-    @Override
-    public boolean updateMouseOver(Vector mousePos) {
-        return shape.updateMouseOver(mousePos);
     }
 
 

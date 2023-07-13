@@ -16,10 +16,6 @@ import java.util.ConcurrentModificationException;
  */
 public abstract class Scene {
 
-    //TODO: Create special abstract screen types
-    // Create bordered screen type that is its own screen that can in case a screen in a border. The border will have action buttons and the inner screen can be swapped
-    // Create a dual screen side-by-side type
-
     private final ArrayList<ElementUI> elementList = new ArrayList<>();
 
     private Window window;
@@ -31,10 +27,13 @@ public abstract class Scene {
     }
 
 
+    /**
+     * This is the main draw method for the scene. It will draw all elements that are added to the scene. To draw more than the elements provided, you
+     * must call the super of this method inside your override to continue to support the added elements. This method is called in the draw thread of the window
+     */
     public void draw() {
         try {
             for (ElementUI element : getElements()) {
-                if (!element.shouldRender()) continue;
                 element.draw(this, getWindow().getScaledMousePos());
             }
         } catch (ConcurrentModificationException e) {
@@ -42,10 +41,13 @@ public abstract class Scene {
         }
     }
 
+    /**
+     * This is the main tick method for the scene. It will tick all elements that are added to the scene. To tick more than the elements provided, you
+     * must call the super of this method inside your override to continue to support the added elements. This method is called in the tick thread of the window
+     */
     public void tick() {
         try {
             for (ElementUI element : getElements()) {
-                if (!element.shouldTick()) continue;
                 element.tick(this, getWindow().getScaledMousePos());
             }
         } catch (ConcurrentModificationException e) {
@@ -53,6 +55,15 @@ public abstract class Scene {
         }
     }
 
+    /**
+     * This method is a user-input detection method. It will detect all key presses for added elements, returning the key, scancode, action, and modifiers for the key.
+     * To scan for more input that the elements provided, you must call the super of this method inside your override to continue to support the added elements.
+     * This method is called in the tick thread of the window.
+     * @param key
+     * @param scancode
+     * @param action
+     * @param mods
+     */
     public void onKeyPress(int key, int scancode, int action, int mods) {
         try {
             for (ElementUI element : getElements()) {
@@ -64,6 +75,15 @@ public abstract class Scene {
         }
     }
 
+    /**
+     * This method is a user-input detection method. It will detect all mouse clicks for added elements, returning the button, action, modifiers, and mousePos for the click.
+     * To scan for more input that the elements provided, you must call the super of this method inside your override to continue to support the added elements.
+     * This method is called in the tick thread of the window.
+     * @param button
+     * @param action
+     * @param mods
+     * @param mousePos
+     */
     public void onMouseClick(int button, int action, int mods, Vector mousePos) {
         try {
             for (ElementUI element : getElements()) {

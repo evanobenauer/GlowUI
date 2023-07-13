@@ -9,16 +9,18 @@ import org.lwjgl.opengl.GL11;
 public class LineUI extends ElementUI implements IShape {
 
     private Vector pos2;
+    private ColorE colorE;
+
     private double width;
     private Type type;
-    private ColorE colorE;
 
     public LineUI(Vector pos1, Vector pos2, ColorE color, Type type, double width) {
         super(pos1, true, true);
         this.pos2 = pos2;
+        this.colorE = color;
+
         this.width = width;
         this.type = type;
-        this.colorE = color;
     }
 
     @Override
@@ -52,18 +54,10 @@ public class LineUI extends ElementUI implements IShape {
     }
 
     @Override
-    public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
-    }
-
-    @Override
-    public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
-    }
-
-
-    @Override
     public boolean updateMouseOver(Vector mousePos) {
         return false;
     }
+
 
     public void setPos1(Vector point1) {
         setPos(point1);

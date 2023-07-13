@@ -4,11 +4,11 @@ import com.ejo.glowlib.event.EventE;
 
 public class KeyPressEvent extends EventE {
 
-    long window;
-    int key;
-    int scancode;
-    int action;
-    int mods;
+    private long window;
+    private int key;
+    private int scancode;
+    private int action;
+    private int mods;
 
     @Override
     public void post(Object... args) {

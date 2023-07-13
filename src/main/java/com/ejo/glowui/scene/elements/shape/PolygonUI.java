@@ -31,19 +31,11 @@ public class PolygonUI extends ElementUI implements IShape {
     }
 
     @Override
-    public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
-    }
-
-    @Override
-    public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
-    }
-
-
-    @Override
     public boolean updateMouseOver(Vector mousePos) {
         //TODO find how to do this lol
         return false;
     }
+
 
     public Vector setCenter(Vector pos) {
         //TODO figure this out too

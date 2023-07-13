@@ -7,6 +7,7 @@ import com.ejo.glowui.scene.elements.construct.IComponent;
 import com.ejo.glowui.scene.elements.construct.ITick;
 import com.ejo.glowlib.math.Vector;
 
+//TODO: Update Java DOC comments for all methods
 public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput {
 
     private Vector pos;
@@ -22,29 +23,37 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
         this.mouseOver = false;
     }
 
+    /**
+     * The draw method should be called in the draw method of the scene to which it belongs. This method operates in the render thread
+     * @param scene
+     * @param mousePos
+     */
     @Override
     public void draw(Scene scene, Vector mousePos) {
         if (!shouldRender()) return;
         drawElement(scene,mousePos);
     }
 
-    public void quickDraw(Scene scene) {
+    public void draw(Scene scene) {
         draw(scene,scene.getWindow().getScaledMousePos());
     }
 
-    public void quickDraw() {
+    public void draw() {
         draw(null,new Vector(-1,-1));
     }
 
     /**
      * This is the method that the element will have its contents drawn in. This method is called whenever draw() is called
+     * Make sure when drawing elements, do NOT override draw(), and use this method instead
      * @param scene
      * @param mousePos
      */
     protected abstract void drawElement(Scene scene, Vector mousePos);
 
     /**
-     * Make sure that for every implementation of the tick method in different elements, you supersede the code with the super
+     * The tick method should be called in the tick method of the scene to which it belongs. This method operates in the tick thread
+     * @param scene
+     * @param mousePos
      */
     @Override
     public void tick(Scene scene, Vector mousePos) {
@@ -53,32 +62,31 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
         tickElement(scene,mousePos);
     }
 
-    public void quickTick(Scene scene) {
+    public void tick(Scene scene) {
         tick(scene,scene.getWindow().getScaledMousePos());
     }
 
-    public void quickTick() {
+    public void tick() {
         tick(null,new Vector(-1,-1));
     }
 
     /**
      * This is the method that the element will have its contents ticked in. This method is called whenever tick() is called
+     * Make sure when ticking elements, do NOT override tick(), and use this method instead
      * @param scene
      * @param mousePos
      */
     protected abstract void tickElement(Scene scene, Vector mousePos);
 
-    /**
-     * Make sure that for every implementation of the tick method in different elements, you supersede the code with the super
-     */
-    @Override
-    public abstract void onKeyPress(Scene scene, int key, int scancode, int action, int mods);
 
-    /**
-     * Make sure that for every implementation of the tick method in different elements, you supersede the code with the super
-     */
     @Override
-    public abstract void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos);
+    public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
+
+    }
+
+    @Override
+    public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
+    }
 
 
     /**

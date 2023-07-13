@@ -56,6 +56,12 @@ public abstract class WidgetUI extends ElementUI {
         new RectangleUI(getBaseRect().getPos(), getBaseRect().getSize(), new ColorE(255, 255, 255, hoverFade)).draw(scene, mousePos);
     }
 
+    /**
+     * The DrawWidget method is the abstract method in which all widgets must draw their contents in. The method is called in drawElement for the widget
+     * Make sure when drawing widgets, do NOT override drawElement() or draw()
+     * @param scene
+     * @param mousePos
+     */
     protected abstract void drawWidget(Scene scene, Vector mousePos);
 
     @Override
@@ -64,14 +70,31 @@ public abstract class WidgetUI extends ElementUI {
         tickWidget(scene,mousePos);
     }
 
+    /**
+     * The TickWidget method is the abstract method in which all widgets must place their tick contents in. The method is called in the tickElement method.
+     * Make sure when ticking widgets, do NOT override tickElement() or tick()
+     * @param scene
+     * @param mousePos
+     */
     protected abstract void tickWidget(Scene scene, Vector mousePos);
 
+    @Override
+    public abstract void onKeyPress(Scene scene, int key, int scancode, int action, int mods);
+
+    @Override
+    public abstract void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos);
 
     @Override
     public boolean updateMouseOver(Vector mousePos) {
         return baseRect.updateMouseOver(mousePos);
     }
 
+    /**
+     * Sets up the default widget display text. This text is a scaled top left oriented text. Position must be set after this method is called
+     * @param text
+     * @param border
+     * @param textSize
+     */
     public void setUpDisplayText(String text, double border, int textSize) {
         getDisplayText().setText(text);
         getDisplayText().setSize(textSize);
@@ -81,6 +104,7 @@ public abstract class WidgetUI extends ElementUI {
         }
         getDisplayText().setPos(getPos().getAdded(border,border));
     }
+
 
     public void removeTitle() {
         setTitle("");
