@@ -22,6 +22,7 @@ public class PhysicsDraggableUI extends PhysicsObjectUI {
         } else {
             dragPos = scene.getWindow().getScaledMousePos().getAdded(getPos().getMultiplied(-1));
         }
+        super.tickElement(scene,mousePos);
     }
 
     @Override
