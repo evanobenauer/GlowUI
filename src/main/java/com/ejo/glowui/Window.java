@@ -5,6 +5,8 @@ import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.util.GLManager;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import com.ejo.glowlib.math.Vector;
@@ -192,17 +194,25 @@ public class Window {
     }
 
     private void onKeyPress() {
-        glfwSetKeyCallback(getWindowId(), (window, key, scancode, action, mods) -> {
+        GLFWKeyCallback callback = glfwSetKeyCallback(getWindowId(), (window, key, scancode, action, mods) -> {
             this.getScene().onKeyPress(key, scancode, action, mods);
             EventRegistry.EVENT_KEY_PRESS.post(window, key, scancode, action, mods); //Key Event to be used outside of class
         });
+        try {
+            callback.close();
+        } catch (NullPointerException ignored){
+        }
     }
 
     private void onMouseClick() {
-        glfwSetMouseButtonCallback(getWindowId(), (window, button, action, mods) -> {
+        GLFWMouseButtonCallback callback = glfwSetMouseButtonCallback(getWindowId(), (window, button, action, mods) -> {
             this.getScene().onMouseClick(button, action, mods, getScaledMousePos());
             EventRegistry.EVENT_MOUSE_CLICK.post(window, button, action, mods, getScaledMousePos()); //Mouse click event to be used outside of class
         });
+        try {
+            callback.close();
+        } catch (NullPointerException ignored){
+        }
     }
 
     private void updateWindow() {
