@@ -5,17 +5,22 @@ import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.util.GLManager;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.time.StopWatch;
+import org.lwjgl.system.MemoryStack;
 
+import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
+import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.stb.STBImage.stbi_load;
 
 /**
  * The Window class is a container class for the LWJGL3 WindowID. It incorporates GLFW methods in an easy-to-use object-oriented
@@ -44,7 +49,10 @@ public class Window {
 
     private double uiScale;
 
+    private boolean open;
+
     private Scene scene;
+
 
     public Window(String title, Vector pos, Vector size, Scene startingScene, boolean vSync, int antiAliasing, int maxTPS, int maxFPS) {
         this.title = title;
@@ -55,6 +63,7 @@ public class Window {
         this.maxTPS = maxTPS;
         this.maxFPS = maxFPS;
         this.uiScale = 1;
+        this.open = true;
         this.scene = startingScene;
     }
 
@@ -75,6 +84,10 @@ public class Window {
 
         //Creating the monitor
         glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+        // Load the window icon
+        //TODO: Add Icon Setting
+        //glfwSetWindowIcon(getWindowId(),getImageBuffer(""));
 
         //Show the window
         setPos(getPos());
@@ -117,7 +130,7 @@ public class Window {
      */
     public void startTickLoop() {
         Thread thread = new Thread(() -> {
-            while (!glfwWindowShouldClose(getWindowId())) {
+            while (isOpen()) {
                 long startTimeNS = System.nanoTime();
                 tick();
                 ticks++;
@@ -129,7 +142,6 @@ public class Window {
             }
         });
         thread.setName("Tick Thread");
-        thread.setDaemon(true);
         thread.start();
     }
 
@@ -140,7 +152,8 @@ public class Window {
      * a part of the main thread
      */
     public void runRenderLoop() {
-        while (!glfwWindowShouldClose(getWindowId())) {
+        while (isOpen()) {
+            setOpen(!glfwWindowShouldClose(getWindowId()));
             long startTimeNS = System.nanoTime();
             updateWindow();
             draw();
@@ -151,6 +164,7 @@ public class Window {
             long sleepTimeNS = (1000000000 / getMaxFPS() - tickTimeNS);
             if (!getVSync()) if (sleepTimeNS > 0) sleepThread(sleepTimeNS / 1000000);
         }
+        setOpen(false);
     }
 
     private void sleepThread(long ms) {
@@ -243,6 +257,10 @@ public class Window {
         }
     }
 
+    public static GLFWImage.Buffer getImageBuffer(String path) {
+        return null;
+    }
+
 
     public void run() {
         init();
@@ -289,6 +307,10 @@ public class Window {
 
     public void setUIScale(double uiScale) {
         this.uiScale = uiScale;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
     }
 
     public void setMaxTPS(int maxTPS) {
@@ -347,6 +369,10 @@ public class Window {
 
     public double getUIScale() {
         return uiScale;
+    }
+
+    public boolean isOpen() {
+        return open;
     }
 
     public int getMaxTPS() {
