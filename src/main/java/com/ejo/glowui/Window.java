@@ -212,10 +212,7 @@ public class Window {
             this.getScene().onKeyPress(key, scancode, action, mods);
             EventRegistry.EVENT_KEY_PRESS.post(window, key, scancode, action, mods); //Key Event to be used outside of class
         });
-        try {
-            callback.close();
-        } catch (NullPointerException ignored){
-        }
+        closeAutoClosable(callback);
     }
 
     private void onMouseClick() {
@@ -223,11 +220,17 @@ public class Window {
             this.getScene().onMouseClick(button, action, mods, getScaledMousePos());
             EventRegistry.EVENT_MOUSE_CLICK.post(window, button, action, mods, getScaledMousePos()); //Mouse click event to be used outside of class
         });
+        closeAutoClosable(callback);
+    }
+
+    private void closeAutoClosable(AutoCloseable closable) {
         try {
-            callback.close();
-        } catch (NullPointerException ignored){
+            closable.close();
+        } catch (Exception e) {
+            //
         }
     }
+
 
     private void updateWindow() {
         IntBuffer buffer = BufferUtils.createIntBuffer(1);
