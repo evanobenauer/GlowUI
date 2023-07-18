@@ -3,9 +3,6 @@ package com.ejo.glowui.scene;
 import com.ejo.glowui.scene.elements.ElementUI;
 import com.ejo.glowui.Window;
 import com.ejo.glowlib.math.Vector;
-import com.ejo.glowui.scene.elements.construct.IDrawable;
-import com.ejo.glowui.scene.elements.construct.IInput;
-import com.ejo.glowui.scene.elements.construct.ITick;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -17,6 +14,9 @@ import java.util.ConcurrentModificationException;
 public abstract class Scene {
 
     private final ArrayList<ElementUI> elementList = new ArrayList<>();
+
+    private final ArrayList<ElementUI> addElementList = new ArrayList<>();
+    private final ArrayList<ElementUI> deleteElementList = new ArrayList<>();
 
     private Window window;
     private String title;
@@ -50,6 +50,10 @@ public abstract class Scene {
             for (ElementUI element : getElements()) {
                 element.tick(this, getWindow().getScaledMousePos());
             }
+            addElements(getAddElementList().toArray(new ElementUI[0])); //Adds all queued elements to the list after all ticks
+            removeElements(getRemoveElementList().toArray(new ElementUI[0])); //Removes all queued elements to the list after all ticks
+            getAddElementList().clear();
+            getRemoveElementList().clear();
         } catch (ConcurrentModificationException e) {
             e.printStackTrace();
         }
@@ -110,6 +114,24 @@ public abstract class Scene {
         }
     }
 
+    public void queueAddElements(ElementUI... elements) {
+        for (ElementUI element : elements) {
+            getAddElementList().add(element);
+        }
+    }
+
+    private void removeElements(ElementUI... elements) {
+        for (ElementUI element : elements) {
+            getElements().remove(element);
+        }
+    }
+
+    private void queueRemoveElements(ElementUI... elements) {
+        for (ElementUI element : elements) {
+            getRemoveElementList().add(element);
+        }
+    }
+
     public Vector getSize() {
         return getWindow().getScaledSize();
     }
@@ -124,6 +146,14 @@ public abstract class Scene {
 
     public ArrayList<ElementUI> getElements() {
         return elementList;
+    }
+
+    private ArrayList<ElementUI> getAddElementList() {
+        return addElementList;
+    }
+
+    private ArrayList<ElementUI> getRemoveElementList() {
+        return deleteElementList;
     }
 
 }
