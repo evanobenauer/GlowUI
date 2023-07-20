@@ -1,8 +1,10 @@
 package com.ejo.glowui.scene;
 
+import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowui.scene.elements.ElementUI;
 import com.ejo.glowui.Window;
 import com.ejo.glowlib.math.Vector;
+import com.ejo.glowui.util.QuickDraw;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -99,6 +101,10 @@ public abstract class Scene {
         }
     }
 
+
+    public void drawBackground(ColorE color) {
+        QuickDraw.drawRect(Vector.NULL,getSize(),color);
+    }
 
     public void setWindow(Window window) {
         this.window = window;

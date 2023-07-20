@@ -1,7 +1,6 @@
 package com.ejo.glowui.scene.elements.shape;
 
 import com.ejo.glowui.scene.Scene;
-import org.lwjgl.opengl.GL11;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 
@@ -9,9 +8,13 @@ public class RectangleUI extends PolygonUI implements IShape {
 
     private Vector size;
 
-    public RectangleUI(Vector pos, Vector size, ColorE color) {
-        super(pos,color, new Vector(0,0),new Vector(0,size.getY()),size,new Vector(size.getX(),0));
+    public RectangleUI(Vector pos, Vector size, boolean outlined, ColorE color) {
+        super(pos,color, outlined, new Vector(0,0),new Vector(0,size.getY()),size,new Vector(size.getX(),0));
         this.size = size;
+    }
+
+    public RectangleUI(Vector pos, Vector size, ColorE color) {
+        this(pos,size,false,color);
     }
 
     @Override

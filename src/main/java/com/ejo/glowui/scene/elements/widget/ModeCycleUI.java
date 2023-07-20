@@ -68,7 +68,7 @@ public class ModeCycleUI<T> extends WidgetUI {
     }
 
     @Override
-    public void tickWidget(Scene scene, Vector mousePos) {
+    protected void tickWidget(Scene scene, Vector mousePos) {
         this.mode = getContainer().get(); //Consistently sync the value of the container and the value of the widget
     }
 

@@ -91,7 +91,7 @@ public class SliderUI<T extends Number> extends WidgetUI {
      * Updates the value of the slider per every tick based off if the slider is sliding
      */
     @Override
-    public void tickWidget(Scene scene, Vector mousePos) {
+    protected void tickWidget(Scene scene, Vector mousePos) {
         this.value = getContainer().get(); //Consistently sync the value of the container and the value of the widget
 
         if (sliding) { //Updates the value of the setting based off of the current width of the slider
