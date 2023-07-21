@@ -3,6 +3,8 @@ package com.ejo.glowui;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.util.GLManager;
+import com.ejo.glowui.util.Key;
+import com.ejo.glowui.util.Mouse;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWImage;
@@ -86,6 +88,10 @@ public class Window {
 
         //Creating the monitor
         glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+        //Set up keys
+        Key.onKey.subscribe();
+        Mouse.onMouse.subscribe();
 
         // Load the window icon
         //TODO: Add Icon Setting
@@ -218,16 +224,16 @@ public class Window {
 
     private void onKeyPress() {
         GLFWKeyCallback callback = glfwSetKeyCallback(getWindowId(), (window, key, scancode, action, mods) -> {
-            this.getScene().onKeyPress(key, scancode, action, mods);
             EventRegistry.EVENT_KEY_PRESS.post(window, key, scancode, action, mods); //Key Event to be used outside of class
+            this.getScene().onKeyPress(key, scancode, action, mods);
         });
         closeAutoClosable(callback);
     }
 
     private void onMouseClick() {
         GLFWMouseButtonCallback callback = glfwSetMouseButtonCallback(getWindowId(), (window, button, action, mods) -> {
-            this.getScene().onMouseClick(button, action, mods, getScaledMousePos());
             EventRegistry.EVENT_MOUSE_CLICK.post(window, button, action, mods, getScaledMousePos()); //Mouse click event to be used outside of class
+            this.getScene().onMouseClick(button, action, mods, getScaledMousePos());
         });
         closeAutoClosable(callback);
     }

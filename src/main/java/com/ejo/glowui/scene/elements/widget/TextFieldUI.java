@@ -1,8 +1,8 @@
 package com.ejo.glowui.scene.elements.widget;
 
 import com.ejo.glowui.scene.Scene;
-import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowui.util.DrawUtil;
+import com.ejo.glowui.util.Key;
 import com.ejo.glowui.util.QuickDraw;
 import org.lwjgl.glfw.GLFW;
 import com.ejo.glowlib.math.Vector;
@@ -19,25 +19,35 @@ public class TextFieldUI extends WidgetUI {
     private final Container<String> container;
     private String hint;
     private boolean numbersOnly;
+    private int charLimit;
 
     private ColorE color;
 
     private final StopWatch cursorTimer = new StopWatch();
     private boolean typing;
 
-    public TextFieldUI(String title, Vector pos, Vector size, ColorE color, Container<String> container, String hint, boolean numbersOnly) {
+    public TextFieldUI(String title, Vector pos, Vector size, ColorE color, Container<String> container, String hint, boolean numbersOnly, int charLimit) {
         super(title, pos, size, true, true, null);
         this.container = container;
         this.text = container.get();
         this.hint = hint;
         this.numbersOnly = numbersOnly;
+        this.charLimit = charLimit;
         this.color = color;
 
         setAction(() -> container.set(text));
     }
 
+    public TextFieldUI(Vector pos, Vector size, ColorE color, Container<String> container, String hint, boolean numbersOnly, int charLimit) {
+        this("", pos, size, color, container, hint, numbersOnly,charLimit);
+    }
+
+    public TextFieldUI(String title, Vector pos, Vector size, ColorE color, Container<String> container, String hint, boolean numbersOnly) {
+        this(title, pos, size, color, container, hint, numbersOnly,-1);
+    }
+
     public TextFieldUI(Vector pos, Vector size, ColorE color, Container<String> container, String hint, boolean numbersOnly) {
-        this("", pos, size, color, container, hint, numbersOnly);
+        this("", pos, size, color, container, hint, numbersOnly,-1);
     }
 
     @Override
@@ -81,34 +91,37 @@ public class TextFieldUI extends WidgetUI {
     }
 
 
-    //TODO: Add character count limit
-    // Add shifting
-    // Add copy paste
-    // Add all text deletion
+    //TODO: Add UNDO
     @Override
     public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
         if (action == 0 || !isTyping()) return;
-        String buttonText = getContainer().get();
-        try {
-            if (isTyping()) {
-                if (key == GLFW.GLFW_KEY_ESCAPE || key == GLFW.GLFW_KEY_ENTER) {
-                    setTyping(false);
-                } else if (key == GLFW.GLFW_KEY_BACKSPACE) {
-                    if (buttonText.length() > 0) buttonText = buttonText.substring(0, buttonText.length() - 1);
-                } else if (key == GLFW.GLFW_KEY_SPACE) {
-                    if (shouldEnterKey(key)) buttonText = buttonText + " ";
-                } else if (!GLFW.glfwGetKeyName(key, -1).equals("null")) {
-                    if (GLFW.glfwGetKey(scene.getWindow().getWindowId(), GLFW.GLFW_KEY_LEFT_SHIFT) == 1 || GLFW.glfwGetKey(scene.getWindow().getWindowId(), GLFW.GLFW_KEY_RIGHT_SHIFT) == 1) {
-                        buttonText = buttonText + GLFW.glfwGetKeyName(key, -1).toUpperCase();
-                    } else {
-                        if (shouldEnterKey(key)) buttonText = buttonText + GLFW.glfwGetKeyName(key, -1);
-                    }
+        this.text = getContainer().get();
+
+        if (isTyping()) {
+            if (key == GLFW.GLFW_KEY_ESCAPE || key == GLFW.GLFW_KEY_ENTER) setTyping(false);
+
+            else if (key == GLFW.GLFW_KEY_DELETE) {
+                text = "";
+            } else if (key == GLFW.GLFW_KEY_SPACE) {
+                if (shouldEnterKey(key, text)) text += " ";
+            } else if (key == GLFW.GLFW_KEY_BACKSPACE) {
+                if (text.length() > 0) text = text.substring(0, text.length() - 1);
+            } else if ((Key.KEY_LCONTROL.isKeyDown() || Key.KEY_RCONTROL.isKeyDown()) && key == Key.KEY_C.getId()) {
+                GLFW.glfwSetClipboardString(scene.getWindow().getWindowId(), text);
+            } else if ((Key.KEY_LCONTROL.isKeyDown() || Key.KEY_RCONTROL.isKeyDown()) && key == Key.KEY_X.getId()) {
+                GLFW.glfwSetClipboardString(scene.getWindow().getWindowId(), text);
+                text = "";
+
+            } else if (GLFW.glfwGetKeyName(key, scancode) != null && !GLFW.glfwGetKeyName(key, scancode).equals("null")) {
+                if (Key.KEY_LSHIFT.isKeyDown() || Key.KEY_RSHIFT.isKeyDown()) {
+                    text += getShiftValue(key);
+                } else if ((Key.KEY_LCONTROL.isKeyDown() || Key.KEY_RCONTROL.isKeyDown()) && key == Key.KEY_V.getId()) {
+                    text += GLFW.glfwGetClipboardString(scene.getWindow().getWindowId());
+                } else {
+                    if (shouldEnterKey(key, text)) text += GLFW.glfwGetKeyName(key, scancode);
                 }
             }
-        } catch (Exception ignored) {
         }
-
-        this.text = buttonText;
 
         getAction().run();
     }
@@ -121,7 +134,8 @@ public class TextFieldUI extends WidgetUI {
         }
     }
 
-    public boolean shouldEnterKey(int key) {
+    private boolean shouldEnterKey(int key, String text) {
+        if (getCharLimit() != -1 && text.length() >= getCharLimit()) return false;
         if (isNumbersOnly()) {
             return key == GLFW.GLFW_KEY_PERIOD ||
                     key == GLFW.GLFW_KEY_KP_SUBTRACT ||
@@ -151,6 +165,31 @@ public class TextFieldUI extends WidgetUI {
         }
     }
 
+    private String getShiftValue(int key) {
+        if (key == Key.KEY_GRAVE.getId()) return "~";
+        else if (key == Key.KEY_1.getId()) return "!";
+        else if (key == Key.KEY_2.getId()) return "@";
+        else if (key == Key.KEY_3.getId()) return "#";
+        else if (key == Key.KEY_4.getId()) return "$";
+        else if (key == Key.KEY_5.getId()) return "%";
+        else if (key == Key.KEY_6.getId()) return "^";
+        else if (key == Key.KEY_7.getId()) return "&";
+        else if (key == Key.KEY_8.getId()) return "*";
+        else if (key == Key.KEY_9.getId()) return "(";
+        else if (key == Key.KEY_0.getId()) return ")";
+        else if (key == Key.KEY_MINUS.getId()) return "_";
+        else if (key == Key.KEY_EQUALS.getId()) return "+";
+        else if (key == Key.KEY_LBRACKET.getId()) return "{";
+        else if (key == Key.KEY_RBRACKET.getId()) return "}";
+        else if (key == Key.KEY_BACK_SLASH.getId()) return "|";
+        else if (key == Key.KEY_SEMICOLON.getId()) return ":";
+        else if (key == Key.KEY_APOSTROPHE.getId()) return "\"";
+        else if (key == Key.KEY_COMMA.getId()) return "<";
+        else if (key == Key.KEY_PERIOD.getId()) return ">";
+        else if (key == Key.KEY_FORWARD_SLASH.getId()) return "?";
+        else return GLFW.glfwGetKeyName(key, -1).toUpperCase();
+    }
+
     public void setColor(ColorE color) {
         this.color = color;
     }
@@ -165,6 +204,10 @@ public class TextFieldUI extends WidgetUI {
 
     public void setNumbersOnly(boolean numbersOnly) {
         this.numbersOnly = numbersOnly;
+    }
+
+    public void setCharLimit(int charLimit) {
+        this.charLimit = charLimit;
     }
 
 
@@ -182,6 +225,10 @@ public class TextFieldUI extends WidgetUI {
 
     public boolean isNumbersOnly() {
         return numbersOnly;
+    }
+
+    public int getCharLimit() {
+        return charLimit;
     }
 
     public Container<String> getContainer() {
