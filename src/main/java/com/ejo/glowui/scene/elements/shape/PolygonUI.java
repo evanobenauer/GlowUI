@@ -27,6 +27,7 @@ public class PolygonUI extends ElementUI implements IShape {
     @Override
     public void drawElement(Scene scene, Vector mousePos) {
         GL11.glColor4f(getColor().getRed() / 255f, getColor().getGreen() / 255f, getColor().getBlue() / 255f, getColor().getAlpha() / 255f);
+        GL11.glDisable(GL11.GL_LINE_STIPPLE);
         if (isOutlined()) {
             GL11.glBegin(GL11.GL_LINE_LOOP);
         } else {
@@ -67,8 +68,20 @@ public class PolygonUI extends ElementUI implements IShape {
     }
 
     public Vector getCenter() {
-        //int minY = Collections.min(getVertices())
-        return null;
+        double minX = getVertices()[0].getX();
+        double maxX = getVertices()[0].getX();
+
+        double minY = getVertices()[0].getY();
+        double maxY = getVertices()[0].getY();
+        
+        for (Vector vertex : getVertices()) {
+            if (vertex.getX() > maxX) maxX = vertex.getX();
+            if (vertex.getX() < minX) minX = vertex.getX();
+            if (vertex.getY() > maxY) maxY = vertex.getY();
+            if (vertex.getY() < minY) minY = vertex.getY();
+        }
+
+        return new Vector(maxX + minX,maxY + minY).getMultiplied(.5);
     }
 
     public boolean isOutlined() {

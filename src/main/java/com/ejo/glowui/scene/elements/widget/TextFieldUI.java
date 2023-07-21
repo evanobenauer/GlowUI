@@ -80,6 +80,11 @@ public class TextFieldUI extends WidgetUI {
         this.text = getContainer().get(); //Consistently sync the value of the container and the value of the widget
     }
 
+
+    //TODO: Add character count limit
+    // Add shifting
+    // Add copy paste
+    // Add all text deletion
     @Override
     public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
         if (action == 0 || !isTyping()) return;
@@ -100,7 +105,7 @@ public class TextFieldUI extends WidgetUI {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
 
         this.text = buttonText;
