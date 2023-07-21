@@ -12,12 +12,9 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.time.StopWatch;
-import org.lwjgl.system.MemoryStack;
 
-import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
-import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.stb.STBImage.stbi_load;
@@ -51,6 +48,9 @@ public class Window {
 
     private boolean open;
 
+    private boolean drawn;
+    private boolean ticking;
+
     private Scene scene;
 
 
@@ -64,6 +64,8 @@ public class Window {
         this.maxFPS = maxFPS;
         this.uiScale = 1;
         this.open = true;
+        this.drawn = true;
+        this.ticking = true;
         this.scene = startingScene;
     }
 
@@ -151,12 +153,12 @@ public class Window {
      * In order to have consistently paced actions, use the tick loop. The render loop must be the final loop as it is
      * a part of the main thread
      */
-    public void runRenderLoop() {
+    public void runRenderLoop(boolean economic) {
         while (isOpen()) {
             setOpen(!glfwWindowShouldClose(getWindowId()));
             long startTimeNS = System.nanoTime();
             updateWindow();
-            draw();
+            draw(economic);
             frames++;
             long endTimeNS = System.nanoTime();
 
@@ -176,35 +178,42 @@ public class Window {
     }
 
 
-    public void draw() {
-        GL.createCapabilities();
-        GL11.glViewport(0, 0, (int) getSize().getX(), (int) getSize().getY());
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
-        GL11.glOrtho(0, getSize().getX(), getSize().getY(), 0, -1, 1);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glLoadIdentity();
+    public void draw(boolean economic) {
+        if (shouldDraw()) {
+            GL.createCapabilities();
+            GL11.glViewport(0, 0, (int) getSize().getX(), (int) getSize().getY());
+            GL11.glMatrixMode(GL11.GL_PROJECTION);
+            GL11.glLoadIdentity();
+            GL11.glOrtho(0, getSize().getX(), getSize().getY(), 0, -1, 1);
+            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+            GL11.glLoadIdentity();
 
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-        GLManager.scale(getUIScale()); //Shape Scale
-        GLManager.textureScale(getUIScale()); //Texture Scale
 
-        this.getScene().draw(); //Draw the screen
-        EventRegistry.EVENT_RENDER.post(this); //Render event after drawing the screen
+            GLManager.scale(getUIScale()); //Shape Scale
+            GLManager.textureScale(getUIScale()); //Texture Scale
 
-        glfwSwapBuffers(getWindowId()); //Finish Drawing here
-        GLFW.glfwPollEvents();
+            this.getScene().draw(); //Draw the screen
+            EventRegistry.EVENT_RENDER.post(this); //Render event after drawing the screen
+
+            glfwSwapBuffers(getWindowId()); //Finish Drawing here
+            if (!economic)GLFW.glfwPollEvents(); else GLFW.glfwWaitEvents();
+        } else {
+            GLFW.glfwWaitEvents();
+        }
     }
 
     private void tick() {
-        onKeyPress();
-        onMouseClick();
-        getScene().tick();
-        EventRegistry.EVENT_TICK.post(this);
+        if (shouldTick()) {
+            onKeyPress();
+            onMouseClick();
+            getScene().tick();
+            EventRegistry.EVENT_TICK.post(this);
+        }
     }
 
     private void onKeyPress() {
@@ -269,7 +278,7 @@ public class Window {
         init();
         startMaintenanceLoop();
         startTickLoop();
-        runRenderLoop();
+        runRenderLoop(false);
     }
 
     public void close() {
@@ -314,6 +323,14 @@ public class Window {
 
     public void setOpen(boolean open) {
         this.open = open;
+    }
+
+    public void setDrawn(boolean drawn) {
+        this.drawn = drawn;
+    }
+
+    public void setTicking(boolean ticking) {
+        this.ticking = ticking;
     }
 
     public void setMaxTPS(int maxTPS) {
@@ -376,6 +393,14 @@ public class Window {
 
     public boolean isOpen() {
         return open;
+    }
+
+    public boolean shouldDraw() {
+        return drawn;
+    }
+
+    public boolean shouldTick() {
+        return ticking;
     }
 
     public int getMaxTPS() {
