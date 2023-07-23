@@ -53,6 +53,8 @@ public class Window {
     private boolean drawn;
     private boolean ticking;
 
+    private boolean economic;
+
     private Scene scene;
 
 
@@ -68,6 +70,7 @@ public class Window {
         this.open = true;
         this.drawn = true;
         this.ticking = true;
+        this.economic = false;
         this.scene = startingScene;
     }
 
@@ -159,12 +162,12 @@ public class Window {
      * In order to have consistently paced actions, use the tick loop. The render loop must be the final loop as it is
      * a part of the main thread
      */
-    public void runRenderLoop(boolean economic) {
+    public void runRenderLoop() {
         while (isOpen()) {
             setOpen(!glfwWindowShouldClose(getWindowId()));
             long startTimeNS = System.nanoTime();
             updateWindow();
-            draw(economic);
+            draw(isEconomic());
             frames++;
             long endTimeNS = System.nanoTime();
 
@@ -241,8 +244,7 @@ public class Window {
     private void closeAutoClosable(AutoCloseable closable) {
         try {
             closable.close();
-        } catch (Exception e) {
-            //
+        } catch (Exception ignored) {
         }
     }
 
@@ -284,7 +286,7 @@ public class Window {
         init();
         startMaintenanceLoop();
         startTickLoop();
-        runRenderLoop(false);
+        runRenderLoop();
     }
 
     public void close() {
@@ -337,6 +339,10 @@ public class Window {
 
     public void setTicking(boolean ticking) {
         this.ticking = ticking;
+    }
+
+    public void setEconomic(boolean economic) {
+        this.economic = economic;
     }
 
     public void setMaxTPS(int maxTPS) {
@@ -407,6 +413,10 @@ public class Window {
 
     public boolean shouldTick() {
         return ticking;
+    }
+
+    public boolean isEconomic() {
+        return economic;
     }
 
     public int getMaxTPS() {
