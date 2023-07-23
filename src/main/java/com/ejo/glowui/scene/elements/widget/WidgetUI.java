@@ -98,10 +98,16 @@ public abstract class WidgetUI extends ElementUI {
     public void setUpDisplayText(String text, double border, int textSize) {
         getDisplayText().setText(text);
         getDisplayText().setSize(textSize);
-        getDisplayText().setScale(1);
+        double scaleValue = 1;
+        getDisplayText().setScale(scaleValue);
         if (getDisplayText().getWidth() > getSize().getX() - border * 2) {
-            getDisplayText().setScale((getSize().getX() - border*2) / getDisplayText().getWidth());
+            scaleValue = (getSize().getX() - border*2) / getDisplayText().getWidth();
         }
+        if (getDisplayText().getHeight() > (getSize().getY())) {
+            double scaleValueHeight = (getSize().getY()) / getDisplayText().getHeight();
+            if (scaleValueHeight < scaleValue) scaleValue = scaleValueHeight;
+        }
+        getDisplayText().setScale(scaleValue);
         getDisplayText().setPos(getPos().getAdded(border,border));
     }
 

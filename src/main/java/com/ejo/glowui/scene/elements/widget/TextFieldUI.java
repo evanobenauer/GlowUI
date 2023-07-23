@@ -61,7 +61,7 @@ public class TextFieldUI extends WidgetUI {
         String msg = (hasTitle() ? getTitle() + ": " : "") + text;
         int size = (int) (getSize().getY() / 1.5);
         setUpDisplayText(msg,border,size);
-        getDisplayText().setPos(getPos().getAdded(border, -2 + getSize().getY() / 2 - getDisplayText().getHeight() / 2));
+        getDisplayText().setPos(getPos().getAdded(border, getSize().getY() / 2 - getDisplayText().getHeight() / 2));
         getDisplayText().setColor(ColorE.WHITE);
 
         //Draw Hint
@@ -76,9 +76,15 @@ public class TextFieldUI extends WidgetUI {
             cursorTimer.start();
             if (cursorTimer.hasTimePassedS(1)) cursorTimer.restart();
             int alpha = cursorTimer.hasTimePassedMS(500) ? 255 : 0;
-            double x = getPos().getX() + getDisplayText().getWidth() + border;
-            double y = getPos().getY() + border;
-            QuickDraw.drawRect(new Vector(x, y), new Vector(2, getSize().getY() - 2 * border), new ColorE(255, 255, 255, alpha));
+
+            String[] text = getDisplayText().getText().split("\\\\n");
+            String lastRow = text[text.length - 1];
+            double lastRowWidth = getDisplayText().getFontMetrics().stringWidth(lastRow) * getDisplayText().getScale();
+
+            double x = getPos().getX() + lastRowWidth + border;
+            double height = (getSize().getY() - 2 * border) / text.length;
+            double y = getPos().getY() + getSize().getY() - height - border/text.length;
+            QuickDraw.drawRect(new Vector(x, y), new Vector(2, height), new ColorE(255, 255, 255, alpha));
         }
 
         //Draw Text Object
@@ -91,27 +97,35 @@ public class TextFieldUI extends WidgetUI {
     }
 
 
-    //TODO: Add UNDO
     @Override
     public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
         if (action == 0 || !isTyping()) return;
         this.text = getContainer().get();
 
         if (isTyping()) {
-            if (key == GLFW.GLFW_KEY_ESCAPE || key == GLFW.GLFW_KEY_ENTER) setTyping(false);
-
-            else if (key == GLFW.GLFW_KEY_DELETE) {
+            if ((Key.KEY_LSHIFT.isKeyDown() || Key.KEY_RSHIFT.isKeyDown()) && key == Key.KEY_ENTER.getId()) {
+                text += "\\n";
+            } else if (key == GLFW.GLFW_KEY_ESCAPE || key == GLFW.GLFW_KEY_ENTER) {
+                setTyping(false);
+            } else if (key == GLFW.GLFW_KEY_DELETE) {
                 text = "";
             } else if (key == GLFW.GLFW_KEY_SPACE) {
                 if (shouldEnterKey(key, text)) text += " ";
             } else if (key == GLFW.GLFW_KEY_BACKSPACE) {
-                if (text.length() > 0) text = text.substring(0, text.length() - 1);
+                if (text.length() > 1) {
+                    if (text.substring(text.length() - 2).equals("\\n")) {
+                        text = text.substring(0, text.length() - 3);
+                    } else {
+                        text = text.substring(0, text.length() - 1);
+                    }
+                } else if (text.length() > 0) text = "";
             } else if ((Key.KEY_LCONTROL.isKeyDown() || Key.KEY_RCONTROL.isKeyDown()) && key == Key.KEY_C.getId()) {
                 GLFW.glfwSetClipboardString(scene.getWindow().getWindowId(), text);
             } else if ((Key.KEY_LCONTROL.isKeyDown() || Key.KEY_RCONTROL.isKeyDown()) && key == Key.KEY_X.getId()) {
                 GLFW.glfwSetClipboardString(scene.getWindow().getWindowId(), text);
                 text = "";
-
+            } else if ((Key.KEY_LCONTROL.isKeyDown() || Key.KEY_RCONTROL.isKeyDown()) && key == Key.KEY_Z.getId()) {
+                //TODO: Add Undo
             } else if (GLFW.glfwGetKeyName(key, scancode) != null && !GLFW.glfwGetKeyName(key, scancode).equals("null")) {
                 if (Key.KEY_LSHIFT.isKeyDown() || Key.KEY_RSHIFT.isKeyDown()) {
                     text += getShiftValue(key);

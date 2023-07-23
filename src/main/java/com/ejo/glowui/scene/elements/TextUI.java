@@ -11,15 +11,8 @@ import com.ejo.glowlib.misc.ColorE;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
 import java.nio.ByteBuffer;
-
-import static org.lwjgl.glfw.GLFW.GLFW_SAMPLES;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glGenBuffers;
 
 public class TextUI extends ElementUI {
 
@@ -63,9 +56,9 @@ public class TextUI extends ElementUI {
     private void renderText(Scene scene, double x, double y) {
         if (getText().equals("")) return;
         GL11.glRasterPos2f((float)x, (float)y);
-        //GL11.glPixelZoom(1, -1); //Disabled due to text scaling in Window draw
-        int imgWidth = fontMetrics.stringWidth(getText()) + 4;
-        int imgHeight = fontMetrics.getHeight() + 4;
+        String[] text = getText().split("\\\\n");
+        int imgWidth = fontMetrics.stringWidth(text[getLargestStringIndex(text)]) + 4;
+        int imgHeight = fontMetrics.getHeight()*text.length + 4;
         GL11.glDrawPixels(imgWidth,imgHeight, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, fontImageBuffer);
     }
 
@@ -83,8 +76,9 @@ public class TextUI extends ElementUI {
 
     private ByteBuffer createFontImageBuffer() {
         if (getText().equals("")) return null;
-        int imgWidth = fontMetrics.stringWidth(getText()) + 4;
-        int imgHeight = fontMetrics.getHeight() + 4;
+        String[] text = getText().split("\\\\n");
+        int imgHeight = fontMetrics.getHeight()*text.length + 4;
+        int imgWidth = fontMetrics.stringWidth(text[getLargestStringIndex(text)]) + 4;
         BufferedImage fontImage = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
 
         //Draw Text Using Graphics
@@ -96,12 +90,14 @@ public class TextUI extends ElementUI {
         graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
         graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.drawString(getText(), 0, fontMetrics.getAscent());
+        for (int i = 0; i < text.length; i++) {
+            graphics.drawString(text[i], 0, fontMetrics.getAscent()*(i+1));
+        }
 
         //Get DataBuffer From Graphics
         DataBuffer dataBuffer = fontImage.getRaster().getDataBuffer();
         int[] imageData = ((DataBufferInt) dataBuffer).getData();
-        ByteBuffer buffer = BufferUtils.createByteBuffer(imageData.length * 4);
+        ByteBuffer buffer = BufferUtils.createByteBuffer(imageData.length * 16);
         for (int pixel : imageData) {
             buffer.putInt(pixel);
         }
@@ -179,6 +175,10 @@ public class TextUI extends ElementUI {
         return font;
     }
 
+    public FontMetrics getFontMetrics() {
+        return fontMetrics;
+    }
+
     public String getText() {
         return text;
     }
@@ -188,11 +188,20 @@ public class TextUI extends ElementUI {
     }
 
     public double getWidth() {
-        return fontMetrics.stringWidth(getText()) * getScale();
+        String[] text = getText().split("\\\\n");
+        return fontMetrics.stringWidth(text[getLargestStringIndex(text)]) * getScale();
     }
 
     public double getHeight() {
-        return getFont().getSize() * getScale();
+        return getFont().getSize() * getText().split("\\\\n").length * getScale();
+    }
+
+    private int getLargestStringIndex(String[] list) {
+        int index = 0;
+        for (int i = 0; i < list.length; i++) {
+            if (getFontMetrics().stringWidth(list[i]) > getFontMetrics().stringWidth(list[index])) index = i;
+        }
+        return index;
     }
 
 }
