@@ -210,7 +210,7 @@ public class Window {
             EventRegistry.EVENT_RENDER.post(this); //Render event after drawing the screen
 
             glfwSwapBuffers(getWindowId()); //Finish Drawing here
-            GLFW.glfwPollEvents(); //TODO: Add something to swap between these two to make it more economic
+            if (isEconomic()) GLFW.glfwWaitEvents(); else GLFW.glfwPollEvents();
         } else {
             GLFW.glfwWaitEvents();
         }
