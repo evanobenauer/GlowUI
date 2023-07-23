@@ -167,7 +167,7 @@ public class Window {
             setOpen(!glfwWindowShouldClose(getWindowId()));
             long startTimeNS = System.nanoTime();
             updateWindow();
-            draw(isEconomic());
+            draw();
             frames++;
             long endTimeNS = System.nanoTime();
 
@@ -187,7 +187,7 @@ public class Window {
     }
 
 
-    public void draw(boolean economic) {
+    public void draw() {
         if (shouldDraw()) {
             GL.createCapabilities();
             GL11.glViewport(0, 0, (int) getSize().getX(), (int) getSize().getY());
@@ -210,7 +210,7 @@ public class Window {
             EventRegistry.EVENT_RENDER.post(this); //Render event after drawing the screen
 
             glfwSwapBuffers(getWindowId()); //Finish Drawing here
-            if (!economic)GLFW.glfwPollEvents(); else GLFW.glfwWaitEvents();
+            GLFW.glfwPollEvents(); //TODO: Add something to swap between these two to make it more economic
         } else {
             GLFW.glfwWaitEvents();
         }
