@@ -21,6 +21,7 @@ import java.nio.IntBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.stb.STBImage.stbi_load;
 
+//https://www.glfw.org/docs/latest/window.html#window_refresh
 /**
  * The Window class is a container class for the LWJGL3 WindowID. It incorporates GLFW methods in an easy-to-use object-oriented
  * fashion for the window.
@@ -54,6 +55,7 @@ public class Window {
     private boolean ticking;
 
     private boolean economic;
+    private int economicCountdown = 10;
 
     private Scene scene;
 
@@ -121,10 +123,12 @@ public class Window {
      */
     public void startMaintenanceLoop() {
         Thread thread = new Thread(() -> {
-            StopWatch stopWatch = new StopWatch();
+            StopWatch fpsWatch = new StopWatch();
+            StopWatch economicWatch = new StopWatch();
             while (true) {
                 sleepThread(1); //This is a limitation that slows down the maintenance loop. I may plan to change this in the future
-                calculateFPSTPS(stopWatch);
+                calculateFPSTPS(fpsWatch);
+                if (isEconomic()) forceWaitEventsFrame(economicWatch,2);
                 EventRegistry.EVENT_RUN_MAINTENANCE.post();
             }
         });
@@ -210,7 +214,7 @@ public class Window {
             EventRegistry.EVENT_RENDER.post(this); //Render event after drawing the screen
 
             glfwSwapBuffers(getWindowId()); //Finish Drawing here
-            if (isEconomic()) GLFW.glfwWaitEvents(); else GLFW.glfwPollEvents();
+            if (isEconomic()) GLFW.glfwWaitEvents(); else GLFW.glfwPollEvents(); //TODO: Have WaitEvents activate after 10 seconds of inactivity
         } else {
             GLFW.glfwWaitEvents();
         }
@@ -273,6 +277,14 @@ public class Window {
             frames = 0;
             tps = ticks;
             ticks = 0;
+            stopWatch.restart();
+        }
+    }
+
+    private void forceWaitEventsFrame(StopWatch stopWatch, int fps) {
+        stopWatch.start();
+        if (stopWatch.hasTimePassedMS((double) 1000 /fps)) {
+            GLFW.glfwPostEmptyEvent();
             stopWatch.restart();
         }
     }
