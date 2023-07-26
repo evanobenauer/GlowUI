@@ -9,7 +9,7 @@ public interface IInput {
 
     void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos);
 
-    void onMouseScroll(Scene scene, double scrollX, double scrollY, Vector mousePos);
+    void onMouseScroll(Scene scene, int scrollX, int scrollY, Vector mousePos);
 
     boolean updateMouseOver(Vector mousePos);
 

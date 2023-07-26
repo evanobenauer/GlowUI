@@ -101,7 +101,7 @@ public abstract class Scene {
         }
     }
 
-    public void onMouseScroll(double scrollX, double scrollY, Vector mousePos) {
+    public void onMouseScroll(int scrollX, int scrollY, Vector mousePos) {
         try {
             for (ElementUI element : getElements()) {
                 if (!element.shouldTick()) continue;

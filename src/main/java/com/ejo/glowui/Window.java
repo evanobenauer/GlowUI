@@ -246,8 +246,8 @@ public class Window {
 
     private void onMouseScroll() {
         GLFWScrollCallback callback = glfwSetScrollCallback(getWindowId(), (window, scrollX, scrollY) -> {
-            EventRegistry.EVENT_MOUSE_SCROLL.post(window,scrollX,scrollY,getScaledMousePos());
-            getScene().onMouseScroll(scrollX,scrollY, getScaledMousePos());
+            EventRegistry.EVENT_MOUSE_SCROLL.post(window,(int)scrollX,(int)scrollY,getScaledMousePos());
+            getScene().onMouseScroll((int)scrollX,(int)scrollY, getScaledMousePos());
         });
         closeAutoClosable(callback);
     }
