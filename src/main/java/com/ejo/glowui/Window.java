@@ -128,7 +128,7 @@ public class Window {
             while (true) {
                 sleepThread(1); //This is a limitation that slows down the maintenance loop. I may plan to change this in the future
                 calculateFPSTPS(fpsWatch);
-                if (isEconomic()) forceWaitEventsFrame(economicWatch,2);
+                if (isEconomic()) forceWaitEventsFrame(economicWatch,2); //TODO: remove once 10 second activity is figured out
                 EventRegistry.EVENT_RUN_MAINTENANCE.post();
             }
         });

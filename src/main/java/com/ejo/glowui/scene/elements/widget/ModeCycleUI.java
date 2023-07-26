@@ -18,8 +18,8 @@ import java.util.Arrays;
 public class ModeCycleUI<T> extends WidgetUI {
 
     private T mode;
+    private Container<T> container;
 
-    private final Container<T> container;
     private final ArrayList<T> modes;
 
     private ColorE baseColor;
@@ -135,6 +135,10 @@ public class ModeCycleUI<T> extends WidgetUI {
         this.colorL = colorL;
     }
 
+    public void setContainer(Container<T> container) {
+        this.container = container;
+    }
+
 
     public ColorE getColor() {
         return baseColor;
@@ -148,10 +152,10 @@ public class ModeCycleUI<T> extends WidgetUI {
         return colorL;
     }
 
-
     public Container<T> getContainer() {
         return container;
     }
+
 
     public ArrayList<T> getModes() {
         return modes;

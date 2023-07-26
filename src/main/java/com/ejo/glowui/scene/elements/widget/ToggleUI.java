@@ -17,7 +17,7 @@ import java.awt.*;
 
 public class ToggleUI extends WidgetUI {
 
-    private final Container<Boolean> container;
+    private Container<Boolean> container;
 
     private ColorE color;
 
@@ -80,6 +80,10 @@ public class ToggleUI extends WidgetUI {
 
     public void setColor(ColorE color) {
         this.color = color;
+    }
+
+    public void setContainer(Container<Boolean> container) {
+        this.container = container;
     }
 
 

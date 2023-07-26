@@ -16,8 +16,8 @@ import java.awt.*;
 public class SliderUI<T extends Number> extends WidgetUI {
 
     private T value;
+    private Container<T> container;
 
-    private final Container<T> container;
     private T min;
     private T max;
     private T step;
@@ -151,6 +151,10 @@ public class SliderUI<T extends Number> extends WidgetUI {
 
     public void setMin(T min) {
         this.min = min;
+    }
+
+    public void setContainer(Container<T> container) {
+        this.container = container;
     }
 
 

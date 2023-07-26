@@ -15,8 +15,8 @@ import java.awt.*;
 public class TextFieldUI extends WidgetUI {
 
     private String text;
+    private Container<String> container;
 
-    private final Container<String> container;
     private String hint;
     private boolean numbersOnly;
     private int charLimit;
@@ -222,6 +222,10 @@ public class TextFieldUI extends WidgetUI {
 
     public void setCharLimit(int charLimit) {
         this.charLimit = charLimit;
+    }
+
+    public void setContainer(Container<String> container) {
+        this.container = container;
     }
 
 
