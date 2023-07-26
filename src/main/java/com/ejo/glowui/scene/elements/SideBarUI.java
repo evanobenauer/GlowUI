@@ -234,6 +234,10 @@ public class SideBarUI extends ElementUI {
         return title;
     }
 
+    public ButtonUI getButton() {
+        return buttonUI;
+    }
+
 
     private void addElements(ElementUI... elementUI) {
         elementList.addAll(Arrays.asList(elementUI));

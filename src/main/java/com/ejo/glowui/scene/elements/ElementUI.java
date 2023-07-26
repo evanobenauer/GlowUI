@@ -88,7 +88,7 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
     }
 
     @Override
-    public void onMouseScroll(Scene scene, int scrollX, int scrollY, Vector mousePos) {
+    public void onMouseScroll(Scene scene, int scroll, Vector mousePos) {
     }
 
 

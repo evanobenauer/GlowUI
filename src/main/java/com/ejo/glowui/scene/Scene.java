@@ -101,11 +101,11 @@ public abstract class Scene {
         }
     }
 
-    public void onMouseScroll(int scrollX, int scrollY, Vector mousePos) {
+    public void onMouseScroll(int scroll, Vector mousePos) {
         try {
             for (ElementUI element : getElements()) {
                 if (!element.shouldTick()) continue;
-                element.onMouseScroll(this, scrollX, scrollY, mousePos);
+                element.onMouseScroll(this, scroll, mousePos);
             }
         } catch (ConcurrentModificationException e) {
             e.printStackTrace();

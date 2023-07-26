@@ -6,16 +6,14 @@ import com.ejo.glowlib.math.Vector;
 public class MouseScrollEvent extends EventE {
 
     private long window;
-    private int scrollX;
-    private int scrollY;
+    private int scroll;
     private Vector mousePos;
 
     @Override
     public void post(Object... args) {
         this.window = (long)args[0];
-        this.scrollX = (int)args[1];
-        this.scrollY = (int)args[2];
-        this.mousePos = (Vector)args[3];
+        this.scroll = (int)args[1];
+        this.mousePos = (Vector)args[2];
         super.post(args);
     }
 
@@ -23,12 +21,8 @@ public class MouseScrollEvent extends EventE {
         return window;
     }
 
-    public int getScrollX() {
-        return scrollX;
-    }
-
-    public int getScrollY() {
-        return scrollY;
+    public int getScroll() {
+        return scroll;
     }
 
     public Vector getMousePos() {
