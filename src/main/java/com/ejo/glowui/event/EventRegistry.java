@@ -1,9 +1,6 @@
 package com.ejo.glowui.event;
 
-import com.ejo.glowui.event.events.KeyPressEvent;
-import com.ejo.glowui.event.events.MouseClickEvent;
-import com.ejo.glowui.event.events.RenderEvent;
-import com.ejo.glowui.event.events.TickEvent;
+import com.ejo.glowui.event.events.*;
 import com.ejo.glowlib.event.EventE;
 
 /**
@@ -14,6 +11,7 @@ public class EventRegistry {
 
     public static KeyPressEvent EVENT_KEY_PRESS = new KeyPressEvent();
     public static MouseClickEvent EVENT_MOUSE_CLICK = new MouseClickEvent();
+    public static MouseScrollEvent EVENT_MOUSE_SCROLL = new MouseScrollEvent();
     public static RenderEvent EVENT_RENDER = new RenderEvent();
     public static TickEvent EVENT_TICK = new TickEvent();
     public static EventE EVENT_RUN_MAINTENANCE = new EventE();

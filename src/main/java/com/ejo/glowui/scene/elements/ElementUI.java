@@ -81,11 +81,14 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
 
     @Override
     public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
-
     }
 
     @Override
     public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
+    }
+
+    @Override
+    public void onMouseScroll(Scene scene, double scrollX, double scrollY, Vector mousePos) {
     }
 
 

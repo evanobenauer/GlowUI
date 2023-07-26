@@ -101,6 +101,17 @@ public abstract class Scene {
         }
     }
 
+    public void onMouseScroll(double scrollX, double scrollY, Vector mousePos) {
+        try {
+            for (ElementUI element : getElements()) {
+                if (!element.shouldTick()) continue;
+                element.onMouseScroll(this, scrollX, scrollY, mousePos);
+            }
+        } catch (ConcurrentModificationException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void drawBackground(ColorE color) {
         QuickDraw.drawRect(Vector.NULL,getSize(),color);

@@ -1,15 +1,13 @@
 package com.ejo.glowui;
 
+import com.ejo.glowlib.misc.Container;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.util.GLManager;
 import com.ejo.glowui.util.Key;
 import com.ejo.glowui.util.Mouse;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWImage;
-import org.lwjgl.glfw.GLFWKeyCallback;
-import org.lwjgl.glfw.GLFWMouseButtonCallback;
+import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import com.ejo.glowlib.math.Vector;
@@ -210,7 +208,7 @@ public class Window {
             GLManager.scale(getUIScale()); //Shape Scale
             GLManager.textureScale(getUIScale()); //Texture Scale
 
-            this.getScene().draw(); //Draw the screen
+            getScene().draw(); //Draw the screen
             EventRegistry.EVENT_RENDER.post(this); //Render event after drawing the screen
 
             glfwSwapBuffers(getWindowId()); //Finish Drawing here
@@ -224,6 +222,7 @@ public class Window {
         if (shouldTick()) {
             onKeyPress();
             onMouseClick();
+            onMouseScroll();
             getScene().tick();
             EventRegistry.EVENT_TICK.post(this);
         }
@@ -232,7 +231,7 @@ public class Window {
     private void onKeyPress() {
         GLFWKeyCallback callback = glfwSetKeyCallback(getWindowId(), (window, key, scancode, action, mods) -> {
             EventRegistry.EVENT_KEY_PRESS.post(window, key, scancode, action, mods); //Key Event to be used outside of class
-            this.getScene().onKeyPress(key, scancode, action, mods);
+            getScene().onKeyPress(key, scancode, action, mods);
         });
         closeAutoClosable(callback);
     }
@@ -240,7 +239,15 @@ public class Window {
     private void onMouseClick() {
         GLFWMouseButtonCallback callback = glfwSetMouseButtonCallback(getWindowId(), (window, button, action, mods) -> {
             EventRegistry.EVENT_MOUSE_CLICK.post(window, button, action, mods, getScaledMousePos()); //Mouse click event to be used outside of class
-            this.getScene().onMouseClick(button, action, mods, getScaledMousePos());
+            getScene().onMouseClick(button, action, mods, getScaledMousePos());
+        });
+        closeAutoClosable(callback);
+    }
+
+    private void onMouseScroll() {
+        GLFWScrollCallback callback = glfwSetScrollCallback(getWindowId(), (window, scrollX, scrollY) -> {
+            EventRegistry.EVENT_MOUSE_SCROLL.post(window,scrollX,scrollY,getScaledMousePos());
+            getScene().onMouseScroll(scrollX,scrollY, getScaledMousePos());
         });
         closeAutoClosable(callback);
     }
