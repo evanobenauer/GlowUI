@@ -38,7 +38,7 @@ public class QuickDraw {
     }
 
     public static void drawFPSTPS(Scene scene, Vector pos, int size, boolean label) {
-        QuickDraw.drawText((label ? "FPS: " : "") + scene.getWindow().getFPS(),new Font("Arial",Font.PLAIN,size),pos,ColorE.WHITE);
-        QuickDraw.drawText((label ? "TPS: " : "") + scene.getWindow().getTPS(),new Font("Arial",Font.PLAIN,size),pos.getAdded(0,size + size/5),ColorE.WHITE);
+        QuickDraw.drawText((label ? "FPS: " : "") + scene.getWindow().getFPS(),Fonts.getDefaultFont(size),pos,ColorE.WHITE);
+        QuickDraw.drawText((label ? "TPS: " : "") + scene.getWindow().getTPS(),Fonts.getDefaultFont(size),pos.getAdded(0,size + size/5),ColorE.WHITE);
     }
 }

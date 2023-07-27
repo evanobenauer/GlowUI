@@ -12,20 +12,25 @@ public class DrawUtil {
     /**
      * This method is solely used for setting fade values in animations from any element
      */
-    public static float getNextAnimValue(boolean condition, float val, int min, int max, float step) {
+    public static float getNextAnimationValue(boolean condition, float val, int min, int max, float step) {
         if (condition) {
             if (val < max) {
                 val += step;
-                GLFW.glfwPostEmptyEvent();
+                avoidEconomy();
             }
         } else {
             if (val > min) {
                 val -= step;
-                GLFW.glfwPostEmptyEvent();
+                avoidEconomy();
             }
         }
         val = NumberUtil.getBoundValue(val,min,max).floatValue();
         return val;
+    }
+
+    //Potential name changes: sendEconomyEvent, ignoreEconomy, addEconomyFrame
+    public static void avoidEconomy() {
+        GLFW.glfwPostEmptyEvent();
     }
 
 }

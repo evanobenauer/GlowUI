@@ -8,6 +8,7 @@ import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.widget.ButtonUI;
 import com.ejo.glowui.util.DrawUtil;
+import com.ejo.glowui.util.Fonts;
 import com.ejo.glowui.util.GLManager;
 import com.ejo.glowui.util.QuickDraw;
 
@@ -35,7 +36,7 @@ public class SideBarUI extends ElementUI {
     public EventAction onMaintenance = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
         stopWatch.start();
         if (stopWatch.hasTimePassedMS(1)) {
-            openPercent = (int) DrawUtil.getNextAnimValue(isOpen(), openPercent,0,100,2f);
+            openPercent = (int) DrawUtil.getNextAnimationValue(isOpen(), openPercent,0,100,2f);
             stopWatch.restart();
         }
     });
@@ -90,7 +91,7 @@ public class SideBarUI extends ElementUI {
                 QuickDraw.drawRect(getBarPos(),new Vector(scene.getSize().getX(),getWidth()),getColor());
                 //Title
                 GLManager.translate(getBarPos());
-                QuickDraw.drawTextCentered(getTitle(),new Font("Arial",Font.PLAIN,20),new Vector(0,14),new Vector(scene.getSize().getX(),0),ColorE.WHITE);
+                QuickDraw.drawTextCentered(getTitle(), Fonts.getDefaultFont(20),new Vector(0,14),new Vector(scene.getSize().getX(),0),ColorE.WHITE);
                 GLManager.translate(getBarPos().getMultiplied(-1));
             }
             case LEFT, RIGHT -> {
@@ -104,7 +105,7 @@ public class SideBarUI extends ElementUI {
                 QuickDraw.drawRect(getBarPos(),new Vector(getWidth(),scene.getSize().getY()),getColor());
                 //Title
                 GLManager.translate(getBarPos());
-                QuickDraw.drawTextCentered(getTitle(),new Font("Arial",Font.PLAIN,20),new Vector(0,14),new Vector(getWidth(),0),ColorE.WHITE);
+                QuickDraw.drawTextCentered(getTitle(),Fonts.getDefaultFont(20),new Vector(0,14),new Vector(getWidth(),0),ColorE.WHITE);
                 GLManager.translate(getBarPos().getMultiplied(-1));
             }
         }

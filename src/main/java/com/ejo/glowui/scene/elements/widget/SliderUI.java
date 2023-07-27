@@ -43,7 +43,7 @@ public class SliderUI<T extends Number> extends WidgetUI {
         this.displayValue = displayValue;
         this.sliding = false;
 
-        setAction(() -> container.set(value));
+        setAction(() -> getContainer().set(value));
     }
 
     public SliderUI(Vector pos, Vector size, ColorE color, Container<T> container, T min, T max, T step, Type type, boolean displayValue) {

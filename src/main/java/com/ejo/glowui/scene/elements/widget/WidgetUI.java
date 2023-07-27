@@ -10,6 +10,7 @@ import com.ejo.glowlib.event.EventAction;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.time.StopWatch;
+import com.ejo.glowui.util.Fonts;
 
 import java.awt.*;
 
@@ -33,7 +34,7 @@ public abstract class WidgetUI extends ElementUI {
     public EventAction onMaintenance = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
         hoverWatch.start();
         if (hoverWatch.hasTimePassedMS(1)) {
-            hoverFade = (int)DrawUtil.getNextAnimValue(isMouseOver(),hoverFade,0,75,2f);
+            hoverFade = (int)DrawUtil.getNextAnimationValue(isMouseOver(),hoverFade,0,75,2f);
             hoverWatch.restart();
         }
     });
@@ -41,7 +42,7 @@ public abstract class WidgetUI extends ElementUI {
     public WidgetUI(String title, Vector pos, Vector size, boolean shouldRender, boolean shouldTick, Runnable action) {
         super(pos, shouldRender,shouldTick);
         this.title = title;
-        this.displayText = new TextUI(title,new Font("Arial",Font.PLAIN,(int)size.getY()),pos,ColorE.WHITE);
+        this.displayText = new TextUI(title, Fonts.getDefaultFont((int)size.getY()),pos,ColorE.WHITE);
 
         this.action = action;
         this.size = size;

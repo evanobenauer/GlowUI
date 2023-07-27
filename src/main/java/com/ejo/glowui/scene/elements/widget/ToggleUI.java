@@ -23,7 +23,7 @@ public class ToggleUI extends WidgetUI {
     public EventAction onMaintenance = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
         hoverWatch.start();
         if (hoverWatch.hasTimePassedMS(1)) {
-            toggleFade = (int) DrawUtil.getNextAnimValue(getContainer().get(),toggleFade,0,150,2f);
+            toggleFade = (int) DrawUtil.getNextAnimationValue(getContainer().get(),toggleFade,0,150,2f);
             hoverWatch.restart();
         }
     });
@@ -33,7 +33,7 @@ public class ToggleUI extends WidgetUI {
         this.container = container;
         this.color = color;
 
-        setAction(() -> container.set(!container.get()));
+        setAction(() -> getContainer().set(!getContainer().get()));
         onMaintenance.subscribe();
     }
 

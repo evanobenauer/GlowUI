@@ -40,7 +40,7 @@ public class ModeCycleUI<T> extends WidgetUI {
 
         this.mode = container.get();
 
-        setAction(() -> container.set(mode));
+        setAction(() -> getContainer().set(mode));
     }
 
     @SafeVarargs

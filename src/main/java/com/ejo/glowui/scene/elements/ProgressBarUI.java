@@ -3,6 +3,7 @@ package com.ejo.glowui.scene.elements;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowui.util.DrawUtil;
+import com.ejo.glowui.util.Fonts;
 import com.ejo.glowui.util.QuickDraw;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
@@ -13,7 +14,7 @@ import java.awt.*;
 
 public class ProgressBarUI<T extends Number> extends ElementUI {
 
-    private final Container<T> container;
+    private Container<T> container;
 
     private String title;
 
@@ -51,7 +52,7 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
                 .getAdded(new Vector(getContainer().get().doubleValue() == getMin() ? 2 : 0, 0)),getColor());
 
         //Draw Title
-        QuickDraw.drawText(getTitle(), new Font("Arial", Font.PLAIN, 20), getPos().getAdded(2, 2), ColorE.WHITE);
+        QuickDraw.drawText(getTitle(), Fonts.getDefaultFont(20), getPos().getAdded(2, 2), ColorE.WHITE);
     }
 
     @Override
@@ -74,6 +75,10 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
 
     public void setColor(ColorE color) {
         this.color = color;
+    }
+
+    public void setContainer(Container<T> container) {
+        this.container = container;
     }
 
 

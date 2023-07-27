@@ -53,7 +53,6 @@ public class Window {
     private boolean ticking;
 
     private boolean economic;
-    private int economicCountdown = 10;
 
     private Scene scene;
 
@@ -188,42 +187,49 @@ public class Window {
 
 
     public void draw() {
-        if (shouldDraw()) {
-            GL.createCapabilities();
-            GL11.glViewport(0, 0, (int) getSize().getX(), (int) getSize().getY());
-            GL11.glMatrixMode(GL11.GL_PROJECTION);
-            GL11.glLoadIdentity();
-            GL11.glOrtho(0, getSize().getX(), getSize().getY(), 0, -1, 1);
-            GL11.glMatrixMode(GL11.GL_MODELVIEW);
-            GL11.glLoadIdentity();
-
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-
-
-            GLManager.scale(getUIScale()); //Shape Scale
-            GLManager.textureScale(getUIScale()); //Texture Scale
-
-            getScene().draw(); //Draw the screen
-            EventRegistry.EVENT_RENDER.post(this); //Render event after drawing the screen
-
-            glfwSwapBuffers(getWindowId()); //Finish Drawing here
-            if (isEconomic()) GLFW.glfwWaitEvents(); else GLFW.glfwPollEvents(); //TODO: Have WaitEvents activate after 5 seconds of inactivity
-        } else {
+        if (!shouldDraw()) {
             GLFW.glfwWaitEvents();
+            return;
+        }
+        GL.createCapabilities();
+        GL11.glViewport(0, 0, (int) getSize().getX(), (int) getSize().getY());
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        GL11.glOrtho(0, getSize().getX(), getSize().getY(), 0, -1, 1);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glLoadIdentity();
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+
+        GLManager.scale(getUIScale()); //Shape Scale
+        GLManager.textureScale(getUIScale()); //Texture Scale
+
+        getScene().draw(); //Draw the screen
+        EventRegistry.EVENT_RENDER.post(this); //Render event after drawing the screen
+
+        glfwSwapBuffers(getWindowId()); //Finish Drawing here
+
+        if (isEconomic()) {
+            try {
+                GLFW.glfwWaitEvents();
+            } catch (NullPointerException e) {
+                GLFW.glfwPollEvents();
+            }
+        } else {
+            GLFW.glfwPollEvents();
         }
     }
 
     private void tick() {
-        if (shouldTick()) {
-            onKeyPress();
-            onMouseClick();
-            onMouseScroll();
-            getScene().tick();
-            EventRegistry.EVENT_TICK.post(this);
-        }
+        if (!shouldTick()) return;
+        onKeyPress();
+        onMouseClick();
+        onMouseScroll();
+        getScene().tick();
+        EventRegistry.EVENT_TICK.post(this);
     }
 
     private void onKeyPress() {

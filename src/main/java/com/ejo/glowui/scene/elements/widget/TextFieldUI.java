@@ -2,6 +2,7 @@ package com.ejo.glowui.scene.elements.widget;
 
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.util.DrawUtil;
+import com.ejo.glowui.util.Fonts;
 import com.ejo.glowui.util.Key;
 import com.ejo.glowui.util.QuickDraw;
 import org.lwjgl.glfw.GLFW;
@@ -35,7 +36,7 @@ public class TextFieldUI extends WidgetUI {
         this.charLimit = charLimit;
         this.color = color;
 
-        setAction(() -> container.set(text));
+        setAction(() -> getContainer().set(text));
     }
 
     public TextFieldUI(Vector pos, Vector size, ColorE color, Container<String> container, String hint, boolean numbersOnly, int charLimit) {
@@ -66,7 +67,7 @@ public class TextFieldUI extends WidgetUI {
 
         //Draw Hint
         if (text.equals(""))
-            QuickDraw.drawText(getHint(), new Font("Arial", Font.PLAIN, size), getPos()
+            QuickDraw.drawText(getHint(), Fonts.getDefaultFont(size), getPos()
                     .getAdded(border + getDisplayText().getWidth(), -2 + getSize().getY() / 2 - getDisplayText().getHeight() / 2)
                     , ColorE.GRAY);
 
