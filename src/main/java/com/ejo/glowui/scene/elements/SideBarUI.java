@@ -10,7 +10,6 @@ import com.ejo.glowui.scene.elements.widget.ButtonUI;
 import com.ejo.glowui.util.DrawUtil;
 import com.ejo.glowui.util.GLManager;
 import com.ejo.glowui.util.QuickDraw;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class SideBarUI extends ElementUI {
     public EventAction onMaintenance = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
         stopWatch.start();
         if (stopWatch.hasTimePassedMS(1)) {
-            openPercent = (int) DrawUtil.getNextFade(isOpen(), openPercent,0,100,2f);
+            openPercent = (int) DrawUtil.getNextAnimValue(isOpen(), openPercent,0,100,2f);
             stopWatch.restart();
         }
     });

@@ -2,8 +2,6 @@ package com.ejo.glowui.scene.elements.widget;
 
 import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.scene.Scene;
-import com.ejo.glowui.scene.elements.TextUI;
-import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowui.util.DrawUtil;
 import com.ejo.glowui.util.Mouse;
 import com.ejo.glowui.util.QuickDraw;
@@ -12,8 +10,6 @@ import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.misc.Container;
 import com.ejo.glowlib.time.StopWatch;
-
-import java.awt.*;
 
 public class ToggleUI extends WidgetUI {
 
@@ -27,7 +23,7 @@ public class ToggleUI extends WidgetUI {
     public EventAction onMaintenance = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
         hoverWatch.start();
         if (hoverWatch.hasTimePassedMS(1)) {
-            toggleFade = (int) DrawUtil.getNextFade(getContainer().get(),toggleFade,0,150,2f);
+            toggleFade = (int) DrawUtil.getNextAnimValue(getContainer().get(),toggleFade,0,150,2f);
             hoverWatch.restart();
         }
     });

@@ -2,6 +2,7 @@ package com.ejo.glowui.util;
 
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.util.NumberUtil;
+import org.lwjgl.glfw.GLFW;
 
 public class DrawUtil {
 
@@ -11,14 +12,20 @@ public class DrawUtil {
     /**
      * This method is solely used for setting fade values in animations from any element
      */
-    public static float getNextFade(boolean condition, float fade, int min, int max, float speed) {
+    public static float getNextAnimValue(boolean condition, float val, int min, int max, float step) {
         if (condition) {
-            if (fade < max) fade += speed;
+            if (val < max) {
+                val += step;
+                GLFW.glfwPostEmptyEvent();
+            }
         } else {
-            if (fade > min) fade -= speed;
+            if (val > min) {
+                val -= step;
+                GLFW.glfwPostEmptyEvent();
+            }
         }
-        fade = NumberUtil.getBoundValue(fade,min,max).floatValue();
-        return fade;
+        val = NumberUtil.getBoundValue(val,min,max).floatValue();
+        return val;
     }
 
 }

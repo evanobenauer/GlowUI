@@ -122,11 +122,9 @@ public class Window {
     public void startMaintenanceLoop() {
         Thread thread = new Thread(() -> {
             StopWatch fpsWatch = new StopWatch();
-            StopWatch economicWatch = new StopWatch();
             while (true) {
                 sleepThread(1); //This is a limitation that slows down the maintenance loop. I may plan to change this in the future
                 calculateFPSTPS(fpsWatch);
-                if (isEconomic()) forceWaitEventsFrame(economicWatch,2); //TODO: remove once 10 second activity is figured out
                 EventRegistry.EVENT_RUN_MAINTENANCE.post();
             }
         });
@@ -212,7 +210,7 @@ public class Window {
             EventRegistry.EVENT_RENDER.post(this); //Render event after drawing the screen
 
             glfwSwapBuffers(getWindowId()); //Finish Drawing here
-            if (isEconomic()) GLFW.glfwWaitEvents(); else GLFW.glfwPollEvents(); //TODO: Have WaitEvents activate after 10 seconds of inactivity
+            if (isEconomic()) GLFW.glfwWaitEvents(); else GLFW.glfwPollEvents(); //TODO: Have WaitEvents activate after 5 seconds of inactivity
         } else {
             GLFW.glfwWaitEvents();
         }
@@ -288,13 +286,6 @@ public class Window {
         }
     }
 
-    private void forceWaitEventsFrame(StopWatch stopWatch, int fps) {
-        stopWatch.start();
-        if (stopWatch.hasTimePassedMS((double) 1000 /fps)) {
-            GLFW.glfwPostEmptyEvent();
-            stopWatch.restart();
-        }
-    }
 
     public static GLFWImage.Buffer getImageBuffer(String path) {
         return null;
