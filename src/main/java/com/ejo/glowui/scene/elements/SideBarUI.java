@@ -82,9 +82,11 @@ public class SideBarUI extends ElementUI {
         switch(getType()) {
             case TOP, BOTTOM -> {
                 //Button Lines
-                QuickDraw.drawRect(getButtonPos().getAdded(border,border*2),new Vector(getButtonSize().getX() - 2*border,size),ColorE.WHITE);
-                QuickDraw.drawRect(getButtonPos().getAdded(border,getButtonSize().getY()/2 - size / 2),new Vector(getButtonSize().getX() - 2*border,size),ColorE.WHITE);
-                QuickDraw.drawRect(getButtonPos().getAdded(border,getButtonSize().getY() - 2*border - size),new Vector(getButtonSize().getX() - 2*border,size),ColorE.WHITE);
+                if (getButton().shouldRender()) {
+                    QuickDraw.drawRect(getButtonPos().getAdded(border, border * 2), new Vector(getButtonSize().getX() - 2 * border, size), ColorE.WHITE);
+                    QuickDraw.drawRect(getButtonPos().getAdded(border, getButtonSize().getY() / 2 - size / 2), new Vector(getButtonSize().getX() - 2 * border, size), ColorE.WHITE);
+                    QuickDraw.drawRect(getButtonPos().getAdded(border, getButtonSize().getY() - 2 * border - size), new Vector(getButtonSize().getX() - 2 * border, size), ColorE.WHITE);
+                }
                 //Background
                 QuickDraw.drawRect(getBarPos(),new Vector(scene.getSize().getX(),getWidth()),getColor());
                 //Title
@@ -94,9 +96,11 @@ public class SideBarUI extends ElementUI {
             }
             case LEFT, RIGHT -> {
                 //Button Lines
-                QuickDraw.drawRect(getButtonPos().getAdded(border*2,border),new Vector(size,getButtonSize().getY() - 2*border),ColorE.WHITE);
-                QuickDraw.drawRect(getButtonPos().getAdded(getButtonSize().getX()/2 - size / 2,border),new Vector(size,getButtonSize().getY() - 2*border),ColorE.WHITE);
-                QuickDraw.drawRect(getButtonPos().getAdded(getButtonSize().getX() - 2*border - size,border),new Vector(size,getButtonSize().getY() - 2*border),ColorE.WHITE);
+                if (getButton().shouldRender()) {
+                    QuickDraw.drawRect(getButtonPos().getAdded(border * 2, border), new Vector(size, getButtonSize().getY() - 2 * border), ColorE.WHITE);
+                    QuickDraw.drawRect(getButtonPos().getAdded(getButtonSize().getX() / 2 - size / 2, border), new Vector(size, getButtonSize().getY() - 2 * border), ColorE.WHITE);
+                    QuickDraw.drawRect(getButtonPos().getAdded(getButtonSize().getX() - 2 * border - size, border), new Vector(size, getButtonSize().getY() - 2 * border), ColorE.WHITE);
+                }
                 //Background
                 QuickDraw.drawRect(getBarPos(),new Vector(getWidth(),scene.getSize().getY()),getColor());
                 //Title
