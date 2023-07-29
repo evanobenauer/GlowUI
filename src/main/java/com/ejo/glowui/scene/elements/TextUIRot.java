@@ -1,14 +1,12 @@
 package com.ejo.glowui.scene.elements;
 
 import com.ejo.glowlib.math.Angle;
+import com.ejo.glowlib.math.Vector;
+import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import com.ejo.glowlib.math.Vector;
-import com.ejo.glowlib.misc.ColorE;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,7 +14,7 @@ import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
 import java.nio.ByteBuffer;
 
-public class TextUI extends ElementUI {
+public class TextUIRot extends ElementUI {
 
     private Font font;
     private String text;
@@ -28,7 +26,7 @@ public class TextUI extends ElementUI {
     private FontMetrics fontMetrics;
     private ByteBuffer fontImageBuffer;
 
-    public TextUI(String text, Font font, Vector pos, ColorE color) {
+    public TextUIRot(String text, Font font, Vector pos, ColorE color) {
         super(pos, true,true);
         this.font = font;
         this.text = text;
@@ -38,11 +36,11 @@ public class TextUI extends ElementUI {
         this.fontImageBuffer = createFontImageBuffer();
     }
 
-    public TextUI(String text, String font, int modifier, int height, Vector pos, ColorE color) {
+    public TextUIRot(String text, String font, int modifier, int height, Vector pos, ColorE color) {
         this(text, new Font(font,modifier,height),pos,color);
     }
 
-    public TextUI(String text, String font, int height, Vector pos, ColorE color) {
+    public TextUIRot(String text, String font, int height, Vector pos, ColorE color) {
         this(text, font, Font.PLAIN, height, pos,color);
     }
 
@@ -58,9 +56,20 @@ public class TextUI extends ElementUI {
 
     private void renderText(Scene scene, double x, double y) {
         if (getText().equals("")) return;
-        GL11.glRasterPos2f((float)x, (float)y);
-        new RectangleUI(new Vector(x,y),new Vector((int)getWidth() + 4,(int)getHeight() + 4),true,1,ColorE.GREEN).draw(); //DEBUG
-        GL11.glDrawPixels((int)getWidth() + 4,(int)getHeight() + 4, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, fontImageBuffer);
+
+        Vector pos = new Vector(x,y);
+        if (Math.sin(getAngle().getRadians()) < 0) pos = pos.getAdded(0,getWidth() * Math.sin(getAngle().getRadians()));
+        double rotAdjustY = getPos().getY() - pos.getY();
+        if (Math.cos(getAngle().getRadians()) < 0) pos = pos.getAdded(getWidth() * Math.cos(getAngle().getRadians()) - getHeight(),0);
+        double rotAdjustX = getPos().getX() - pos.getX();
+
+        GL11.glRasterPos2f((float)pos.getX(), (float)pos.getY());
+
+        int w = (int)(getWidth() + Math.max(0,getHeight() * Math.cos(getAngle().getRadians())) + 4 + rotAdjustX + getHeight());
+        int h = (int)(getHeight() + Math.max(0,4 + getHeight() + (getWidth() - getHeight()) * Math.sin(getAngle().getRadians())) + 4 + rotAdjustY);
+
+        new RectangleUI(new Vector(pos.getX(),pos.getY()),new Vector(w,h),true,1,ColorE.GREEN).draw(); //DEBUG
+        GL11.glDrawPixels(w,h, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, fontImageBuffer);
     }
 
     @Override
@@ -77,14 +86,29 @@ public class TextUI extends ElementUI {
 
     private ByteBuffer createFontImageBuffer() {
         if (getText().equals("")) return null;
-        BufferedImage fontImage = new BufferedImage((int)getWidth() + 4, (int)getHeight() + 4, BufferedImage.TYPE_INT_ARGB);
+
+        Vector pos = getPos();
+        if (Math.sin(getAngle().getRadians()) < 0) pos = pos.getAdded(0,getWidth() * Math.sin(getAngle().getRadians()));
+        double rotAdjustY = getPos().getY() - pos.getY();
+        if (Math.cos(getAngle().getRadians()) < 0) pos = pos.getAdded(getWidth() * Math.cos(getAngle().getRadians()) - getHeight(),0);
+        double rotAdjustX = getPos().getX() - pos.getX();
+
+
+        int w = (int)(getWidth() + Math.max(0,getHeight() * Math.cos(getAngle().getRadians())) + 4 + rotAdjustX + getHeight());
+        int h = (int)(getHeight() + Math.max(0,4 + getHeight() + (getWidth() - getHeight()) * Math.sin(getAngle().getRadians())) + 4 + rotAdjustY);
+
+        BufferedImage fontImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 
         //Draw Text Using Graphics
         Graphics2D graphics = (Graphics2D) fontImage.getGraphics();
         graphics.setFont(getFont());
         graphics.setColor(new Color(getColor().getHash()));
 
+        if (Math.sin(getAngle().getRadians()) < 0) graphics.translate(0,rotAdjustY);
+        if (Math.cos(getAngle().getRadians()) < 0) graphics.translate(rotAdjustX,0);
         graphics.scale(getScale(),getScale());
+        graphics.rotate(getAngle().getRadians());
+
         graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
         graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -162,6 +186,11 @@ public class TextUI extends ElementUI {
         this.fontImageBuffer = createFontImageBuffer();
     }
 
+    public void setAngle(Angle angle) {
+        this.angle = angle;
+        this.fontImageBuffer = createFontImageBuffer();
+    }
+
 
     public ColorE getColor() {
         return color;
@@ -181,6 +210,10 @@ public class TextUI extends ElementUI {
 
     public float getScale() {
         return scale;
+    }
+
+    public Angle getAngle() {
+        return angle;
     }
 
     public Vector getSize() {

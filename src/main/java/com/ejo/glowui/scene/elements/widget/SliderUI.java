@@ -95,7 +95,7 @@ public class SliderUI<T extends Number> extends WidgetUI {
         this.value = getContainer().get(); //Consistently sync the value of the container and the value of the widget
 
         if (sliding) { //Updates the value of the setting based off of the current width of the slider
-            double valueRange = getMax().doubleValue() - getMin().doubleValue();
+            double valueRange = getMax().doubleValue() - getMin().doubleValue(); //TODO: Fix doubleValue as it breaks float settings
             double sliderWidth = mousePos.getX() - getPos().getX();
             double sliderPercent = NumberUtil.getBoundValue(sliderWidth,0,getSize().getX()).doubleValue() / getSize().getX();
             double calculatedValue = sliderPercent * valueRange + getMin().doubleValue();
