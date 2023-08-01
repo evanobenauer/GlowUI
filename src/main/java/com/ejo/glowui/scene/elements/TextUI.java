@@ -1,11 +1,7 @@
 package com.ejo.glowui.scene.elements;
 
-import com.ejo.glowlib.math.Angle;
 import com.ejo.glowui.scene.Scene;
-import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
@@ -23,7 +19,6 @@ public class TextUI extends ElementUI {
     private ColorE color;
 
     private float scale = 1;
-    private Angle angle = new Angle(0);
 
     private FontMetrics fontMetrics;
     private ByteBuffer fontImageBuffer;
@@ -117,7 +112,7 @@ public class TextUI extends ElementUI {
     public void setColor(ColorE color) {
         if (this.color.equals(color)) return;
         this.color = color;
-        this.fontMetrics = createFontMetrics(font);
+        this.fontMetrics = createFontMetrics(this.font);
         this.fontImageBuffer = createFontImageBuffer();
     }
 
@@ -162,6 +157,7 @@ public class TextUI extends ElementUI {
     }
 
     public void setScale(double scale) {
+        if (this.scale == scale) return;
         this.scale = (float)scale;
         this.fontImageBuffer = createFontImageBuffer();
     }

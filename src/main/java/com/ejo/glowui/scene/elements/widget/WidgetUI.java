@@ -46,15 +46,17 @@ public abstract class WidgetUI extends ElementUI {
 
         this.action = action;
         this.size = size;
-        baseRect = new RectangleUI(Vector.NULL,Vector.NULL,new ColorE(0,0,0,0));
-        onMaintenance.subscribe();
+        baseRect = new RectangleUI(Vector.NULL,Vector.NULL,ColorE.NULL);
+        if (shouldRender()) onMaintenance.subscribe();
     }
 
 
     @Override
     protected void drawElement(Scene scene, Vector mousePos) {
+        baseRect = new RectangleUI(getPos(),getSize(),ColorE.NULL);
         drawWidget(scene, mousePos);
         new RectangleUI(getBaseRect().getPos(), getBaseRect().getSize(), new ColorE(255, 255, 255, hoverFade)).draw(scene, mousePos);
+        if (shouldRender()) onMaintenance.subscribe(); else onMaintenance.unsubscribe();
     }
 
     /**
@@ -67,7 +69,6 @@ public abstract class WidgetUI extends ElementUI {
 
     @Override
     public void tickElement(Scene scene, Vector mousePos) {
-        baseRect = new RectangleUI(getPos(),getSize(),new ColorE(0,0,0,0));
         tickWidget(scene,mousePos);
     }
 
