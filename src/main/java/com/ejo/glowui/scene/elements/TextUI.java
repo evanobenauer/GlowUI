@@ -77,7 +77,11 @@ public class TextUI extends ElementUI {
 
     private ByteBuffer createFontImageBuffer() {
         if (getText().equals("")) return null;
-        BufferedImage fontImage = new BufferedImage((int)getWidth() + 4, (int)getHeight() + 4, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage fontImage;
+        if (getWidth() > 0 && getHeight() > 0)
+            fontImage = new BufferedImage((int)getWidth() + 4, (int)getHeight() + 4, BufferedImage.TYPE_INT_ARGB);
+        else
+            fontImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 
         //Draw Text Using Graphics
         Graphics2D graphics = (Graphics2D) fontImage.getGraphics();

@@ -106,7 +106,7 @@ public abstract class WidgetUI extends ElementUI {
         }
         if (getDisplayText().getHeight() > (getSize().getY())) {
             double scaleValueHeight = (getSize().getY()) / getDisplayText().getHeight();
-            //if (scaleValueHeight < scaleValue && scaleValue != 1) scaleValue = scaleValueHeight;
+            if (scaleValueHeight < scaleValue) scaleValue = scaleValueHeight;
         }
         getDisplayText().setScale(scaleValue);
         getDisplayText().setPos(getPos().getAdded(border,border));
