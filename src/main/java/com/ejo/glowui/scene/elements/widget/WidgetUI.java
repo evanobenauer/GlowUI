@@ -25,7 +25,7 @@ public abstract class WidgetUI extends ElementUI {
 
     private final StopWatch hoverWatch = new StopWatch();
     protected int hoverFade = 0;
-    protected int maintenanceCountdown = 2;
+    protected int maintenanceCountdown = 2 * 1000;
 
     /**
      * This EventAction injects into the Window Maintenance to consistently update the hover fade rectangle. Whenever an
@@ -58,7 +58,7 @@ public abstract class WidgetUI extends ElementUI {
         baseRect = new RectangleUI(getPos(),getSize(),ColorE.NULL);
         drawWidget(scene, mousePos);
         new RectangleUI(getBaseRect().getPos(), getBaseRect().getSize(), new ColorE(255, 255, 255, hoverFade)).draw(scene, mousePos);
-        maintenanceCountdown = 10;
+        maintenanceCountdown = 2 * 1000;
     }
 
     /**
