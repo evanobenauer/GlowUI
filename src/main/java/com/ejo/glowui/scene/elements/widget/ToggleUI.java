@@ -20,21 +20,12 @@ public class ToggleUI extends WidgetUI {
     private final StopWatch hoverWatch = new StopWatch();
     private float toggleFade = 0;
 
-    public EventAction onMaintenance = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
-        hoverWatch.start();
-        if (hoverWatch.hasTimePassedMS(1)) {
-            toggleFade = (int) DrawUtil.getNextAnimationValue(getContainer().get(),toggleFade,0,150,2f);
-            hoverWatch.restart();
-        }
-    });
-
     public ToggleUI(String title, Vector pos, Vector size, ColorE color, Container<Boolean> container) {
         super(title, pos, size, true, true,null);
         this.container = container;
         this.color = color;
 
         setAction(() -> getContainer().set(!getContainer().get()));
-        onMaintenance.subscribe();
     }
 
     public ToggleUI(Vector pos, Vector size, ColorE color, Container<Boolean> container) {
@@ -56,8 +47,17 @@ public class ToggleUI extends WidgetUI {
     }
 
     @Override
-    protected void tickWidget(Scene scene, Vector mousePos) {
+    public void animate(Scene scene, Vector mousePos) {
+        super.animate(scene, mousePos);
+        hoverWatch.start();
+        if (hoverWatch.hasTimePassedMS(1)) {
+            toggleFade = (int) DrawUtil.getNextAnimationValue(getContainer().get(),toggleFade,0,150,2f);
+            hoverWatch.restart();
+        }
+    }
 
+    @Override
+    protected void tickWidget(Scene scene, Vector mousePos) {
     }
 
     @Override

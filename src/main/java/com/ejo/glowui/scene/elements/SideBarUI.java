@@ -111,19 +111,17 @@ public class SideBarUI extends ElementUI {
 
     @Override
     public void animate(Scene scene, Vector mousePos) {
-        super.animate(scene, mousePos);
-
         //Animate Elements
         this.buttonUI.animate(scene,mousePos);
         for (ElementUI elementUI : getElementList()) {
             elementUI.animate(scene, mousePos.getAdded(getBarPos().getMultiplied(-1)));
         }
 
-        stopWatch.start();
-        if (stopWatch.hasTimePassedMS(1)) {
+        //stopWatch.start();
+        //if (stopWatch.hasTimePassedMS(1)) {
             openPercent = (int) DrawUtil.getNextAnimationValue(isOpen(), openPercent,0,100,2f);
-            stopWatch.restart();
-        }
+            //stopWatch.restart();
+        //}
     }
 
     @Override

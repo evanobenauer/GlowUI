@@ -56,11 +56,11 @@ public abstract class WidgetUI extends ElementUI {
      */
     @Override
     public void animate(Scene scene, Vector mousePos) {
-        hoverWatch.start();
-        if (hoverWatch.hasTimePassedMS(1)) {
+        //hoverWatch.start();
+        //if (hoverWatch.hasTimePassedMS(1)) {
             hoverFade = (int)DrawUtil.getNextAnimationValue(isMouseOver(),hoverFade,0,75,2f);
-            hoverWatch.restart();
-        }
+            //hoverWatch.restart();
+        //}
     }
 
     @Override
