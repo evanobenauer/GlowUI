@@ -25,7 +25,7 @@ public abstract class WidgetUI extends ElementUI {
 
     private final StopWatch hoverWatch = new StopWatch();
     protected int hoverFade = 0;
-    protected int maintenanceCountdown = 5;
+    protected int maintenanceCountdown = 2;
 
     /**
      * This EventAction injects into the Window Maintenance to consistently update the hover fade rectangle. Whenever an
@@ -33,7 +33,6 @@ public abstract class WidgetUI extends ElementUI {
      * can be clicked
      */
     public EventAction onMaintenance = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
-        if (maintenanceCountdown <= 0) return;
         hoverWatch.start();
         if (hoverWatch.hasTimePassedMS(1)) {
             hoverFade = (int)DrawUtil.getNextAnimationValue(isMouseOver(),hoverFade,0,75,2f);
@@ -72,6 +71,8 @@ public abstract class WidgetUI extends ElementUI {
 
     @Override
     public void tickElement(Scene scene, Vector mousePos) {
+        if (maintenanceCountdown <= 0) onMaintenance.unsubscribe();
+        else onMaintenance.subscribe();
         tickWidget(scene,mousePos);
     }
 
