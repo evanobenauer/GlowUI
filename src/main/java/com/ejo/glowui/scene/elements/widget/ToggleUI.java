@@ -47,7 +47,7 @@ public class ToggleUI extends WidgetUI {
         QuickDraw.drawRect(getPos(),getSize(),DrawUtil.WIDGET_BACKGROUND);
         QuickDraw.drawRect(getPos(), getSize(), new ColorE(getColor().getRed(), getColor().getGreen(), getColor().getBlue(), (int) toggleFade));
 
-        double border = getSize().getY()/5;
+        double border = 4;//getSize().getY()/5;
 
         //Draw Text
         int size = (int)getSize().getY();
