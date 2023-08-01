@@ -52,7 +52,7 @@ public class SideBarUI extends ElementUI {
 
         this.open = open; //Maybe set default open
 
-        this.buttonUI = new ButtonUI(Vector.NULL,Vector.NULL,getColor(),() -> setOpen(!isOpen()));
+        this.buttonUI = new ButtonUI(Vector.NULL,Vector.NULL,getColor(), ButtonUI.MouseButton.LEFT,() -> setOpen(!isOpen()));
 
         addElements(elements);
         onMaintenance.subscribe();

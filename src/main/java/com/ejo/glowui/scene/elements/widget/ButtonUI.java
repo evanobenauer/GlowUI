@@ -13,14 +13,17 @@ public class ButtonUI extends WidgetUI {
     private ColorE baseColor;
     private ColorE color;
 
-    public ButtonUI(String title, Vector pos, Vector size, ColorE color, Runnable action) {
+    private MouseButton mouseButton;
+
+    public ButtonUI(String title, Vector pos, Vector size, ColorE color, MouseButton mouseButton, Runnable action) {
         super(title,pos,size, true, true, action);
+        this.mouseButton = mouseButton;
         this.baseColor = color;
         this.color = color;
     }
 
-    public ButtonUI(Vector pos, Vector size, ColorE color, Runnable action) {
-        this("",pos,size,color,action);
+    public ButtonUI(Vector pos, Vector size, ColorE color, MouseButton mouseButton, Runnable action) {
+        this("",pos,size,color,mouseButton, action);
     }
 
     @Override
@@ -47,7 +50,7 @@ public class ButtonUI extends WidgetUI {
 
     @Override
     public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
-        if (button == Mouse.BUTTON_LEFT.getId()) {
+        if (button == getMouseButton().getId()) {
             if (action == Mouse.ACTION_CLICK) this.baseColor = getColor();
 
             if (isMouseOver()) {
@@ -72,8 +75,33 @@ public class ButtonUI extends WidgetUI {
         this.color = color;
     }
 
+    public void setMouseButton(MouseButton mouseButton) {
+        this.mouseButton = mouseButton;
+    }
+
+
     public ColorE getColor() {
         return color;
+    }
+
+    public MouseButton getMouseButton() {
+        return mouseButton;
+    }
+
+    public enum MouseButton {
+        LEFT(Mouse.BUTTON_LEFT.getId()),
+        RIGHT(Mouse.BUTTON_RIGHT.getId()),
+        MIDDLE(Mouse.BUTTON_MIDDLE.getId()),
+        ALL(-1);
+
+        final int id;
+        MouseButton(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
     }
 
 }
