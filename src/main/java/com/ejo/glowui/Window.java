@@ -124,6 +124,7 @@ public class Window {
             while (true) {
                 sleepThread(1); //This is a limitation that slows down the maintenance loop. I may plan to change this in the future
                 calculateFPSTPS(fpsWatch);
+                getScene().animate();
                 EventRegistry.EVENT_RUN_MAINTENANCE.post();
             }
         });

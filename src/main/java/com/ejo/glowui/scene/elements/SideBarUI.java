@@ -33,14 +33,6 @@ public class SideBarUI extends ElementUI {
     private final StopWatch stopWatch = new StopWatch();
     protected int openPercent = 0;
 
-    public EventAction onMaintenance = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
-        stopWatch.start();
-        if (stopWatch.hasTimePassedMS(1)) {
-            openPercent = (int) DrawUtil.getNextAnimationValue(isOpen(), openPercent,0,100,2f);
-            stopWatch.restart();
-        }
-    });
-
     public SideBarUI(String title, Type type, double width, boolean open, ColorE color, ElementUI... elements) {
         super(Vector.NULL, true, true);
         this.title = title;
@@ -55,7 +47,6 @@ public class SideBarUI extends ElementUI {
         this.buttonUI = new ButtonUI(Vector.NULL,Vector.NULL,getColor(), ButtonUI.MouseButton.LEFT,() -> setOpen(!isOpen()));
 
         addElements(elements);
-        onMaintenance.subscribe();
     }
 
     public SideBarUI(Type type, double width, boolean open, ColorE color,  ElementUI... elements) {
@@ -116,6 +107,23 @@ public class SideBarUI extends ElementUI {
             elementUI.draw(scene, mousePos.getAdded(getBarPos().getMultiplied(-1)));
         }
         GLManager.translate(getBarPos().getMultiplied(-1));
+    }
+
+    @Override
+    public void animate(Scene scene, Vector mousePos) {
+        super.animate(scene, mousePos);
+
+        //Animate Elements
+        this.buttonUI.animate(scene,mousePos);
+        for (ElementUI elementUI : getElementList()) {
+            elementUI.animate(scene, mousePos.getAdded(getBarPos().getMultiplied(-1)));
+        }
+
+        stopWatch.start();
+        if (stopWatch.hasTimePassedMS(1)) {
+            openPercent = (int) DrawUtil.getNextAnimationValue(isOpen(), openPercent,0,100,2f);
+            stopWatch.restart();
+        }
     }
 
     @Override

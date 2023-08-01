@@ -1,18 +1,14 @@
 package com.ejo.glowui.scene.elements.widget;
 
-import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.ElementUI;
 import com.ejo.glowui.scene.elements.TextUI;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowui.util.DrawUtil;
-import com.ejo.glowlib.event.EventAction;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.time.StopWatch;
 import com.ejo.glowui.util.Fonts;
-
-import java.awt.*;
 
 public abstract class WidgetUI extends ElementUI {
 
@@ -25,21 +21,6 @@ public abstract class WidgetUI extends ElementUI {
 
     private final StopWatch hoverWatch = new StopWatch();
     protected int hoverFade = 0;
-    protected int maintenanceCountdown = 2 * 1000;
-
-    /**
-     * This EventAction injects into the Window Maintenance to consistently update the hover fade rectangle. Whenever an
-     * intractable is hovered over, it will gain a slight highlight that fades in upon mouse hover which indicates that it
-     * can be clicked
-     */
-    public EventAction onMaintenance = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
-        hoverWatch.start();
-        if (hoverWatch.hasTimePassedMS(1)) {
-            hoverFade = (int)DrawUtil.getNextAnimationValue(isMouseOver(),hoverFade,0,75,2f);
-            maintenanceCountdown -= 1;
-            hoverWatch.restart();
-        }
-    });
 
     public WidgetUI(String title, Vector pos, Vector size, boolean shouldRender, boolean shouldTick, Runnable action) {
         super(pos, shouldRender,shouldTick);
@@ -49,7 +30,6 @@ public abstract class WidgetUI extends ElementUI {
         this.action = action;
         this.size = size;
         baseRect = new RectangleUI(Vector.NULL,Vector.NULL,ColorE.NULL);
-        onMaintenance.subscribe();
     }
 
 
@@ -58,7 +38,6 @@ public abstract class WidgetUI extends ElementUI {
         baseRect = new RectangleUI(getPos(),getSize(),ColorE.NULL);
         drawWidget(scene, mousePos);
         new RectangleUI(getBaseRect().getPos(), getBaseRect().getSize(), new ColorE(255, 255, 255, hoverFade)).draw(scene, mousePos);
-        maintenanceCountdown = 2 * 1000;
     }
 
     /**
@@ -69,10 +48,23 @@ public abstract class WidgetUI extends ElementUI {
      */
     protected abstract void drawWidget(Scene scene, Vector mousePos);
 
+
+    /**
+     * This method injects into the Window Maintenance to consistently update the hover fade rectangle. Whenever an
+     * intractable is hovered over, it will gain a slight highlight that fades in upon mouse hover which indicates that it
+     * can be clicked
+     */
+    @Override
+    public void animate(Scene scene, Vector mousePos) {
+        hoverWatch.start();
+        if (hoverWatch.hasTimePassedMS(1)) {
+            hoverFade = (int)DrawUtil.getNextAnimationValue(isMouseOver(),hoverFade,0,75,2f);
+            hoverWatch.restart();
+        }
+    }
+
     @Override
     public void tickElement(Scene scene, Vector mousePos) {
-        if (maintenanceCountdown <= 0) onMaintenance.unsubscribe();
-        else onMaintenance.subscribe();
         tickWidget(scene,mousePos);
     }
 
