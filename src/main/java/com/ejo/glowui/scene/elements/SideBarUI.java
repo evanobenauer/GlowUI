@@ -12,7 +12,6 @@ import com.ejo.glowui.util.Fonts;
 import com.ejo.glowui.util.GLManager;
 import com.ejo.glowui.util.QuickDraw;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -30,14 +29,14 @@ public class SideBarUI extends ElementUI {
 
     private Vector barPos;
 
-    private final StopWatch hoverWatch = new StopWatch();
+    private final StopWatch openWatch = new StopWatch();
     protected int openPercent = 0;
 
-    public EventAction onMaintenance = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
-        hoverWatch.start();
-        if (hoverWatch.hasTimePassedMS(1)) {
+    public EventAction openAnimation = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
+        openWatch.start();
+        if (openWatch.hasTimePassedMS(1)) {
             openPercent = (int) DrawUtil.getNextAnimationValue(isOpen(), openPercent, 0, 100, 2f);
-            hoverWatch.restart();
+            openWatch.restart();
         }
     });
 
@@ -55,7 +54,7 @@ public class SideBarUI extends ElementUI {
         this.buttonUI = new ButtonUI(Vector.NULL,Vector.NULL,getColor(), ButtonUI.MouseButton.LEFT,() -> setOpen(!isOpen()));
 
         addElements(elements);
-        onMaintenance.subscribe();
+        openAnimation.subscribe();
     }
 
     public SideBarUI(Type type, double width, boolean open, ColorE color,  ElementUI... elements) {

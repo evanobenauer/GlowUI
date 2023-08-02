@@ -12,8 +12,6 @@ import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.time.StopWatch;
 import com.ejo.glowui.util.Fonts;
 
-import java.awt.*;
-
 public abstract class WidgetUI extends ElementUI {
 
     private String title;
@@ -23,7 +21,7 @@ public abstract class WidgetUI extends ElementUI {
     private Vector size;
     private Runnable action;
 
-    private final StopWatch hoverWatch = new StopWatch();
+    private final StopWatch fadeWatch = new StopWatch();
     protected int hoverFade = 0;
 
     /**
@@ -31,11 +29,11 @@ public abstract class WidgetUI extends ElementUI {
      * intractable is hovered over, it will gain a slight highlight that fades in upon mouse hover which indicates that it
      * can be clicked
      */
-    public EventAction onMaintenance = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
-        hoverWatch.start();
-        if (hoverWatch.hasTimePassedMS(1)) {
+    public EventAction hoverAnimation = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
+        fadeWatch.start();
+        if (fadeWatch.hasTimePassedMS(1)) {
             hoverFade = (int)DrawUtil.getNextAnimationValue(isMouseOver(),hoverFade,0,75,2f);
-            hoverWatch.restart();
+            fadeWatch.restart();
         }
     });
 
@@ -47,7 +45,7 @@ public abstract class WidgetUI extends ElementUI {
         this.action = action;
         this.size = size;
         baseRect = new RectangleUI(Vector.NULL,Vector.NULL,ColorE.NULL);
-        onMaintenance.subscribe();
+        hoverAnimation.subscribe();
     }
 
 
