@@ -47,7 +47,7 @@ public abstract class WidgetUI extends ElementUI {
         this.action = action;
         this.size = size;
         baseRect = new RectangleUI(Vector.NULL,Vector.NULL,ColorE.NULL);
-        if (shouldRender()) onMaintenance.subscribe();
+        onMaintenance.subscribe();
     }
 
 
@@ -56,7 +56,6 @@ public abstract class WidgetUI extends ElementUI {
         baseRect = new RectangleUI(getPos(),getSize(),ColorE.NULL);
         drawWidget(scene, mousePos);
         new RectangleUI(getBaseRect().getPos(), getBaseRect().getSize(), new ColorE(255, 255, 255, hoverFade)).draw(scene, mousePos);
-        if (shouldRender()) onMaintenance.subscribe(); else onMaintenance.unsubscribe();
     }
 
     /**
