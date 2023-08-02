@@ -56,7 +56,7 @@ public class SliderUI<T extends Number> extends WidgetUI {
         //Draw Background
         QuickDraw.drawRect(getPos(),getSize(),DrawUtil.WIDGET_BACKGROUND);
 
-        double border = 4;//getSize().getY()/5;
+        double border = getSize().getY()/5;
 
         //Draw the slider fill
         double valueRange = getMax().doubleValue() - getMin().doubleValue();
