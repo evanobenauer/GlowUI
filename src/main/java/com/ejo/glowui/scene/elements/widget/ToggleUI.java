@@ -17,7 +17,16 @@ public class ToggleUI extends WidgetUI {
 
     private ColorE color;
 
+    private final StopWatch hoverWatch = new StopWatch();
     private float toggleFade = 0;
+
+    public EventAction onMaintenance = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
+        hoverWatch.start();
+        if (hoverWatch.hasTimePassedMS(1)) {
+            toggleFade = (int)DrawUtil.getNextAnimationValue(isMouseOver(),toggleFade,0,75,2f);
+            hoverWatch.restart();
+        }
+    });
 
     public ToggleUI(String title, Vector pos, Vector size, ColorE color, Container<Boolean> container) {
         super(title, pos, size, true, true,null);
@@ -25,6 +34,7 @@ public class ToggleUI extends WidgetUI {
         this.color = color;
 
         setAction(() -> getContainer().set(!getContainer().get()));
+        onMaintenance.subscribe();
     }
 
     public ToggleUI(Vector pos, Vector size, ColorE color, Container<Boolean> container) {
@@ -37,18 +47,12 @@ public class ToggleUI extends WidgetUI {
         QuickDraw.drawRect(getPos(),getSize(),DrawUtil.WIDGET_BACKGROUND);
         QuickDraw.drawRect(getPos(), getSize(), new ColorE(getColor().getRed(), getColor().getGreen(), getColor().getBlue(), (int) toggleFade));
 
-        double border = getSize().getY()/5;
+        double border = 4;//getSize().getY()/5;
 
         //Draw Text
         int size = (int)getSize().getY();
         setUpDisplayText(getTitle(),border,size);
         getDisplayText().drawCentered(scene, mousePos, getSize().getAdded(-border*2,-border*2).getAdded(-getSize().getX()/50,0));
-    }
-
-    @Override
-    public void animate(Scene scene, Vector mousePos) {
-        super.animate(scene, mousePos);
-        toggleFade = (int) DrawUtil.getNextAnimationValue(getContainer().get(),toggleFade,0,150,2f);
     }
 
     @Override

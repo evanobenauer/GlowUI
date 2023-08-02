@@ -131,22 +131,6 @@ public class Window {
     }
 
     /**
-     * The Animation Loop is a loop that runs side by side with the Maintenance Loop, TickLoop and RenderLoop.
-     * Its intended job is to have animation calculations to be called in this constantly timed thread
-     */
-    public void startAnimationLoop() {
-        Thread thread = new Thread(() -> {
-            while (true) {
-                sleepThread(1); //This is a limitation that slows down the maintenance loop. I may plan to change this in the future
-                getScene().animate();
-            }
-        });
-        thread.setName("Animation Thread");
-        thread.setDaemon(true);
-        thread.start();
-    }
-
-    /**
      * The TickLoop is a loop that runs side by side with the RenderLoop in its own thread.
      * This loop will update as per the defined max TPS of the UI, as defined in the constructor.
      * Its purpose is to have all calculations and functions carried out in it, separate from rendering, which is variable.
@@ -315,7 +299,6 @@ public class Window {
     public void run() {
         init();
         startMaintenanceLoop();
-        startAnimationLoop();
         startTickLoop();
         runRenderLoop();
     }

@@ -44,20 +44,6 @@ public abstract class Scene {
     }
 
     /**
-     * This is the main animate method for the scene. It will animate all elements that are added to the scene. To animate more than the elements provided, you
-     * must call the super of this method inside your override to continue to support the added elements. This method is called in the maintenance thread of the window
-     */
-    public void animate() {
-        try {
-            for (ElementUI element : getElements()) {
-                element.animate(this, getWindow().getScaledMousePos());
-            }
-        } catch (ConcurrentModificationException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * This is the main tick method for the scene. It will tick all elements that are added to the scene. To tick more than the elements provided, you
      * must call the super of this method inside your override to continue to support the added elements. This method is called in the tick thread of the window
      */

@@ -52,24 +52,6 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
 
 
     /**
-     * The animate method should be called in the animate method of the scene to which it belongs. This method operates in the maintenance thread. This method is not abstract
-     * but can be called IF the element requires animations
-     * @param scene
-     * @param mousePos
-     */
-    public void animate(Scene scene, Vector mousePos) {
-    }
-
-    public void animate(Scene scene) {
-        animate(scene,scene.getWindow().getScaledMousePos());
-    }
-
-    public void animate() {
-        tick(null,new Vector(-1,-1));
-    }
-
-
-    /**
      * The tick method should be called in the tick method of the scene to which it belongs. This method operates in the tick thread
      * @param scene
      * @param mousePos

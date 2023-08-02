@@ -31,7 +31,7 @@ public class ButtonUI extends WidgetUI {
         //Draw Background Color
         QuickDraw.drawRect(getPos(),getSize(),getColor());
 
-        double border = getSize().getY() / 5;
+        double border = 4;//getSize().getY() / 5;
 
         //Draw Text
         int fontSize = (int)(getSize().getY());

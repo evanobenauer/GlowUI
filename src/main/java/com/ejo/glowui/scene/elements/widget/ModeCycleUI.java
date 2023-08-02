@@ -53,7 +53,7 @@ public class ModeCycleUI<T> extends WidgetUI {
         //Draw Background
         QuickDraw.drawRect(getPos(),getSize(),DrawUtil.WIDGET_BACKGROUND);
 
-        double border = getSize().getY()/5;
+        double border = 4;//getSize().getY()/5;
 
         //Draw Mode Arrows
         double borderArrow = border/2;
