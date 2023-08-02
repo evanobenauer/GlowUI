@@ -1,6 +1,5 @@
 package com.ejo.glowui;
 
-import com.ejo.glowlib.misc.Container;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.util.GLManager;
@@ -17,7 +16,6 @@ import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.stb.STBImage.stbi_load;
 
 //https://www.glfw.org/docs/latest/window.html#window_refresh
 /**
@@ -114,7 +112,7 @@ public class Window {
     }
 
     /**
-     * The MaintenanceLoop is a loop that runs side by side with the TickLoop and RenderLoop.
+     * The MaintenanceLoop is a loop that runs side by side with the Animation Loop, TickLoop and RenderLoop.
      * Its intended job is to have features that don't fit into tick and render to be called in order to modify
      * or "Do Maintenance" on the application
      */
@@ -124,11 +122,26 @@ public class Window {
             while (true) {
                 sleepThread(1); //This is a limitation that slows down the maintenance loop. I may plan to change this in the future
                 calculateFPSTPS(fpsWatch);
-                getScene().animate();
                 EventRegistry.EVENT_RUN_MAINTENANCE.post();
             }
         });
         thread.setName("Maintenance Thread");
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    /**
+     * The Animation Loop is a loop that runs side by side with the Maintenance Loop, TickLoop and RenderLoop.
+     * Its intended job is to have animation calculations to be called in this constantly timed thread
+     */
+    public void startAnimationLoop() {
+        Thread thread = new Thread(() -> {
+            while (true) {
+                sleepThread(1); //This is a limitation that slows down the maintenance loop. I may plan to change this in the future
+                getScene().animate();
+            }
+        });
+        thread.setName("Animation Thread");
         thread.setDaemon(true);
         thread.start();
     }
@@ -302,6 +315,7 @@ public class Window {
     public void run() {
         init();
         startMaintenanceLoop();
+        startAnimationLoop();
         startTickLoop();
         runRenderLoop();
     }

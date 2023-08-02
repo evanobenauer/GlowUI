@@ -30,7 +30,6 @@ public class SideBarUI extends ElementUI {
 
     private Vector barPos;
 
-    private final StopWatch stopWatch = new StopWatch();
     protected int openPercent = 0;
 
     public SideBarUI(String title, Type type, double width, boolean open, ColorE color, ElementUI... elements) {
@@ -117,11 +116,7 @@ public class SideBarUI extends ElementUI {
             elementUI.animate(scene, mousePos.getAdded(getBarPos().getMultiplied(-1)));
         }
 
-        //stopWatch.start();
-        //if (stopWatch.hasTimePassedMS(1)) {
-            openPercent = (int) DrawUtil.getNextAnimationValue(isOpen(), openPercent,0,100,2f);
-            //stopWatch.restart();
-        //}
+        openPercent = (int) DrawUtil.getNextAnimationValue(isOpen(), openPercent,0,100,2f);
     }
 
     @Override

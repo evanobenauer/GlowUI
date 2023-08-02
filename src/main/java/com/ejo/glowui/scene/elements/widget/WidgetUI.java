@@ -19,7 +19,6 @@ public abstract class WidgetUI extends ElementUI {
     private Vector size;
     private Runnable action;
 
-    private final StopWatch hoverWatch = new StopWatch();
     protected int hoverFade = 0;
 
     public WidgetUI(String title, Vector pos, Vector size, boolean shouldRender, boolean shouldTick, Runnable action) {
@@ -56,11 +55,7 @@ public abstract class WidgetUI extends ElementUI {
      */
     @Override
     public void animate(Scene scene, Vector mousePos) {
-        //hoverWatch.start();
-        //if (hoverWatch.hasTimePassedMS(1)) {
-            hoverFade = (int)DrawUtil.getNextAnimationValue(isMouseOver(),hoverFade,0,75,2f);
-            //hoverWatch.restart();
-        //}
+        hoverFade = (int)DrawUtil.getNextAnimationValue(isMouseOver(),hoverFade,0,75,2f);
     }
 
     @Override

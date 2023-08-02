@@ -17,7 +17,6 @@ public class ToggleUI extends WidgetUI {
 
     private ColorE color;
 
-    private final StopWatch hoverWatch = new StopWatch();
     private float toggleFade = 0;
 
     public ToggleUI(String title, Vector pos, Vector size, ColorE color, Container<Boolean> container) {
@@ -49,11 +48,7 @@ public class ToggleUI extends WidgetUI {
     @Override
     public void animate(Scene scene, Vector mousePos) {
         super.animate(scene, mousePos);
-        hoverWatch.start();
-        if (hoverWatch.hasTimePassedMS(1)) {
-            toggleFade = (int) DrawUtil.getNextAnimationValue(getContainer().get(),toggleFade,0,150,2f);
-            hoverWatch.restart();
-        }
+        toggleFade = (int) DrawUtil.getNextAnimationValue(getContainer().get(),toggleFade,0,150,2f);
     }
 
     @Override
