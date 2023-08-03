@@ -1,5 +1,6 @@
 package com.ejo.glowui.scene.elements.shape;
 
+import com.ejo.glowlib.math.Angle;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowui.scene.Scene;
@@ -21,6 +22,10 @@ public class LineUI extends ElementUI implements IShape {
 
         this.width = width;
         this.type = type;
+    }
+
+    public LineUI(Vector pos, Angle angle, double length, ColorE color, Type type, double width) {
+        this(pos,pos.getAdded(new Vector(length,angle)),color,type,width);
     }
 
     @Override
