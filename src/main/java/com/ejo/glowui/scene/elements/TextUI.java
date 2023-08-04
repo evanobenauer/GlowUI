@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
+import org.w3c.dom.Text;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -114,56 +115,64 @@ public class TextUI extends ElementUI {
     }
 
 
-    public void setColor(ColorE color) {
-        if (this.color.equals(color)) return;
+    public TextUI setColor(ColorE color) {
+        if (this.color.equals(color)) return this;
         this.color = color;
         this.fontMetrics = createFontMetrics(font);
         this.fontImageBuffer = createFontImageBuffer();
+        return this;
     }
 
-    public void setFont(Font font) {
-        if (this.font.equals(font)) return;
+    public TextUI setFont(Font font) {
+        if (this.font.equals(font)) return this;
         this.font = font;
         this.fontMetrics = createFontMetrics(font);
         this.fontImageBuffer = createFontImageBuffer();
+        return this;
     }
 
-    public void setFont(String font) {
-        if (this.font.getName().equals(font)) return;
+    public TextUI setFont(String font) {
+        if (this.font.getName().equals(font)) return this;
         int size = this.font.getSize();
         int style = this.font.getStyle();
         this.font = new Font(font,style,size);
         this.fontMetrics = createFontMetrics(this.font);
         this.fontImageBuffer = createFontImageBuffer();
+        return this;
     }
 
-    public void setSize(int size) {
-        if (this.font.getSize() == size) return;
+    public TextUI setSize(int size) {
+        if (this.font.getSize() == size) return this;
         String name = this.font.getName();
         int style = this.font.getStyle();
         this.font = new Font(name,style,size);
         this.fontMetrics = createFontMetrics(this.font);
         this.fontImageBuffer = createFontImageBuffer();
+        return this;
     }
 
-    public void setModifier(int modifier) {
-        if (this.font.getStyle() == modifier) return;
+    public TextUI setModifier(int modifier) {
+        if (this.font.getStyle() == modifier) return this;
         String name = this.font.getName();
         int size = this.font.getSize();
         this.font = new Font(name,modifier,size);
         this.fontMetrics = createFontMetrics(this.font);
         this.fontImageBuffer = createFontImageBuffer();
+        return this;
     }
 
-    public void setText(String text) {
-        if (this.text.equals(text)) return;
+    public TextUI setText(String text) {
+        if (this.text.equals(text)) return this;
         this.text = text;
         this.fontImageBuffer = createFontImageBuffer();
+        return this;
     }
 
-    public void setScale(double scale) {
+    public TextUI setScale(double scale) {
+        if (this.scale == scale) return this;
         this.scale = (float)scale;
         this.fontImageBuffer = createFontImageBuffer();
+        return this;
     }
 
 

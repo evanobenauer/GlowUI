@@ -122,6 +122,7 @@ public class Window {
             while (true) {
                 sleepThread(1); //This is a limitation that slows down the maintenance loop. I may plan to change this in the future
                 calculateFPSTPS(fpsWatch);
+                //TODO: This may cause problems when changing scenes. Events don't unsubscribe. Also, Ive tried a similar method to Ticking/Rendering as before, but CPU usage skyrockets
                 EventRegistry.EVENT_RUN_MAINTENANCE.post();
             }
         });

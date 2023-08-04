@@ -52,6 +52,7 @@ public abstract class Scene {
             for (ElementUI element : getElements()) {
                 element.tick(this, getWindow().getScaledMousePos());
             }
+            if (getAddElementList().isEmpty() && getRemoveElementList().isEmpty()) return;
             addElements(getAddElementList().toArray(new ElementUI[0])); //Adds all queued elements to the list after all ticks
             removeElements(getRemoveElementList().toArray(new ElementUI[0])); //Removes all queued elements to the list after all ticks
             getAddElementList().clear();
