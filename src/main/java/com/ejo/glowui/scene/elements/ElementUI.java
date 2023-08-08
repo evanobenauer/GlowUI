@@ -97,9 +97,20 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
      * a concurrent modification exception
      * @param disabled
      */
+    @Deprecated
     public void disable(boolean disabled) {
         setRendered(!disabled);
         setTicking(!disabled);
+    }
+
+    /**
+     * This method can set the element to be enabled or disabled. Disabling an element is useful for "removing" elements with an interaction
+     * from another elements while avoiding a concurrent modification exception
+     * @param enabled
+     */
+    public void setEnabled(boolean enabled) {
+        setRendered(enabled);
+        setTicking(enabled);
     }
 
     public abstract boolean updateMouseOver(Vector mousePos);

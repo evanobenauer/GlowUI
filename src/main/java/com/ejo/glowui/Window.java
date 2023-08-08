@@ -1,5 +1,6 @@
 package com.ejo.glowui;
 
+import com.ejo.glowlib.util.Util;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.util.GLManager;

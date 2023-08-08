@@ -17,8 +17,8 @@ public abstract class Scene {
 
     private final ArrayList<ElementUI> elementList = new ArrayList<>();
 
-    private final ArrayList<ElementUI> addElementList = new ArrayList<>();
-    private final ArrayList<ElementUI> deleteElementList = new ArrayList<>();
+    private final ArrayList<ElementUI> addElementQueue = new ArrayList<>();
+    private final ArrayList<ElementUI> deleteElementQueue = new ArrayList<>();
 
     private Window window;
     private String title;
@@ -52,11 +52,11 @@ public abstract class Scene {
             for (ElementUI element : getElements()) {
                 element.tick(this, getWindow().getScaledMousePos());
             }
-            if (getAddElementList().isEmpty() && getRemoveElementList().isEmpty()) return;
-            addElements(getAddElementList().toArray(new ElementUI[0])); //Adds all queued elements to the list after all ticks
-            removeElements(getRemoveElementList().toArray(new ElementUI[0])); //Removes all queued elements to the list after all ticks
-            getAddElementList().clear();
-            getRemoveElementList().clear();
+            if (getAddElementQueue().isEmpty() && getRemoveElementQueue().isEmpty()) return;
+            addElements(getAddElementQueue().toArray(new ElementUI[0])); //Adds all queued elements to the list after all ticks
+            removeElements(getRemoveElementQueue().toArray(new ElementUI[0])); //Removes all queued elements to the list after all ticks
+            getAddElementQueue().clear();
+            getRemoveElementQueue().clear();
         } catch (ConcurrentModificationException e) {
             e.printStackTrace();
         }
@@ -134,7 +134,7 @@ public abstract class Scene {
 
     public void queueAddElements(ElementUI... elements) {
         for (ElementUI element : elements) {
-            getAddElementList().add(element);
+            getAddElementQueue().add(element);
         }
     }
 
@@ -146,7 +146,7 @@ public abstract class Scene {
 
     private void queueRemoveElements(ElementUI... elements) {
         for (ElementUI element : elements) {
-            getRemoveElementList().add(element);
+            getRemoveElementQueue().add(element);
         }
     }
 
@@ -162,16 +162,16 @@ public abstract class Scene {
         return title;
     }
 
+    private ArrayList<ElementUI> getAddElementQueue() {
+        return addElementQueue;
+    }
+
+    private ArrayList<ElementUI> getRemoveElementQueue() {
+        return deleteElementQueue;
+    }
+
     public ArrayList<ElementUI> getElements() {
         return elementList;
-    }
-
-    private ArrayList<ElementUI> getAddElementList() {
-        return addElementList;
-    }
-
-    private ArrayList<ElementUI> getRemoveElementList() {
-        return deleteElementList;
     }
 
 }

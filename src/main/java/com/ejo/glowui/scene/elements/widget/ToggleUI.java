@@ -1,5 +1,6 @@
 package com.ejo.glowui.scene.elements.widget;
 
+import com.ejo.glowlib.setting.Container;
 import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.util.DrawUtil;
@@ -8,7 +9,6 @@ import com.ejo.glowui.util.QuickDraw;
 import com.ejo.glowlib.event.EventAction;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
-import com.ejo.glowlib.misc.Container;
 import com.ejo.glowlib.time.StopWatch;
 
 public class ToggleUI extends WidgetUI {

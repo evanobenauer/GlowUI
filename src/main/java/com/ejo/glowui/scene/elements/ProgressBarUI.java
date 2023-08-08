@@ -1,5 +1,6 @@
 package com.ejo.glowui.scene.elements;
 
+import com.ejo.glowlib.setting.Container;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowui.util.DrawUtil;
@@ -7,10 +8,7 @@ import com.ejo.glowui.util.Fonts;
 import com.ejo.glowui.util.QuickDraw;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
-import com.ejo.glowlib.misc.Container;
 import com.ejo.glowlib.util.NumberUtil;
-
-import java.awt.*;
 
 public class ProgressBarUI<T extends Number> extends ElementUI {
 

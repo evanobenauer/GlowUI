@@ -1,5 +1,6 @@
 package com.ejo.glowui.scene.elements.widget;
 
+import com.ejo.glowlib.setting.Container;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.TextUI;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
@@ -8,10 +9,8 @@ import com.ejo.glowui.util.Mouse;
 import com.ejo.glowui.util.QuickDraw;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
-import com.ejo.glowlib.misc.Container;
 import com.ejo.glowlib.util.NumberUtil;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 

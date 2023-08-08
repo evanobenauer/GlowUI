@@ -1,5 +1,6 @@
 package com.ejo.glowui.scene.elements.widget;
 
+import com.ejo.glowlib.setting.Container;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.util.DrawUtil;
 import com.ejo.glowui.util.Fonts;
@@ -8,10 +9,8 @@ import com.ejo.glowui.util.QuickDraw;
 import org.lwjgl.glfw.GLFW;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
-import com.ejo.glowlib.misc.Container;
 import com.ejo.glowlib.time.StopWatch;
 
-import java.awt.*;
 
 public class TextFieldUI extends WidgetUI {
 

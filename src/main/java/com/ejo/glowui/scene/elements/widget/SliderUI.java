@@ -1,5 +1,6 @@
 package com.ejo.glowui.scene.elements.widget;
 
+import com.ejo.glowlib.setting.Container;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowui.util.DrawUtil;
@@ -7,11 +8,8 @@ import com.ejo.glowui.util.Mouse;
 import com.ejo.glowlib.math.MathE;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
-import com.ejo.glowlib.misc.Container;
 import com.ejo.glowlib.util.NumberUtil;
 import com.ejo.glowui.util.QuickDraw;
-
-import java.awt.*;
 
 public class SliderUI<T extends Number> extends WidgetUI {
 
