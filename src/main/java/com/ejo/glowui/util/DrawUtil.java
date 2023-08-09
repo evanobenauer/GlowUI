@@ -16,12 +16,12 @@ public class DrawUtil {
         if (condition) {
             if (val < max) {
                 val += step;
-                avoidEconomy();
+                forceRenderFrame();
             }
         } else {
             if (val > min) {
                 val -= step;
-                avoidEconomy();
+                forceRenderFrame();
             }
         }
         val = NumberUtil.getBoundValue(val,min,max).floatValue();
@@ -29,7 +29,7 @@ public class DrawUtil {
     }
 
     //Potential name changes: sendEconomyEvent, ignoreEconomy, addEconomyFrame
-    public static void avoidEconomy() {
+    public static void forceRenderFrame() {
         GLFW.glfwPostEmptyEvent();
     }
 
