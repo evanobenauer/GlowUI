@@ -50,7 +50,7 @@ public class ButtonUI extends WidgetUI {
 
     @Override
     public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
-        if (button == getMouseButton().getId()) {
+        if (button == getMouseButton().getId() || getMouseButton().equals(MouseButton.ALL)) {
             if (action == Mouse.ACTION_CLICK) this.baseColor = getColor();
 
             if (isMouseOver()) {
