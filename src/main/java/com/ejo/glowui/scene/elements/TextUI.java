@@ -87,7 +87,7 @@ public class TextUI extends ElementUI {
         //Draw Text Using Graphics
         Graphics2D graphics = (Graphics2D) fontImage.getGraphics();
         graphics.setFont(getFont());
-        graphics.setColor(new Color(getColor().getHash()));
+        graphics.setColor(new Color(getColor().getBlue(),getColor().getGreen(),getColor().getRed()));
 
         graphics.scale(getScale(),getScale());
         graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
