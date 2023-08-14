@@ -61,7 +61,7 @@ public class TextUI extends ElementUI {
         if (getText().equals("")) return;
         GL11.glRasterPos2f((float)x, (float)y);
         //new RectangleUI(new Vector(x,y),new Vector((int)getWidth() + 6,(int)getHeight() + 6),true,1,ColorE.GREEN).draw(); //DEBUG
-        GL11.glDrawPixels((int)getWidth() + 6,(int)getHeight() + 6, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, fontImageBuffer);
+        GL11.glDrawPixels((int)getWidth() + 6,(int)getHeight() + 10, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, fontImageBuffer);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class TextUI extends ElementUI {
         if (getText().equals("")) return null;
         BufferedImage fontImage;
         if (getWidth() > 0 && getHeight() > 0)
-            fontImage = new BufferedImage((int)getWidth() + 6, (int)getHeight() + 6, BufferedImage.TYPE_INT_ARGB);
+            fontImage = new BufferedImage((int)getWidth() + 6, (int)getHeight() + 10, BufferedImage.TYPE_INT_ARGB);
         else
             fontImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 

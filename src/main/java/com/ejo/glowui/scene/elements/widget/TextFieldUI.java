@@ -24,6 +24,7 @@ public class TextFieldUI extends WidgetUI {
     private ColorE color;
 
     private final StopWatch cursorTimer = new StopWatch();
+    private boolean blinked;
     private boolean typing;
 
     public TextFieldUI(String title, Vector pos, Vector size, ColorE color, Container<String> container, String hint, boolean numbersOnly, int charLimit) {
@@ -73,9 +74,7 @@ public class TextFieldUI extends WidgetUI {
         //Draw Blinking Cursor
         if (isTyping()) {
             getDisplayText().setColor(ColorE.GREEN);
-            cursorTimer.start();
-            if (cursorTimer.hasTimePassedS(1)) cursorTimer.restart();
-            int alpha = cursorTimer.hasTimePassedMS(500) ? 255 : 0;
+            int alpha = blinked ? 255 : 0;
 
             String[] text = getDisplayText().getText().split("\\\\n");
             String lastRow = text[text.length - 1];
@@ -94,6 +93,14 @@ public class TextFieldUI extends WidgetUI {
     @Override
     protected void tickWidget(Scene scene, Vector mousePos) {
         this.text = getContainer().get(); //Consistently sync the value of the container and the value of the widget
+
+        //Do Cursor Blink
+        cursorTimer.start();
+        if (cursorTimer.hasTimePassedS(.5) && isTyping()) {
+            DrawUtil.forceRenderFrame();
+            blinked = !blinked;
+            cursorTimer.restart();
+        }
     }
 
 
