@@ -1,5 +1,6 @@
 package com.ejo.glowui.scene.elements;
 
+import com.ejo.glowlib.math.VectorMod;
 import com.ejo.glowlib.setting.Container;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
@@ -19,14 +20,14 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
     private final double min;
     private final double max;
 
-    private Vector size;
+    private VectorMod size;
 
     private ColorE color;
 
     public ProgressBarUI(String title, Vector pos, Vector size, ColorE color, Container<T> container, double min, double max) {
         super(pos, true, true);
         this.title = title;
-        this.size = size;
+        this.size = size.getMod();
         this.container = container;
         this.min = min;
         this.max = max;
@@ -68,7 +69,11 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
     }
 
     public void setSize(Vector size) {
-        this.size = size;
+        this.size = size.getMod();
+    }
+
+    public void setSize(double x, double y) {
+        this.size.setCartesian(x,y);
     }
 
     public void setColor(ColorE color) {

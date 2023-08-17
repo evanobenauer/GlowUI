@@ -1,23 +1,25 @@
 package com.ejo.glowui.scene.elements;
 
+import com.ejo.glowlib.math.VectorMod;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.construct.IDrawable;
 import com.ejo.glowui.scene.elements.construct.IInput;
 import com.ejo.glowui.scene.elements.construct.IComponent;
 import com.ejo.glowui.scene.elements.construct.ITick;
 import com.ejo.glowlib.math.Vector;
+import com.ejo.glowui.util.Mouse;
 
 //TODO: Make all elements stop rendering when off the scene
 public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput {
 
-    private Vector pos;
+    private VectorMod pos;
 
     private boolean rendered;
     private boolean ticking;
     protected boolean mouseOver;
 
     public ElementUI(Vector pos, boolean shouldRender, boolean shouldTick) {
-        this.pos = pos;
+        this.pos = pos.getMod();
         this.rendered = shouldRender;
         this.ticking = shouldTick;
         this.mouseOver = false;
@@ -39,7 +41,7 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
     }
 
     public void draw() {
-        draw(null,new Vector(-1,-1));
+        draw(null, Mouse.NULL_POS);
     }
 
     /**
@@ -68,7 +70,7 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
     }
 
     public void tick() {
-        tick(null,new Vector(-1,-1));
+        tick(null, Mouse.NULL_POS);
     }
 
     /**
@@ -124,9 +126,12 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
     }
 
     public Vector setPos(Vector pos) {
-        return this.pos = pos;
+        return this.pos = pos.getMod();
     }
 
+    public Vector setPos(double x, double y) {
+        return this.pos.setCartesian(x,y);
+    }
 
     public boolean isMouseOver() {
         return this.mouseOver;

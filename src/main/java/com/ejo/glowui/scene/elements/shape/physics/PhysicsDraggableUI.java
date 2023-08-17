@@ -9,8 +9,8 @@ public class PhysicsDraggableUI extends PhysicsObjectUI {
     private boolean dragging;
     private Vector dragPos = Vector.NULL;
 
-    public PhysicsDraggableUI(IShape shape, double mass, Vector velocity, Vector acceleration) {
-        super(shape, mass, velocity, acceleration);
+    public PhysicsDraggableUI(IShape shape, double mass, Vector velocity, Vector netForce) {
+        super(shape, mass, velocity, netForce);
         this.dragging = false;
     }
 

@@ -1,5 +1,6 @@
 package com.ejo.glowui.util;
 
+import com.ejo.glowlib.math.Vector;
 import com.ejo.glowui.event.EventRegistry;
 import org.lwjgl.glfw.GLFW;
 import com.ejo.glowlib.event.EventAction;
@@ -12,6 +13,8 @@ import java.util.HashMap;
 public class Mouse {
 
     public static HashMap<Integer, Mouse> buttonList = new HashMap<>();
+
+    public static final Vector NULL_POS = new Vector(-1,-1);
 
     public static int ACTION_CLICK = 1;
     public static int ACTION_RELEASE = 0;

@@ -1,5 +1,6 @@
 package com.ejo.glowui.scene.elements.widget;
 
+import com.ejo.glowlib.math.VectorMod;
 import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.ElementUI;
@@ -18,7 +19,7 @@ public abstract class WidgetUI extends ElementUI {
     private final TextUI displayText;
 
     private RectangleUI baseRect;
-    private Vector size;
+    private VectorMod size;
     private Runnable action;
 
     private final StopWatch fadeWatch = new StopWatch();
@@ -43,7 +44,7 @@ public abstract class WidgetUI extends ElementUI {
         this.displayText = new TextUI(title, Fonts.getDefaultFont((int)size.getY()),pos,ColorE.WHITE);
 
         this.action = action;
-        this.size = size;
+        this.size = size.getMod();
         baseRect = new RectangleUI(Vector.NULL,Vector.NULL,ColorE.NULL);
         hoverAnimation.subscribe();
     }
@@ -53,7 +54,8 @@ public abstract class WidgetUI extends ElementUI {
     protected void drawElement(Scene scene, Vector mousePos) {
         baseRect = new RectangleUI(getPos(),getSize(),ColorE.NULL);
         drawWidget(scene, mousePos);
-        new RectangleUI(getBaseRect().getPos(), getBaseRect().getSize(), new ColorE(255, 255, 255, hoverFade)).draw(scene, mousePos);
+        baseRect.setColor(new ColorE(255, 255, 255, hoverFade));
+        baseRect.draw(scene,mousePos);
     }
 
     /**
@@ -120,7 +122,11 @@ public abstract class WidgetUI extends ElementUI {
     }
 
     public void setSize(Vector size) {
-        this.size = size;
+        this.size = size.getMod();
+    }
+
+    public void setSize(double x, double y) {
+        this.size.setCartesian(x,y);
     }
 
     public void setAction(Runnable action) {

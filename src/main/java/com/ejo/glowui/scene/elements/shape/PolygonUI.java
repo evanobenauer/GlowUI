@@ -28,11 +28,7 @@ public class PolygonUI extends ElementUI implements IShape {
     public void drawElement(Scene scene, Vector mousePos) {
         GL11.glColor4f(getColor().getRed() / 255f, getColor().getGreen() / 255f, getColor().getBlue() / 255f, getColor().getAlpha() / 255f);
         GL11.glDisable(GL11.GL_LINE_STIPPLE);
-        if (isOutlined()) {
-            GL11.glBegin(GL11.GL_LINE_LOOP);
-        } else {
-            GL11.glBegin(GL11.GL_POLYGON);
-        }
+        GL11.glBegin(isOutlined() ? GL11.GL_LINE_LOOP : GL11.GL_POLYGON);
         for (Vector vert : getVertices()) GL11.glVertex2f((float) getPos().getX() + (float) vert.getX(), (float) getPos().getY() + (float) vert.getY());
         GL11.glEnd();
         GL11.glColor4f(1, 1, 1, 1);

@@ -1,5 +1,6 @@
 package com.ejo.glowui;
 
+import com.ejo.glowlib.math.VectorMod;
 import com.ejo.glowlib.util.Util;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.event.EventRegistry;
@@ -28,8 +29,8 @@ public class Window {
     private long windowId;
 
     private String title;
-    private Vector pos;
-    private Vector size;
+    private VectorMod pos;
+    private VectorMod size;
 
     private int antiAliasing;
 
@@ -58,8 +59,8 @@ public class Window {
 
     public Window(String title, Vector pos, Vector size, Scene startingScene, boolean vSync, int antiAliasing, int maxTPS, int maxFPS) {
         this.title = title;
-        this.pos = pos;
-        this.size = size;
+        this.pos = pos.getMod();
+        this.size = size.getMod();
         this.vSync = vSync;
         this.antiAliasing = antiAliasing;
         this.maxTPS = maxTPS;
@@ -323,12 +324,22 @@ public class Window {
 
     public void setPos(Vector pos) {
         glfwSetWindowPos(getWindowId(), (int) pos.getX(), (int) pos.getY());
-        this.pos = pos;
+        this.pos = pos.getMod();
+    }
+
+    public void setPos(double x, double y) {
+        glfwSetWindowPos(getWindowId(), (int) pos.getX(), (int) pos.getY());
+        this.pos.setCartesian(x,y);
     }
 
     public void setSize(Vector size) {
         glfwSetWindowSize(getWindowId(), (int) size.getX(), (int) size.getY());
-        this.size = size;
+        this.size = size.getMod();
+    }
+
+    public void setSize(double x, double y) {
+        glfwSetWindowSize(getWindowId(), (int) size.getX(), (int) size.getY());
+        this.size.setCartesian(x,y);
     }
 
     public void setVSync(boolean vSync) {

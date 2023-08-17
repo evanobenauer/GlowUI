@@ -7,6 +7,8 @@ import com.ejo.glowui.scene.elements.shape.LineUI;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 
+import java.util.ArrayList;
+
 /**
  * The PhysicsObject class is a container for any shape. The class uses the data from the shape and calculates kinematics to move
  * said shape anywhere on the screen.
@@ -25,13 +27,13 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
 
     private boolean disabled;
 
-    public PhysicsObjectUI(IShape shape, double mass, Vector velocity, Vector acceleration) {
+    public PhysicsObjectUI(IShape shape, double mass, Vector velocity, Vector netForce) {
         super(shape.getPos(), shape.shouldRender(),true);
         this.shape = shape;
         this.mass = mass;
         this.velocity = velocity;
-        this.acceleration = acceleration;
-        this.netForce = Vector.NULL;
+        this.acceleration = Vector.NULL;
+        this.netForce = netForce;
         this.deltaT = 1f;
         this.disabled = false;
     }
@@ -64,7 +66,6 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
 
     public void updateAccForce() {
         setAcceleration(getNetForce().getMultiplied(1 / getMass()));
-        setNetForce(Vector.NULL); //Resets the force after acceleration calculation
     }
 
     public void resetMovement() {
