@@ -78,30 +78,26 @@ public class ModeCycleUI<T> extends WidgetUI {
     @Override
     public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
         if (isMouseOver()) {
-            if (action == 0) {
-                if (button == Mouse.BUTTON_RIGHT.getId()) {
-                    arrayNumber = getModes().indexOf(mode);
-                    arrayNumber += 1;
-                    if (arrayNumber != getModes().size()) {
+            if (action == Mouse.ACTION_RELEASE && (button == Mouse.BUTTON_RIGHT.getId() || button == Mouse.BUTTON_LEFT.getId())) {
+
+                boolean isRightButton = (button == Mouse.BUTTON_RIGHT.getId());
+                int addNum = isRightButton ? 1 : -1;
+                int endIndex = isRightButton ? getModes().size() - 1 : 0;
+                int otherEndIndex = !isRightButton ? getModes().size() - 1 : 0;
+
+                arrayNumber = getModes().indexOf(mode);
+                arrayNumber += addNum;
+                if (arrayNumber - addNum != endIndex) {
+                    try {
                         mode = getModes().get(arrayNumber);
-                        getAction().run();
-                    } else {
+                    } catch (IndexOutOfBoundsException e) {
                         mode = getModes().get(0);
-                        arrayNumber = 0;
-                        getAction().run();
                     }
-                }
-                if (button == Mouse.BUTTON_LEFT.getId()) {
-                    arrayNumber = getModes().indexOf(mode);
-                    arrayNumber -= 1;
-                    if (arrayNumber != -1) {
-                        mode = getModes().get(arrayNumber);
-                        getAction().run();
-                    } else {
-                        mode = (getModes().get(getModes().size() - 1));
-                        arrayNumber = getModes().size() - 1;
-                        getAction().run();
-                    }
+                    getAction().run();
+                } else { //If the value IS equal to the end index
+                    mode = getModes().get(otherEndIndex);
+                    arrayNumber = otherEndIndex;
+                    getAction().run();
                 }
             }
             if (action == Mouse.ACTION_CLICK) {
