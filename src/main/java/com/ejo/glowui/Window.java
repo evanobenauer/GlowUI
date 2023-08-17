@@ -271,15 +271,15 @@ public class Window {
         double x = buffer.get(0);
         glfwGetWindowPos(getWindowId(), null, buffer);
         double y = buffer.get(0);
-        Vector pos = new Vector(x, y);
-        setPos(pos);
+        //Vector pos = new Vector(x, y);
+        setPos(x,y);
 
         glfwGetWindowSize(getWindowId(), buffer, null);
         double w = buffer.get(0);
         glfwGetWindowSize(getWindowId(), null, buffer);
         double h = buffer.get(0);
-        Vector size = new Vector(w, h);
-        if (size.getMagnitude() != 0) setSize(size);
+        //Vector size = new Vector(w, h);
+        if (size.getMagnitude() != 0) setSize(w,h);
     }
 
     private void calculateFPSTPS(StopWatch stopWatch) {
