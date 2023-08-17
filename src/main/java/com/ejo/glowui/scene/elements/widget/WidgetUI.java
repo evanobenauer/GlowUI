@@ -19,7 +19,7 @@ public abstract class WidgetUI extends ElementUI {
     private final TextUI displayText;
 
     private RectangleUI baseRect;
-    private VectorMod size;
+    private Vector size;
     private Runnable action;
 
     private final StopWatch fadeWatch = new StopWatch();
@@ -44,7 +44,7 @@ public abstract class WidgetUI extends ElementUI {
         this.displayText = new TextUI(title, Fonts.getDefaultFont((int)size.getY()),pos,ColorE.WHITE);
 
         this.action = action;
-        this.size = size.getMod();
+        this.size = size;
         baseRect = new RectangleUI(Vector.NULL,Vector.NULL,ColorE.NULL);
         hoverAnimation.subscribe();
     }
@@ -122,11 +122,7 @@ public abstract class WidgetUI extends ElementUI {
     }
 
     public void setSize(Vector size) {
-        this.size = size.getMod();
-    }
-
-    public void setSize(double x, double y) {
-        this.size.setCartesian(x,y);
+        this.size = size;
     }
 
     public void setAction(Runnable action) {

@@ -29,8 +29,8 @@ public class Window {
     private long windowId;
 
     private String title;
-    private VectorMod pos;
-    private VectorMod size;
+    private Vector pos;
+    private Vector size;
 
     private int antiAliasing;
 
@@ -59,8 +59,8 @@ public class Window {
 
     public Window(String title, Vector pos, Vector size, Scene startingScene, boolean vSync, int antiAliasing, int maxTPS, int maxFPS) {
         this.title = title;
-        this.pos = pos.getMod();
-        this.size = size.getMod();
+        this.pos = pos;
+        this.size = size;
         this.vSync = vSync;
         this.antiAliasing = antiAliasing;
         this.maxTPS = maxTPS;
@@ -271,15 +271,15 @@ public class Window {
         double x = buffer.get(0);
         glfwGetWindowPos(getWindowId(), null, buffer);
         double y = buffer.get(0);
-        //Vector pos = new Vector(x, y);
-        setPos(x,y);
+        Vector pos = new Vector(x, y);
+        setPos(pos);
 
         glfwGetWindowSize(getWindowId(), buffer, null);
         double w = buffer.get(0);
         glfwGetWindowSize(getWindowId(), null, buffer);
         double h = buffer.get(0);
-        //Vector size = new Vector(w, h);
-        if (size.getMagnitude() != 0) setSize(w,h);
+        Vector size = new Vector(w, h);
+        if (size.getMagnitude() != 0) setSize(pos);
     }
 
     private void calculateFPSTPS(StopWatch stopWatch) {
@@ -327,19 +327,9 @@ public class Window {
         this.pos = pos.getMod();
     }
 
-    public void setPos(double x, double y) {
-        glfwSetWindowPos(getWindowId(), (int) pos.getX(), (int) pos.getY());
-        this.pos.setCartesian(x,y);
-    }
-
     public void setSize(Vector size) {
         glfwSetWindowSize(getWindowId(), (int) size.getX(), (int) size.getY());
         this.size = size.getMod();
-    }
-
-    public void setSize(double x, double y) {
-        glfwSetWindowSize(getWindowId(), (int) size.getX(), (int) size.getY());
-        this.size.setCartesian(x,y);
     }
 
     public void setVSync(boolean vSync) {

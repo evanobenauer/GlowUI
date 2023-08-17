@@ -12,14 +12,14 @@ import com.ejo.glowui.util.Mouse;
 //TODO: Make all elements stop rendering when off the scene
 public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput {
 
-    private VectorMod pos;
+    private Vector pos;
 
     private boolean rendered;
     private boolean ticking;
     protected boolean mouseOver;
 
     public ElementUI(Vector pos, boolean shouldRender, boolean shouldTick) {
-        this.pos = pos.getMod();
+        this.pos = pos;
         this.rendered = shouldRender;
         this.ticking = shouldTick;
         this.mouseOver = false;
@@ -126,11 +126,7 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
     }
 
     public Vector setPos(Vector pos) {
-        return this.pos = pos.getMod();
-    }
-
-    public Vector setPos(double x, double y) {
-        return this.pos.setCartesian(x,y);
+        return this.pos = pos;
     }
 
     public boolean isMouseOver() {

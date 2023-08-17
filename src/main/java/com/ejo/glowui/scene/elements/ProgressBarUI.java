@@ -20,14 +20,14 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
     private final double min;
     private final double max;
 
-    private VectorMod size;
+    private Vector size;
 
     private ColorE color;
 
     public ProgressBarUI(String title, Vector pos, Vector size, ColorE color, Container<T> container, double min, double max) {
         super(pos, true, true);
         this.title = title;
-        this.size = size.getMod();
+        this.size = size;
         this.container = container;
         this.min = min;
         this.max = max;
@@ -69,11 +69,7 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
     }
 
     public void setSize(Vector size) {
-        this.size = size.getMod();
-    }
-
-    public void setSize(double x, double y) {
-        this.size.setCartesian(x,y);
+        this.size = size;
     }
 
     public void setColor(ColorE color) {
