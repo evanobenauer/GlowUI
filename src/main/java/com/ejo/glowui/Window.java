@@ -1,7 +1,6 @@
 package com.ejo.glowui;
 
-import com.ejo.glowlib.math.VectorMod;
-import com.ejo.glowlib.util.Util;
+import com.ejo.glowlib.misc.DoOnce;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.util.GLManager;
@@ -54,6 +53,8 @@ public class Window {
 
     private boolean economic;
 
+    public DoOnce doOnResize;
+
     private Scene scene;
 
 
@@ -66,10 +67,14 @@ public class Window {
         this.maxTPS = maxTPS;
         this.maxFPS = maxFPS;
         this.uiScale = 1;
+
         this.open = true;
         this.drawn = true;
         this.ticking = true;
         this.economic = false;
+
+        this.doOnResize = new DoOnce();
+
         this.scene = startingScene;
     }
 
@@ -328,6 +333,7 @@ public class Window {
     }
 
     public void setSize(Vector size) {
+        if (!size.equals(getSize())) doOnResize.reset();
         glfwSetWindowSize(getWindowId(), (int) size.getX(), (int) size.getY());
         this.size = size.getMod();
     }
