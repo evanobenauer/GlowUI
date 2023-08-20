@@ -100,7 +100,7 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
         return this.velocity = velocity;
     }
 
-    public Vector setAcceleration(Vector acceleration) {
+    private Vector setAcceleration(Vector acceleration) {
         return this.acceleration = acceleration;
     }
 
