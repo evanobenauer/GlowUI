@@ -138,13 +138,13 @@ public abstract class Scene {
         }
     }
 
-    private void removeElements(ElementUI... elements) {
+    public void removeElements(ElementUI... elements) {
         for (ElementUI element : elements) {
             getElements().remove(element);
         }
     }
 
-    private void queueRemoveElements(ElementUI... elements) {
+    public void queueRemoveElements(ElementUI... elements) {
         for (ElementUI element : elements) {
             getRemoveElementQueue().add(element);
         }
