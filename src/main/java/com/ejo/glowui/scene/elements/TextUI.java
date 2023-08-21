@@ -17,6 +17,7 @@ import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
 import java.nio.ByteBuffer;
 
+//TODO: Text Height has an issue. Try and fix it
 public class TextUI extends ElementUI {
 
     private Font font;
@@ -59,9 +60,9 @@ public class TextUI extends ElementUI {
 
     private void renderText(Scene scene, double x, double y) {
         if (getText().equals("")) return;
-        GL11.glRasterPos2f((float)x, (float)y);
-        //new RectangleUI(new Vector(x,y),new Vector((int)getWidth() + 6,(int)getHeight() + 6),true,1,ColorE.GREEN).draw(); //DEBUG
-        GL11.glDrawPixels((int)getWidth() + 6,(int)getHeight() + 10, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, fontImageBuffer);
+        GL11.glRasterPos2f((float)x, (float)y + 2);
+        //new RectangleUI(new Vector(x,y),new Vector((int)getWidth() + 6,getHeight()),true,1,ColorE.GREEN).draw(); //DEBUG
+        GL11.glDrawPixels((int)getWidth() + 6,(int)getHeight(), GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, fontImageBuffer);
     }
 
     @Override
@@ -80,7 +81,7 @@ public class TextUI extends ElementUI {
         if (getText().equals("")) return null;
         BufferedImage fontImage;
         if (getWidth() > 0 && getHeight() > 0)
-            fontImage = new BufferedImage((int)getWidth() + 6, (int)getHeight() + 10, BufferedImage.TYPE_INT_ARGB);
+            fontImage = new BufferedImage((int)getWidth() + 6, (int)getHeight(), BufferedImage.TYPE_INT_ARGB);
         else
             fontImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 
@@ -206,7 +207,7 @@ public class TextUI extends ElementUI {
     }
 
     public double getHeight() {
-        return (getFont().getSize() * getText().split("\\\\n").length * getScale());
+        return (fontMetrics.getHeight() * getText().split("\\\\n").length * getScale());
     }
 
     private int getLargestStringIndex(String[] list) {
