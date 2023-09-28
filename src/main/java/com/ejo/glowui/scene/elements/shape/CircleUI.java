@@ -40,8 +40,7 @@ public class CircleUI extends ElementUI implements IShape {
 
     @Override
     public boolean updateMouseOver(Vector mousePos) {
-        //TODO: Implement This
-        return false;
+        return mousePos.getAdded(getCenter().getMultiplied(-1)).getMagnitude() < getRadius();
     }
 
 
