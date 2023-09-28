@@ -9,23 +9,29 @@ import org.lwjgl.opengl.GL11;
 public class CircleUI extends ElementUI implements IShape {
 
     private ColorE color;
+    private boolean outlined;
     private double radius;
-    private int vertexCount;
+    private Type type;
 
-    public CircleUI(Vector pos, ColorE color, double radius, int vertexCount) {
+    public CircleUI(Vector pos, ColorE color, boolean outlined, double radius, Type type) {
         super(pos,true,true);
         this.color = color;
+        this.outlined = outlined;
         this.radius = radius;
-        this.vertexCount = vertexCount;
+        this.type = type;
+    }
+
+    public CircleUI(Vector pos, ColorE color, double radius, Type type) {
+        this(pos,color,false,radius,type);
     }
 
     @Override
     protected void drawElement(Scene scene, Vector mousePos) {
         GL11.glColor4f(getColor().getRed() / 255f, getColor().getGreen() / 255f, getColor().getBlue() / 255f, getColor().getAlpha() / 255f);
         GL11.glDisable(GL11.GL_LINE_STIPPLE);
-        GL11.glBegin(GL11.GL_POLYGON);
-        double radianIncrement = 2*Math.PI / getVertexCount();
-        for (int i = 1; i <= getVertexCount(); i++) {
+        GL11.glBegin(isOutlined() ? GL11.GL_LINE_LOOP : GL11.GL_POLYGON);
+        double radianIncrement = 2*Math.PI / getType().getVertices();
+        for (int i = 1; i <= getType().getVertices(); i++) {
             Vector vert = new Vector(Math.cos(radianIncrement*i),Math.sin(radianIncrement*i)).getMultiplied(getRadius());
             GL11.glVertex2f((float) getPos().getX() + (float) vert.getX(), (float) getPos().getY() + (float) vert.getY());
         }
@@ -54,12 +60,16 @@ public class CircleUI extends ElementUI implements IShape {
         this.color = color;
     }
 
+    public void setOutlined(boolean outlined) {
+        this.outlined = outlined;
+    }
+
     public void setRadius(double radius) {
         this.radius = radius;
     }
 
-    public void setVertexCount(int vertexCount) {
-        this.vertexCount = vertexCount;
+    public void setType(Type type) {
+        this.type = type;
     }
 
 
@@ -73,12 +83,31 @@ public class CircleUI extends ElementUI implements IShape {
         return this.color;
     }
 
+    public boolean isOutlined() {
+        return outlined;
+    }
+
     public double getRadius() {
         return radius;
     }
 
-    public int getVertexCount() {
-        return vertexCount;
+    public Type getType() {
+        return type;
+    }
+
+
+    public enum Type {
+        LOW(10),
+        MEDIUM(20),
+        HIGH(30);
+
+        private final int vertices;
+        Type(int vertices) {
+            this.vertices = vertices;
+        }
+        public int getVertices() {
+            return vertices;
+        }
     }
 
 }
