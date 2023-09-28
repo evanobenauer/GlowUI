@@ -56,6 +56,11 @@ public class RegularPolygonUI extends PolygonUI implements IShape {
         return mousePos.getAdded(getCenter().getMultiplied(-1)).getMagnitude() < getRadius();
     }
 
+    @Override
+    public Vector setCenter(Vector pos) {
+        return setPos(pos);
+    }
+
     public void setRadius(double radius) {
         this.radius = radius;
     }
@@ -68,6 +73,11 @@ public class RegularPolygonUI extends PolygonUI implements IShape {
         this.rotation = rotation;
     }
 
+
+    @Override
+    public Vector getCenter() {
+        return getPos();
+    }
 
     public double getRadius() {
         return radius;
