@@ -41,6 +41,7 @@ public abstract class Scene {
         } catch (ConcurrentModificationException e) {
             e.printStackTrace();
         }
+        if (getWindow().isDebug()) QuickDraw.drawFPSTPS(this,new Vector(2,2),15,true);
     }
 
     /**

@@ -53,6 +53,8 @@ public class Window {
 
     private boolean economic;
 
+    private boolean debug;
+
     public DoOnce doOnResize;
 
     private Scene scene;
@@ -72,6 +74,7 @@ public class Window {
         this.drawn = true;
         this.ticking = true;
         this.economic = false;
+        this.debug = false;
 
         this.doOnResize = new DoOnce();
 
@@ -240,6 +243,7 @@ public class Window {
 
     private void onKeyPress() {
         GLFWKeyCallback callback = glfwSetKeyCallback(getWindowId(), (window, key, scancode, action, mods) -> {
+            if (action == Key.ACTION_PRESS) toggleDebugMode();
             EventRegistry.EVENT_KEY_PRESS.post(window, key, scancode, action, mods); //Key Event to be used outside of class
             getScene().onKeyPress(key, scancode, action, mods);
         });
@@ -296,6 +300,11 @@ public class Window {
             ticks = 0;
             stopWatch.restart();
         }
+    }
+
+    private void toggleDebugMode() {
+        if ((Key.KEY_LCONTROL.isKeyDown() || Key.KEY_RCONTROL.isKeyDown()) && (Key.KEY_LSHIFT.isKeyDown() || Key.KEY_RSHIFT.isKeyDown()) && Key.KEY_G.isKeyDown())
+            setDebug(!isDebug());
     }
 
 
@@ -366,6 +375,10 @@ public class Window {
 
     public void setEconomic(boolean economic) {
         this.economic = economic;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
     }
 
     public void setMaxTPS(int maxTPS) {
@@ -440,6 +453,10 @@ public class Window {
 
     public boolean isEconomic() {
         return economic;
+    }
+
+    public boolean isDebug() {
+        return debug;
     }
 
     public int getMaxTPS() {

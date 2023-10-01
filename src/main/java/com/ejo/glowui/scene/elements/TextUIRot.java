@@ -68,7 +68,7 @@ public class TextUIRot extends ElementUI {
         int w = (int)(getWidth() + Math.max(0,getHeight() * Math.cos(getAngle().getRadians())) + 4 + rotAdjustX + getHeight());
         int h = (int)(getHeight() + Math.max(0,4 + getHeight() + (getWidth() - getHeight()) * Math.sin(getAngle().getRadians())) + 4 + rotAdjustY);
 
-        new RectangleUI(new Vector(pos.getX(),pos.getY()),new Vector(w,h),true,1,ColorE.GREEN).draw(); //DEBUG
+        if (scene != null && scene.getWindow().isDebug()) new RectangleUI(new Vector(pos.getX(),pos.getY()),new Vector(w,h),true,1,ColorE.GREEN).draw(); //DEBUG
         GL11.glDrawPixels(w,h, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, fontImageBuffer);
     }
 

@@ -61,7 +61,7 @@ public class TextUI extends ElementUI {
     private void renderText(Scene scene, double x, double y) {
         if (getText().equals("")) return;
         GL11.glRasterPos2f((float)x, (float)y + 2);
-        //new RectangleUI(new Vector(x,y),new Vector((int)getWidth() + 6,getHeight()),true,1,ColorE.GREEN).draw(); //DEBUG
+        if (scene != null && scene.getWindow().isDebug()) new RectangleUI(new Vector(x,y),new Vector((int)getWidth() + 6,getHeight()),true,1,ColorE.GREEN).draw(); //DEBUG
         GL11.glDrawPixels((int)getWidth() + 6,(int)getHeight(), GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, fontImageBuffer);
     }
 
