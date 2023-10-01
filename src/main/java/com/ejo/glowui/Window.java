@@ -243,8 +243,8 @@ public class Window {
 
     private void onKeyPress() {
         GLFWKeyCallback callback = glfwSetKeyCallback(getWindowId(), (window, key, scancode, action, mods) -> {
-            if (action == Key.ACTION_PRESS) toggleDebugMode();
             EventRegistry.EVENT_KEY_PRESS.post(window, key, scancode, action, mods); //Key Event to be used outside of class
+            if (action == Key.ACTION_PRESS) toggleDebugMode();
             getScene().onKeyPress(key, scancode, action, mods);
         });
         closeAutoClosable(callback);
