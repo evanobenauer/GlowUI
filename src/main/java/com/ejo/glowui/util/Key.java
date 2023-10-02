@@ -113,6 +113,16 @@ public class Key {
     public static Key KEY_LEFT = new Key(GLFW.GLFW_KEY_LEFT);
     public static Key KEY_RIGHT = new Key(GLFW.GLFW_KEY_RIGHT);
 
+    public static boolean isControlDown() {
+        return (Key.KEY_LCONTROL.isKeyDown() || Key.KEY_RCONTROL.isKeyDown());
+    }
+    public static boolean isShiftDown() {
+        return (Key.KEY_LSHIFT.isKeyDown() || Key.KEY_RSHIFT.isKeyDown());
+    }
+    public static boolean isAltDown() {
+        return (Key.KEY_LALT.isKeyDown() || Key.KEY_RALT.isKeyDown());
+    }
+
     public static EventAction onKey = new EventAction(EventRegistry.EVENT_KEY_PRESS, true, () -> {
         int key = EventRegistry.EVENT_KEY_PRESS.getKey();
         int scancode = EventRegistry.EVENT_KEY_PRESS.getScancode();

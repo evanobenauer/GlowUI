@@ -244,7 +244,10 @@ public class Window {
     private void onKeyPress() {
         GLFWKeyCallback callback = glfwSetKeyCallback(getWindowId(), (window, key, scancode, action, mods) -> {
             EventRegistry.EVENT_KEY_PRESS.post(window, key, scancode, action, mods); //Key Event to be used outside of class
-            if (action == Key.ACTION_PRESS) toggleDebugMode();
+            if (action == Key.ACTION_PRESS || action == Key.ACTION_HOLD) {
+                toggleDebugMode();
+                runDebugKeybindings();
+            }
             getScene().onKeyPress(key, scancode, action, mods);
         });
         closeAutoClosable(callback);
@@ -303,8 +306,23 @@ public class Window {
     }
 
     private void toggleDebugMode() {
-        if ((Key.KEY_LCONTROL.isKeyDown() || Key.KEY_RCONTROL.isKeyDown()) && (Key.KEY_LSHIFT.isKeyDown() || Key.KEY_RSHIFT.isKeyDown()) && Key.KEY_G.isKeyDown())
-            setDebug(!isDebug());
+        if (Key.isControlDown() && Key.isShiftDown() && Key.KEY_G.isKeyDown()) setDebug(!isDebug());
+    }
+
+    private void runDebugKeybindings() {
+        if (Key.isShiftDown()) {
+            if (Key.KEY_EQUALS.isKeyDown()) setMaxTPS(getMaxTPS() + 1);
+            if (Key.KEY_MINUS.isKeyDown()) setMaxTPS(Math.max(getMaxTPS() - 1,0));
+        } else if (Key.isControlDown()) {
+            if (Key.KEY_EQUALS.isKeyDown()) setMaxFPS(getMaxFPS() + 1);
+            if (Key.KEY_MINUS.isKeyDown()) setMaxFPS(Math.max(getMaxFPS() - 1,0));
+        } else if (Key.isAltDown()) {
+            if (Key.KEY_E.isKeyDown()) setEconomic(!isEconomic());
+            if (Key.KEY_V.isKeyDown()) setVSync(!getVSync());
+        } else {
+            if (Key.KEY_EQUALS.isKeyDown()) setUIScale(getUIScale() + .1);
+            if (Key.KEY_MINUS.isKeyDown()) setUIScale(Math.max(getUIScale() - .1,.1));
+        }
     }
 
 

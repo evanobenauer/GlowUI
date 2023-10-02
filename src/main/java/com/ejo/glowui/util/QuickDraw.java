@@ -1,5 +1,6 @@
 package com.ejo.glowui.util;
 
+import com.ejo.glowui.Window;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.TextUI;
 import com.ejo.glowui.scene.elements.shape.PolygonUI;
@@ -49,8 +50,9 @@ public class QuickDraw {
         }
     }
 
-    public static void drawFPSTPS(Scene scene, Vector pos, int size, boolean label) {
-        QuickDraw.drawText((label ? "FPS: " : "") + scene.getWindow().getFPS(),Fonts.getDefaultFont(size),pos,ColorE.WHITE);
-        QuickDraw.drawText((label ? "TPS: " : "") + scene.getWindow().getTPS(),Fonts.getDefaultFont(size),pos.getAdded(0,size + size/5),ColorE.WHITE);
+    public static void drawFPSTPS(Scene scene, Vector pos, int size, boolean label, boolean showMax) {
+        Window window = scene.getWindow();
+        QuickDraw.drawText((label ? "FPS: " : "") + window.getFPS() + (showMax ? " (" + window.getMaxFPS() + (window.getVSync() ? "V" : "") + (window.isEconomic() ? "E" : "") + ")" : ""),Fonts.getDefaultFont(size),pos,ColorE.WHITE);
+        QuickDraw.drawText((label ? "TPS: " : "") + window.getTPS() + (showMax ? " (" + window.getMaxTPS() + ")" : ""),Fonts.getDefaultFont(size),pos.getAdded(0,size + size/5),ColorE.WHITE);
     }
 }

@@ -1,9 +1,12 @@
 package com.ejo.glowui.scene;
 
+import com.ejo.glowlib.math.MathE;
+import com.ejo.glowlib.math.VectorMod;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowui.scene.elements.ElementUI;
 import com.ejo.glowui.Window;
 import com.ejo.glowlib.math.Vector;
+import com.ejo.glowui.util.Fonts;
 import com.ejo.glowui.util.QuickDraw;
 
 import java.util.ArrayList;
@@ -41,7 +44,7 @@ public abstract class Scene {
         } catch (ConcurrentModificationException e) {
             e.printStackTrace();
         }
-        if (getWindow().isDebug()) QuickDraw.drawFPSTPS(this,new Vector(2,2),15,true);
+        drawDebugText();
     }
 
     /**
@@ -117,6 +120,22 @@ public abstract class Scene {
 
     public void drawBackground(ColorE color) {
         QuickDraw.drawRect(Vector.NULL,getSize(),color);
+    }
+
+    private void drawDebugText() {
+        if (!getWindow().isDebug()) return;
+        QuickDraw.drawFPSTPS(this,new Vector(2,2),15,true,true);
+        VectorMod pos = new Vector(2,37).getMod();
+        int sigFigs = 2;
+        QuickDraw.drawText("UI Scale: " + MathE.roundDouble(getWindow().getUIScale(),sigFigs), Fonts.getDefaultFont(15),pos,ColorE.WHITE);
+        pos.add(new Vector(0,17));
+        QuickDraw.drawText("Size: " + MathE.roundDouble(getWindow().getSize().getX(),sigFigs) + ", " + MathE.roundDouble(getWindow().getSize().getY(),sigFigs),Fonts.getDefaultFont(15),pos,ColorE.WHITE);
+        pos.add(new Vector(0,17));
+        QuickDraw.drawText("ScaledSize: " + MathE.roundDouble(getWindow().getScaledSize().getX(),sigFigs) + ", " + MathE.roundDouble(getWindow().getScaledSize().getY(),sigFigs),Fonts.getDefaultFont(15),pos,ColorE.WHITE);
+        pos.add(new Vector(0,17));
+        QuickDraw.drawText("MousePos: " + MathE.roundDouble(getWindow().getMousePos().getX(),sigFigs) + ", " + MathE.roundDouble(getWindow().getMousePos().getY(),sigFigs),Fonts.getDefaultFont(15),pos,ColorE.WHITE);
+        pos.add(new Vector(0,17));
+        QuickDraw.drawText("ScaledMousePos: " + MathE.roundDouble(getWindow().getScaledMousePos().getX(),sigFigs) + ", " + MathE.roundDouble(getWindow().getScaledMousePos().getY(),sigFigs),Fonts.getDefaultFont(15),pos,ColorE.WHITE);
     }
 
     public void setWindow(Window window) {
