@@ -130,11 +130,11 @@ public abstract class Scene {
 
         //INFO
         int sigFigs = 2;
-        QuickDraw.drawText("UI Scale: " + MathE.roundDouble(getWindow().getUIScale(),sigFigs) + "%", Fonts.getDefaultFont(15),pos,ColorE.WHITE);
+        QuickDraw.drawText("UI Scale: " + (int)MathE.roundDouble(getWindow().getUIScale() * 100,0) + "%", Fonts.getDefaultFont(15),pos,ColorE.WHITE);
         pos.add(new Vector(0,17));
-        QuickDraw.drawText("Size: " + MathE.roundDouble(getWindow().getScaledSize().getX(),sigFigs) + "(" + MathE.roundDouble(getWindow().getSize().getX(),sigFigs) + ")" + ", " + MathE.roundDouble(getWindow().getScaledSize().getY(),sigFigs) + "(" + MathE.roundDouble(getWindow().getSize().getY(),sigFigs) + ")",Fonts.getDefaultFont(15),pos,ColorE.WHITE);
+        QuickDraw.drawText("Size: " + MathE.roundDouble(getWindow().getScaledSize().getX(),sigFigs) + "(" + MathE.roundDouble(getWindow().getSize().getX(),sigFigs) + ")" + ", " + MathE.roundDouble(getWindow().getScaledSize().getY(),sigFigs) + "(" + MathE.roundDouble(getWindow().getSize().getY(),sigFigs) + ") ",Fonts.getDefaultFont(15),pos,ColorE.WHITE);
         pos.add(new Vector(0,17));
-        QuickDraw.drawText("MousePos: " + MathE.roundDouble(getWindow().getScaledMousePos().getX(),sigFigs) + "(" + MathE.roundDouble(getWindow().getMousePos().getX(),sigFigs) + ")" + ", " + MathE.roundDouble(getWindow().getScaledMousePos().getY(),sigFigs) + "(" + MathE.roundDouble(getWindow().getMousePos().getY(),sigFigs) + ")",Fonts.getDefaultFont(15),pos,ColorE.WHITE);
+        QuickDraw.drawText("MousePos: " + MathE.roundDouble(getWindow().getScaledMousePos().getX(),sigFigs) + "(" + MathE.roundDouble(getWindow().getMousePos().getX(),sigFigs) + ")" + ", " + MathE.roundDouble(getWindow().getScaledMousePos().getY(),sigFigs) + "(" + MathE.roundDouble(getWindow().getMousePos().getY(),sigFigs) + ") ",Fonts.getDefaultFont(15),pos,ColorE.WHITE);
 
         //KEYBINDINGS
         int y = 2;
