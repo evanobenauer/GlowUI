@@ -6,6 +6,7 @@ import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowui.scene.elements.ElementUI;
 import com.ejo.glowui.Window;
 import com.ejo.glowlib.math.Vector;
+import com.ejo.glowui.scene.elements.TextUI;
 import com.ejo.glowui.util.Fonts;
 import com.ejo.glowui.util.QuickDraw;
 
@@ -126,16 +127,37 @@ public abstract class Scene {
         if (!getWindow().isDebug()) return;
         QuickDraw.drawFPSTPS(this,new Vector(2,2),15,true,true);
         VectorMod pos = new Vector(2,37).getMod();
+
+        //INFO
         int sigFigs = 2;
-        QuickDraw.drawText("UI Scale: " + MathE.roundDouble(getWindow().getUIScale(),sigFigs), Fonts.getDefaultFont(15),pos,ColorE.WHITE);
+        QuickDraw.drawText("UI Scale: " + MathE.roundDouble(getWindow().getUIScale(),sigFigs) + "%", Fonts.getDefaultFont(15),pos,ColorE.WHITE);
         pos.add(new Vector(0,17));
-        QuickDraw.drawText("Size: " + MathE.roundDouble(getWindow().getSize().getX(),sigFigs) + ", " + MathE.roundDouble(getWindow().getSize().getY(),sigFigs),Fonts.getDefaultFont(15),pos,ColorE.WHITE);
+        QuickDraw.drawText("Size: " + MathE.roundDouble(getWindow().getScaledSize().getX(),sigFigs) + "(" + MathE.roundDouble(getWindow().getSize().getX(),sigFigs) + ")" + ", " + MathE.roundDouble(getWindow().getScaledSize().getY(),sigFigs) + "(" + MathE.roundDouble(getWindow().getSize().getY(),sigFigs) + ")",Fonts.getDefaultFont(15),pos,ColorE.WHITE);
         pos.add(new Vector(0,17));
-        QuickDraw.drawText("ScaledSize: " + MathE.roundDouble(getWindow().getScaledSize().getX(),sigFigs) + ", " + MathE.roundDouble(getWindow().getScaledSize().getY(),sigFigs),Fonts.getDefaultFont(15),pos,ColorE.WHITE);
-        pos.add(new Vector(0,17));
-        QuickDraw.drawText("MousePos: " + MathE.roundDouble(getWindow().getMousePos().getX(),sigFigs) + ", " + MathE.roundDouble(getWindow().getMousePos().getY(),sigFigs),Fonts.getDefaultFont(15),pos,ColorE.WHITE);
-        pos.add(new Vector(0,17));
-        QuickDraw.drawText("ScaledMousePos: " + MathE.roundDouble(getWindow().getScaledMousePos().getX(),sigFigs) + ", " + MathE.roundDouble(getWindow().getScaledMousePos().getY(),sigFigs),Fonts.getDefaultFont(15),pos,ColorE.WHITE);
+        QuickDraw.drawText("MousePos: " + MathE.roundDouble(getWindow().getScaledMousePos().getX(),sigFigs) + "(" + MathE.roundDouble(getWindow().getMousePos().getX(),sigFigs) + ")" + ", " + MathE.roundDouble(getWindow().getScaledMousePos().getY(),sigFigs) + "(" + MathE.roundDouble(getWindow().getMousePos().getY(),sigFigs) + ")",Fonts.getDefaultFont(15),pos,ColorE.WHITE);
+
+        //KEYBINDINGS
+        int y = 2;
+        TextUI text0 = new TextUI("+/-: Scale++/Scale--",Fonts.getDefaultFont(15),Vector.NULL,ColorE.WHITE);
+        text0.setPos(new Vector(getWindow().getScaledSize().getX() - text0.getWidth() - 6,y));
+        text0.draw();
+        y += 17;
+        TextUI text1 = new TextUI("Shift +/-: TPS++/TPS--",Fonts.getDefaultFont(15),Vector.NULL,ColorE.WHITE);
+        text1.setPos(new Vector(getWindow().getScaledSize().getX() - text1.getWidth() - 6,y));
+        text1.draw();
+        y += 17;
+        TextUI text2 = new TextUI("CTRL +/-: FPS++/FPS--",Fonts.getDefaultFont(15),Vector.NULL,ColorE.WHITE);
+        text2.setPos(new Vector(getWindow().getScaledSize().getX() - text2.getWidth() - 6,y));
+        text2.draw();
+        y += 17;
+        TextUI text3 = new TextUI("ALT E: Economy",Fonts.getDefaultFont(15),Vector.NULL,ColorE.WHITE);
+        text3.setPos(new Vector(getWindow().getScaledSize().getX() - text3.getWidth() - 8,y));
+        text3.draw();
+        y += 17;
+        TextUI text4 = new TextUI("ALT V: V-Sync",Fonts.getDefaultFont(15),Vector.NULL,ColorE.WHITE);
+        text4.setPos(new Vector(getWindow().getScaledSize().getX() - text4.getWidth() - 10,y));
+        text4.draw();
+        y += 17;
     }
 
     public void setWindow(Window window) {

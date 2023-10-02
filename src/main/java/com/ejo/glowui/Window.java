@@ -310,6 +310,7 @@ public class Window {
     }
 
     private void runDebugKeybindings() {
+        if (!isDebug()) return;
         if (Key.isShiftDown()) {
             if (Key.KEY_EQUALS.isKeyDown()) setMaxTPS(getMaxTPS() + 1);
             if (Key.KEY_MINUS.isKeyDown()) setMaxTPS(Math.max(getMaxTPS() - 1,0));
