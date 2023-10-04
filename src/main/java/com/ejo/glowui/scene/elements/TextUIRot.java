@@ -14,6 +14,7 @@ import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
 import java.nio.ByteBuffer;
 
+@Deprecated
 public class TextUIRot extends ElementUI {
 
     private Font font;

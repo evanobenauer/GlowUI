@@ -61,7 +61,9 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
 
     @Override
     public boolean updateMouseOver(Vector mousePos) {
-        return false;
+        boolean mouseOverX = mousePos.getX() >= getPos().getX() && mousePos.getX() <= getPos().getX() + getSize().getX();
+        boolean mouseOverY = mousePos.getY() >= getPos().getY() && mousePos.getY() <= getPos().getY() + getSize().getY();
+        return mouseOver = mouseOverX && mouseOverY;
     }
 
     public void setTitle(String title) {

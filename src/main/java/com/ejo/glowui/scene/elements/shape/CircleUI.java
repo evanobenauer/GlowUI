@@ -41,7 +41,6 @@ public class CircleUI extends ElementUI implements IShape {
 
     @Override
     protected void tickElement(Scene scene, Vector mousePos) {
-        //NONE
     }
 
     @Override
@@ -97,9 +96,11 @@ public class CircleUI extends ElementUI implements IShape {
 
 
     public enum Type {
-        LOW(10),
-        MEDIUM(20),
-        HIGH(30);
+        POOR(10),
+        LOW(16),
+        MEDIUM(22),
+        HIGH(28),
+        ULTRA(34);
 
         private final int vertices;
         Type(int vertices) {

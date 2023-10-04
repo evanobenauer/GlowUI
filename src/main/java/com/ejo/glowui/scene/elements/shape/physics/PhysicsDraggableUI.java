@@ -27,8 +27,12 @@ public class PhysicsDraggableUI extends PhysicsObjectUI {
 
     @Override
     public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
-        if (button == 0 && action == 0) dragging = false;
-        if (isMouseOver()) if (button == 0 && action == 1) dragging = true;
+        if (button == 0 && action == 0) setDragging(false);
+        if (isMouseOver()) if (button == 0 && action == 1) setDragging(true);
+    }
+
+    public void setDragging(boolean dragging) {
+        this.dragging = dragging;
     }
 
     public boolean isDragging() {
