@@ -23,6 +23,11 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
     private Vector acceleration;
     private Vector netForce;
 
+    public double spin;
+    private double omega;
+    private double alpha;
+    private double netTorque;
+
     private double deltaT;
 
     private boolean disabled;
@@ -34,6 +39,10 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
         this.velocity = velocity;
         this.acceleration = Vector.NULL;
         this.netForce = netForce;
+        this.spin = 0;
+        this.omega = 0;
+        this.alpha = 0;
+        this.netTorque = 0;
         this.deltaT = 1f;
         this.disabled = false;
     }
@@ -48,6 +57,8 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
         if (!isDisabled()) {
             updateAccForce();
             updateKinematics();
+            updateAlphaFromTorque();
+            updateRotationalKinematics();
         } else {
             resetMovement();
         }
@@ -66,6 +77,16 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
 
     public void updateAccForce() {
         setAcceleration(getNetForce().getMultiplied(1 / getMass()));
+    }
+
+    private void updateAlphaFromTorque() {
+        double I = 1;//(double) 2 /5 * getMass() * Math.pow(getPolygon().getRadius(),2);
+        alpha = netTorque / I;
+    }
+
+    private void updateRotationalKinematics() {
+        omega += alpha*getDeltaT();
+        spin += omega*getDeltaT();
     }
 
     public void resetMovement() {
@@ -108,6 +129,22 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
         return this.netForce = netForce;
     }
 
+    public void setSpin(double spin) {
+        this.spin = spin;
+    }
+
+    public void setOmega(double omega) {
+        this.omega = omega;
+    }
+
+    public void setAlpha(double alpha) {
+        this.alpha = alpha;
+    }
+
+    public void setNetTorque(double netTorque) {
+        this.netTorque = netTorque;
+    }
+
     public double setDeltaT(double deltaT) {
         return this.deltaT = deltaT;
     }
@@ -143,6 +180,22 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
 
     public Vector getNetForce() {
         return netForce;
+    }
+
+    public double getSpin() {
+        return spin;
+    }
+
+    public double getOmega() {
+        return omega;
+    }
+
+    public double getAlpha() {
+        return alpha;
+    }
+
+    public double getNetTorque() {
+        return netTorque;
     }
 
     public double getDeltaT() {
