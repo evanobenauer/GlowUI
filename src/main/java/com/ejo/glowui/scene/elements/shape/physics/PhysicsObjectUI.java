@@ -2,12 +2,9 @@ package com.ejo.glowui.scene.elements.shape.physics;
 
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.ElementUI;
-import com.ejo.glowui.scene.elements.shape.IShape;
-import com.ejo.glowui.scene.elements.shape.LineUI;
+import com.ejo.glowui.scene.elements.shape.*;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
-
-import java.util.ArrayList;
 
 /**
  * The PhysicsObject class is a container for any shape. The class uses the data from the shape and calculates kinematics to move
@@ -55,7 +52,7 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
     @Override
     protected void tickElement(Scene scene, Vector mousePos) {
         if (!isDisabled()) {
-            updateAccForce();
+            updateAccFromForce();
             updateKinematics();
             updateAlphaFromTorque();
             updateRotationalKinematics();
@@ -75,24 +72,26 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
         setCenter(getCenter().getAdded(getVelocity().getMultiplied(getDeltaT())));
     }
 
-    public void updateAccForce() {
+    public void updateAccFromForce() {
         setAcceleration(getNetForce().getMultiplied(1 / getMass()));
     }
 
-    private void updateAlphaFromTorque() {
-        double I = 1;//(double) 2 /5 * getMass() * Math.pow(getPolygon().getRadius(),2);
-        alpha = netTorque / I;
+    private void updateRotationalKinematics() {
+        setOmega(getOmega() + getAlpha()*getDeltaT());
+        setSpin(getSpin() + getOmega()*getDeltaT());
     }
 
-    private void updateRotationalKinematics() {
-        omega += alpha*getDeltaT();
-        spin += omega*getDeltaT();
+    private void updateAlphaFromTorque() {
+        alpha = netTorque / getMomentOfInertia();
     }
 
     public void resetMovement() {
         setNetForce(Vector.NULL);
         setAcceleration(Vector.NULL);
         setVelocity(Vector.NULL);
+        setNetTorque(0);
+        setAlpha(0);
+        setOmega(0);
     }
 
     //TODO: Add collisions with shapes and lines here
@@ -129,20 +128,20 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
         return this.netForce = netForce;
     }
 
-    public void setSpin(double spin) {
-        this.spin = spin;
+    public double setSpin(double spin) {
+        return this.spin = spin;
     }
 
-    public void setOmega(double omega) {
-        this.omega = omega;
+    public double setOmega(double omega) {
+        return this.omega = omega;
     }
 
-    public void setAlpha(double alpha) {
-        this.alpha = alpha;
+    public double setAlpha(double alpha) {
+        return this.alpha = alpha;
     }
 
-    public void setNetTorque(double netTorque) {
-        this.netTorque = netTorque;
+    public double setNetTorque(double netTorque) {
+        return this.netTorque = netTorque;
     }
 
     public double setDeltaT(double deltaT) {
@@ -200,6 +199,15 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
 
     public double getDeltaT() {
         return deltaT;
+    }
+
+    public double getMomentOfInertia() {
+        double I = getMass();
+        if (getShape() instanceof RegularPolygonUI poly) I = (double) 2 /5 * getMass() * Math.pow(poly.getRadius(),2);
+        if (getShape() instanceof CircleUI circle) I = (double) 2 /5 * getMass() * Math.pow(circle.getRadius(),2);
+        if (getShape() instanceof RectangleUI rect) I = (double) 1 /12 * getMass() * (Math.pow(rect.getSize().getX(),2) + Math.pow(rect.getSize().getY(),2));
+        if (getShape() instanceof LineUI line) I = (double) 1/ 12 * getMass() * Math.pow(line.getLength(),2);
+        return I;
     }
 
     public boolean isDisabled() {

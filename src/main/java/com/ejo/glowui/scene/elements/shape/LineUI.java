@@ -1,6 +1,7 @@
 package com.ejo.glowui.scene.elements.shape;
 
 import com.ejo.glowlib.math.Angle;
+import com.ejo.glowlib.math.MathE;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowui.scene.Scene;
@@ -73,7 +74,11 @@ public class LineUI extends ElementUI implements IShape {
     }
 
     public Vector setCenter(Vector pos) {
-        return null; //Center is un-settable due to 2 point system
+        Vector pos1DirVec = getPos1().getAdded(getCenter().getMultiplied(-1));
+        Vector pos2DirVec = getPos2().getAdded(getCenter().getMultiplied(-1));
+        setPos1(pos1DirVec.getAdded(pos));
+        setPos2(pos2DirVec.getAdded(pos));
+        return getCenter();
     }
 
     public void setWidth(double width) {
@@ -103,6 +108,10 @@ public class LineUI extends ElementUI implements IShape {
 
     public double getWidth() {
         return width;
+    }
+
+    public double getLength() {
+        return getPos1().getAdded(getPos2().getMultiplied(-1)).getMagnitude();
     }
 
     public Type getType() {
