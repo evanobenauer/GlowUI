@@ -13,6 +13,15 @@ import org.lwjgl.opengl.GL11;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.time.StopWatch;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferInt;
+import java.awt.image.ImageObserver;
+import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 
@@ -104,8 +113,12 @@ public class Window {
         Mouse.onMouse.subscribe();
 
         // Load the window icon
-        //TODO: Add Icon Setting
-        //glfwSetWindowIcon(getWindowId(),getImageBuffer(""));
+        try {
+            File imageFile = new File(getClass().getResource("/icon.png").toURI());
+            glfwSetWindowIcon(getWindowId(), getImageBuffer(imageFile, 512,512));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //Show the window
         setPos(getPos());
@@ -327,8 +340,27 @@ public class Window {
     }
 
 
-    public static GLFWImage.Buffer getImageBuffer(String path) {
-        return null;
+    public static GLFWImage.Buffer getImageBuffer(File imageFile, int width, int height) {
+        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = img.createGraphics();
+        try {
+            graphics.scale((double) img.getWidth() / ImageIO.read(imageFile).getWidth(),(double) img.getHeight() / ImageIO.read(imageFile).getHeight());
+            graphics.drawImage(ImageIO.read(imageFile), 0, 0, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        DataBuffer dataBuffer = img.getRaster().getDataBuffer();
+        int[] imageData = ((DataBufferInt) dataBuffer).getData();
+        ByteBuffer buffer = BufferUtils.createByteBuffer(imageData.length * 16);
+        for (int pixel : imageData) buffer.putInt(pixel);
+        buffer.flip();
+
+        GLFWImage glfwImage = GLFWImage.malloc();
+        GLFWImage.Buffer glfwImageBuffer = GLFWImage.malloc(1);
+        glfwImage.set(width,height,buffer);
+        glfwImageBuffer.close();
+        return glfwImageBuffer.put(0,glfwImage);
     }
 
 
