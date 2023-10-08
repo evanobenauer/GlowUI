@@ -82,7 +82,7 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
     }
 
     private void updateAlphaFromTorque() {
-        alpha = netTorque / getMomentOfInertia();
+        setAlpha(getNetTorque() / getMomentOfInertia());
     }
 
     public void resetMovement() {
@@ -136,7 +136,7 @@ public class PhysicsObjectUI extends ElementUI implements IShape {
         return this.omega = omega;
     }
 
-    public double setAlpha(double alpha) {
+    private double setAlpha(double alpha) {
         return this.alpha = alpha;
     }
 
