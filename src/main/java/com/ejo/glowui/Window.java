@@ -21,6 +21,7 @@ import java.awt.image.DataBufferInt;
 import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
@@ -52,6 +53,8 @@ public class Window {
 
     private int tps;
     private int fps;
+
+    private Vector mousePos;
 
     private double uiScale;
 
@@ -116,7 +119,7 @@ public class Window {
         try {
             File imageFile = new File(getClass().getResource("/icon.png").toURI());
             glfwSetWindowIcon(getWindowId(), getImageBuffer(imageFile, 512,512));
-        } catch (Exception e) {
+        } catch (URISyntaxException | NullPointerException e) {
             e.printStackTrace();
         }
 
@@ -164,6 +167,7 @@ public class Window {
         Thread thread = new Thread(() -> {
             while (isOpen()) {
                 long startTimeNS = System.nanoTime();
+                updateMousePos();
                 tick();
                 ticks++;
                 long endTimeNS = System.nanoTime();
@@ -305,6 +309,15 @@ public class Window {
         double h = buffer.get(0);
         Vector size = new Vector(w, h);
         if (size.getMagnitude() != 0) setSize(size);
+    }
+
+    private Vector updateMousePos() {
+        DoubleBuffer buffer = BufferUtils.createDoubleBuffer(1);
+        glfwGetCursorPos(getWindowId(), buffer, null);
+        double mouseX = buffer.get(0);
+        glfwGetCursorPos(getWindowId(), null, buffer);
+        double mouseY = buffer.get(0);
+        return mousePos = new Vector(mouseX, mouseY);
     }
 
     private void calculateFPSTPS(StopWatch stopWatch) {
@@ -466,12 +479,7 @@ public class Window {
     }
 
     public Vector getMousePos() {
-        DoubleBuffer buffer = BufferUtils.createDoubleBuffer(1);
-        glfwGetCursorPos(getWindowId(), buffer, null);
-        double mouseX = buffer.get(0);
-        glfwGetCursorPos(getWindowId(), null, buffer);
-        double mouseY = buffer.get(0);
-        return new Vector(mouseX, mouseY);
+        return mousePos;
     }
 
     public Vector getScaledMousePos() {
