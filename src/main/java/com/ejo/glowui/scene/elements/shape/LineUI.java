@@ -25,7 +25,7 @@ public class LineUI extends ElementUI implements IShape {
     }
 
     public LineUI(Vector pos, Angle angle, double length, ColorE color, Type type, double width) {
-        this(pos,pos.getAdded(angle.getDirectionVector().getMultiplied(length)),color,type,width);
+        this(pos,pos.getAdded(new Vector(angle.getDirectionVector().getX(),-angle.getDirectionVector().getY()).getMultiplied(length)),color,type,width);
     }
 
     @Override
