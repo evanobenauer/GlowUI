@@ -4,6 +4,7 @@ import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.shape.IShape;
 import com.ejo.glowlib.math.Vector;
 
+@Deprecated
 public class PhysicsDraggableUI extends PhysicsObjectUI {
 
     private boolean dragging;

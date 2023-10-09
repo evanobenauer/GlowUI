@@ -5,12 +5,12 @@ import com.ejo.glowui.scene.elements.ElementUI;
 import com.ejo.glowui.scene.elements.shape.*;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
-
 /**
  * The PhysicsObject class is a container for any shape. The class uses the data from the shape and calculates kinematics to move
  * said shape anywhere on the screen.
  * NOTE: Physics objects will NOT render properly in economy mode as they do not post empty events. You MUST use standard mode to render properly
  */
+@Deprecated
 public class PhysicsObjectUI extends ElementUI implements IShape {
 
     protected final IShape shape;
