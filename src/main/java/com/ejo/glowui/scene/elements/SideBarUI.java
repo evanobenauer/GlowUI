@@ -46,7 +46,6 @@ public class SideBarUI extends ElementUI {
         this.color = color;
 
         setPos(Vector.NULL);
-        //this.barPos = Vector.NULL;
 
         this.open = open;
 
