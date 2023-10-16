@@ -3,9 +3,10 @@ package com.ejo.glowui;
 import com.ejo.glowlib.misc.DoOnce;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.event.EventRegistry;
-import com.ejo.glowui.util.GLManager;
+import com.ejo.glowui.util.render.GLManager;
 import com.ejo.glowui.util.Key;
 import com.ejo.glowui.util.Mouse;
+import com.ejo.glowui.util.render.TextureUtil;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
@@ -18,9 +19,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
-import java.awt.image.ImageObserver;
 import java.io.File;
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
@@ -117,8 +116,14 @@ public class Window {
 
         // Load the window icon
         try {
+            int width = 512;
+            int height = 512;
             File imageFile = new File(getClass().getResource("/icon.png").toURI());
-            glfwSetWindowIcon(getWindowId(), getImageBuffer(imageFile, 512,512));
+            GLFWImage glfwImage = GLFWImage.malloc();
+            GLFWImage.Buffer glfwImageBuffer = GLFWImage.malloc(1);
+            glfwImage.set(width,height,TextureUtil.getImageBuffer(imageFile, width,height));
+            glfwImageBuffer.close();
+            glfwSetWindowIcon(getWindowId(), glfwImageBuffer.put(0,glfwImage));
         } catch (URISyntaxException | NullPointerException e) {
             e.printStackTrace();
         }
@@ -350,30 +355,6 @@ public class Window {
             if (Key.KEY_EQUALS.isKeyDown()) setUIScale(getUIScale() + .1);
             if (Key.KEY_MINUS.isKeyDown()) setUIScale(Math.max(getUIScale() - .1,.1));
         }
-    }
-
-
-    public static GLFWImage.Buffer getImageBuffer(File imageFile, int width, int height) {
-        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
-        Graphics2D graphics = img.createGraphics();
-        try {
-            graphics.scale((double) img.getWidth() / ImageIO.read(imageFile).getWidth(),(double) img.getHeight() / ImageIO.read(imageFile).getHeight());
-            graphics.drawImage(ImageIO.read(imageFile), 0, 0, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        DataBuffer dataBuffer = img.getRaster().createWritableChild(0, 0, img.getWidth(), img.getHeight(), 0, 0, new int[]{2, 1, 0}).getDataBuffer();
-        int[] imageData = ((DataBufferInt) dataBuffer).getData();
-        ByteBuffer buffer = BufferUtils.createByteBuffer(imageData.length * 16);
-        for (int pixel : imageData) buffer.putInt(pixel);
-        buffer.flip();
-
-        GLFWImage glfwImage = GLFWImage.malloc();
-        GLFWImage.Buffer glfwImageBuffer = GLFWImage.malloc(1);
-        glfwImage.set(width,height,buffer);
-        glfwImageBuffer.close();
-        return glfwImageBuffer.put(0,glfwImage);
     }
 
 

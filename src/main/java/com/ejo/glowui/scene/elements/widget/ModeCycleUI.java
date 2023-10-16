@@ -2,11 +2,9 @@ package com.ejo.glowui.scene.elements.widget;
 
 import com.ejo.glowlib.setting.Container;
 import com.ejo.glowui.scene.Scene;
-import com.ejo.glowui.scene.elements.TextUI;
-import com.ejo.glowui.scene.elements.shape.RectangleUI;
-import com.ejo.glowui.util.DrawUtil;
+import com.ejo.glowui.util.Util;
 import com.ejo.glowui.util.Mouse;
-import com.ejo.glowui.util.QuickDraw;
+import com.ejo.glowui.util.render.QuickDraw;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.util.NumberUtil;
@@ -50,7 +48,7 @@ public class ModeCycleUI<T> extends WidgetUI {
     @Override
     protected void drawWidget(Scene scene, Vector mousePos) {
         //Draw Background
-        QuickDraw.drawRect(getPos(),getSize(),DrawUtil.WIDGET_BACKGROUND);
+        QuickDraw.drawRect(getPos(),getSize(), Util.WIDGET_BACKGROUND);
 
         double border = 4;//getSize().getY()/5;
 

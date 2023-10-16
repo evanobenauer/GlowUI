@@ -1,4 +1,4 @@
-package com.ejo.glowui.util;
+package com.ejo.glowui.util.render;
 
 import com.ejo.glowui.Window;
 import com.ejo.glowui.scene.Scene;
@@ -7,6 +7,7 @@ import com.ejo.glowui.scene.elements.shape.PolygonUI;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
+import com.ejo.glowui.util.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -52,7 +53,7 @@ public class QuickDraw {
 
     public static void drawFPSTPS(Scene scene, Vector pos, int size, boolean label, boolean showMax) {
         Window window = scene.getWindow();
-        QuickDraw.drawText((label ? "FPS: " : "") + window.getFPS() + (showMax ? " (" + window.getMaxFPS() + (window.getVSync() ? "V" : "") + (window.isEconomic() ? "E" : "") + ")" : ""),Fonts.getDefaultFont(size),pos,ColorE.WHITE);
+        QuickDraw.drawText((label ? "FPS: " : "") + window.getFPS() + (showMax ? " (" + window.getMaxFPS() + (window.getVSync() ? "V" : "") + (window.isEconomic() ? "E" : "") + ")" : ""), Fonts.getDefaultFont(size),pos,ColorE.WHITE);
         QuickDraw.drawText((label ? "TPS: " : "") + window.getTPS() + (showMax ? " (" + window.getMaxTPS() + ")" : ""),Fonts.getDefaultFont(size),pos.getAdded(0,size + size/5),ColorE.WHITE);
     }
 }

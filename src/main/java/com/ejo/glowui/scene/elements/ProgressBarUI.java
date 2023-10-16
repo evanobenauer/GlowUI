@@ -1,12 +1,10 @@
 package com.ejo.glowui.scene.elements;
 
-import com.ejo.glowlib.math.VectorMod;
 import com.ejo.glowlib.setting.Container;
 import com.ejo.glowui.scene.Scene;
-import com.ejo.glowui.scene.elements.shape.RectangleUI;
-import com.ejo.glowui.util.DrawUtil;
-import com.ejo.glowui.util.Fonts;
-import com.ejo.glowui.util.QuickDraw;
+import com.ejo.glowui.util.Util;
+import com.ejo.glowui.util.render.Fonts;
+import com.ejo.glowui.util.render.QuickDraw;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.util.NumberUtil;
@@ -41,7 +39,7 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
     @Override
     protected void drawElement(Scene scene, Vector mousePos) {
         //Draw Background
-        QuickDraw.drawRect(getPos(),getSize(),DrawUtil.WIDGET_BACKGROUND);
+        QuickDraw.drawRect(getPos(),getSize(), Util.WIDGET_BACKGROUND);
 
         int border = 4;//(int)getSize().getY()/5;
 

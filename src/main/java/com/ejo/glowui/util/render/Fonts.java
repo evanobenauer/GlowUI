@@ -1,4 +1,4 @@
-package com.ejo.glowui.util;
+package com.ejo.glowui.util.render;
 
 import java.awt.*;
 

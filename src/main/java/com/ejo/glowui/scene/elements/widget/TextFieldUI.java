@@ -2,10 +2,10 @@ package com.ejo.glowui.scene.elements.widget;
 
 import com.ejo.glowlib.setting.Container;
 import com.ejo.glowui.scene.Scene;
-import com.ejo.glowui.util.DrawUtil;
-import com.ejo.glowui.util.Fonts;
+import com.ejo.glowui.util.Util;
+import com.ejo.glowui.util.render.Fonts;
 import com.ejo.glowui.util.Key;
-import com.ejo.glowui.util.QuickDraw;
+import com.ejo.glowui.util.render.QuickDraw;
 import org.lwjgl.glfw.GLFW;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
@@ -54,7 +54,7 @@ public class TextFieldUI extends WidgetUI {
     @Override
     protected void drawWidget(Scene scene, Vector mousePos) {
         //Draw Background
-        QuickDraw.drawRect(getPos(),getSize(),DrawUtil.WIDGET_BACKGROUND);
+        QuickDraw.drawRect(getPos(),getSize(), Util.WIDGET_BACKGROUND);
 
         double border = 4;//getSize().getY()/5;
 
@@ -97,7 +97,7 @@ public class TextFieldUI extends WidgetUI {
         //Do Cursor Blink
         cursorTimer.start();
         if (cursorTimer.hasTimePassedS(.5) && isTyping()) {
-            DrawUtil.forceRenderFrame();
+            Util.forceRenderFrame();
             blinked = !blinked;
             cursorTimer.restart();
         }

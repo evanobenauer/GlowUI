@@ -7,8 +7,8 @@ import com.ejo.glowui.scene.elements.ElementUI;
 import com.ejo.glowui.Window;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowui.scene.elements.TextUI;
-import com.ejo.glowui.util.Fonts;
-import com.ejo.glowui.util.QuickDraw;
+import com.ejo.glowui.util.render.Fonts;
+import com.ejo.glowui.util.render.QuickDraw;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;

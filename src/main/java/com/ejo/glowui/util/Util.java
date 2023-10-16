@@ -4,7 +4,7 @@ import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.util.NumberUtil;
 import org.lwjgl.glfw.GLFW;
 
-public class DrawUtil {
+public class Util {
 
     public static ColorE GLOW_BLUE = new ColorE(0,125,200);
     public static ColorE WIDGET_BACKGROUND = new ColorE(50,50,50,200);

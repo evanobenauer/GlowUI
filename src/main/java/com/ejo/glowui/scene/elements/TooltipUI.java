@@ -3,8 +3,8 @@ package com.ejo.glowui.scene.elements;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowui.scene.Scene;
-import com.ejo.glowui.util.GLManager;
-import com.ejo.glowui.util.QuickDraw;
+import com.ejo.glowui.util.render.GLManager;
+import com.ejo.glowui.util.render.QuickDraw;
 
 import java.util.ArrayList;
 import java.util.Arrays;

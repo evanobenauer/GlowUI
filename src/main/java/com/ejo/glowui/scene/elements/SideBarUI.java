@@ -7,10 +7,10 @@ import com.ejo.glowlib.time.StopWatch;
 import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.widget.ButtonUI;
-import com.ejo.glowui.util.DrawUtil;
-import com.ejo.glowui.util.Fonts;
-import com.ejo.glowui.util.GLManager;
-import com.ejo.glowui.util.QuickDraw;
+import com.ejo.glowui.util.Util;
+import com.ejo.glowui.util.render.Fonts;
+import com.ejo.glowui.util.render.GLManager;
+import com.ejo.glowui.util.render.QuickDraw;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +33,7 @@ public class SideBarUI extends ElementUI {
     public EventAction openAnimation = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
         openWatch.start();
         if (openWatch.hasTimePassedMS(1)) {
-            openPercent = (int) DrawUtil.getNextAnimationValue(isOpen(), openPercent, 0, 100, 2f);
+            openPercent = (int) Util.getNextAnimationValue(isOpen(), openPercent, 0, 100, 2f);
             openWatch.restart();
         }
     });

@@ -1,12 +1,11 @@
 package com.ejo.glowui.scene.elements.widget;
 
 import com.ejo.glowui.scene.Scene;
-import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowui.util.Mouse;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.util.NumberUtil;
-import com.ejo.glowui.util.QuickDraw;
+import com.ejo.glowui.util.render.QuickDraw;
 
 public class ButtonUI extends WidgetUI {
 
