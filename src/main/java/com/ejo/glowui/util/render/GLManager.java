@@ -25,4 +25,8 @@ public class GLManager {
         GL11.glPixelZoom((float) val, (float)-val);
     }
 
+    public static void color(double red, double green, double blue, double alpha) {
+        GL11.glColor4d(red/255f,green/255f,blue/255f,alpha/255f);
+    }
+
 }
