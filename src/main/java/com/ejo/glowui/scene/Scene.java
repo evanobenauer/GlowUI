@@ -40,9 +40,8 @@ public abstract class Scene {
      */
     public void draw() {
         try {
-            drawElementsList = getElements(); //Stops queued elements from causing a concurrent modification exception
-        } catch (ConcurrentModificationException e) {
-            e.printStackTrace();
+            drawElementsList = new ArrayList<>(getElements()); //Stops queued elements from causing a concurrent modification exception
+        } catch (ConcurrentModificationException ignored) {
         }
         try {
             for (ElementUI element : drawElementsList) {
