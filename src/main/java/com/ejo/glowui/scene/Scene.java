@@ -64,10 +64,10 @@ public abstract class Scene {
                 element.tick(this, getWindow().getScaledMousePos());
             }
             if (getAddElementQueue().isEmpty() && getRemoveElementQueue().isEmpty()) return;
-            addElements(getAddElementQueue().toArray(new ElementUI[0])); //Adds all queued elements to the list after all ticks
             removeElements(getRemoveElementQueue().toArray(new ElementUI[0])); //Removes all queued elements to the list after all ticks
-            getAddElementQueue().clear();
+            addElements(getAddElementQueue().toArray(new ElementUI[0])); //Adds all queued elements to the list after all ticks
             getRemoveElementQueue().clear();
+            getAddElementQueue().clear();
         } catch (ConcurrentModificationException e) {
             e.printStackTrace();
         }
