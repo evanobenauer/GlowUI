@@ -250,7 +250,11 @@ public class Window {
                 GLFW.glfwPollEvents();
             }
         } else {
-            GLFW.glfwPollEvents();
+            try {
+                GLFW.glfwPollEvents();
+            } catch (NullPointerException e) {
+                GLFW.glfwWaitEvents();
+            }
         }
     }
 

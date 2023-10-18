@@ -20,7 +20,7 @@ import java.util.ConcurrentModificationException;
 public abstract class Scene {
 
     private final ArrayList<ElementUI> elementList = new ArrayList<>();
-    private ArrayList<ElementUI> prevElementList = new ArrayList<>();
+    private ArrayList<ElementUI> drawElementsList = new ArrayList<>();
 
     private final ArrayList<ElementUI> addElementQueue = new ArrayList<>();
     private final ArrayList<ElementUI> deleteElementQueue = new ArrayList<>();
@@ -40,18 +40,18 @@ public abstract class Scene {
      */
     public void draw() {
         try {
-            for (ElementUI element : prevElementList) {
+            drawElementsList = getElements(); //Stops queued elements from causing a concurrent modification exception
+        } catch (ConcurrentModificationException e) {
+            e.printStackTrace();
+        }
+        try {
+            for (ElementUI element : drawElementsList) {
                 element.draw(this, getWindow().getScaledMousePos());
             }
         } catch (ConcurrentModificationException e) {
             e.printStackTrace();
         }
         drawDebugText();
-        try {
-            prevElementList = getElements(); //Stops queued elements from causing a concurrent modification exception
-        } catch (ConcurrentModificationException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
