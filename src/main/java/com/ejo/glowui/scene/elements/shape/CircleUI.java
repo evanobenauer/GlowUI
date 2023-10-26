@@ -31,7 +31,7 @@ public class CircleUI extends ElementUI implements IShape {
         GL11.glDisable(GL11.GL_LINE_STIPPLE);
         GL11.glBegin(isOutlined() ? GL11.GL_LINE_LOOP : GL11.GL_POLYGON);
         double radianIncrement = 2*Math.PI / getType().getVertices();
-        for (int i = 1; i <= getType().getVertices(); i++) {
+        for (int i = 0; i <= getType().getVertices(); i++) {
             Vector vert = new Vector(Math.cos(radianIncrement*i),Math.sin(radianIncrement*i)).getMultiplied(getRadius());
             GL11.glVertex2f((float) getPos().getX() + (float) vert.getX(), (float) getPos().getY() + (float) vert.getY());
         }
