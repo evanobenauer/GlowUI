@@ -10,10 +10,7 @@ import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.util.NumberUtil;
 import com.ejo.glowui.util.render.QuickDraw;
 
-public class SliderUI<T extends Number> extends WidgetUI {
-
-    private T value;
-    private Container<T> container;
+public class SliderUI<T extends Number> extends SettingWidget<T> {
 
     private T min;
     private T max;
@@ -26,21 +23,17 @@ public class SliderUI<T extends Number> extends WidgetUI {
     private boolean sliding;
 
     public SliderUI(String title, Vector pos, Vector size, ColorE color, Container<T> container, T min, T max, T step, Type type, boolean displayValue) {
-        super(title,pos,size,true,true,null);
-        this.container = container;
+        super(title,pos,size,true,true,container);
         this.type = type;
 
         this.color = color;
 
-        this.value = container.get();
         this.min = min;
         this.max = max;
         this.step = step;
 
         this.displayValue = displayValue;
         this.sliding = false;
-
-        setAction(() -> getContainer().set(value));
     }
 
     public SliderUI(Vector pos, Vector size, ColorE color, Container<T> container, T min, T max, T step, Type type, boolean displayValue) {
@@ -89,8 +82,7 @@ public class SliderUI<T extends Number> extends WidgetUI {
      */
     @Override
     protected void tickWidget(Scene scene, Vector mousePos) {
-        this.value = getContainer().get(); //Consistently sync the value of the container and the value of the widget
-
+        super.tickWidget(scene,mousePos);
         if (sliding) { //Updates the value of the setting based off of the current width of the slider
             double valueRange = getMax().doubleValue() - getMin().doubleValue(); //TODO: Fix doubleValue as it breaks float settings
             double sliderWidth = mousePos.getX() - getPos().getX();
@@ -150,10 +142,6 @@ public class SliderUI<T extends Number> extends WidgetUI {
         this.min = min;
     }
 
-    public void setContainer(Container<T> container) {
-        this.container = container;
-    }
-
 
     public ColorE getColor() {
         return color;
@@ -177,10 +165,6 @@ public class SliderUI<T extends Number> extends WidgetUI {
 
     public T getMin() {
         return min;
-    }
-
-    public Container<T> getContainer() {
-        return container;
     }
 
 

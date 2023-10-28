@@ -12,10 +12,7 @@ import com.ejo.glowlib.util.NumberUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ModeCycleUI<T> extends WidgetUI {
-
-    private T mode;
-    private Container<T> container;
+public class ModeCycleUI<T> extends SettingWidget<T> {
 
     private final ArrayList<T> modes;
 
@@ -27,17 +24,12 @@ public class ModeCycleUI<T> extends WidgetUI {
 
     @SafeVarargs
     public ModeCycleUI(String title, Vector pos, Vector size, ColorE color, Container<T> container, T... modes) {
-        super(title,pos, size, true, true,null);
-        this.container = container;
+        super(title,pos, size, true, true,container);
         this.modes = new ArrayList<>(Arrays.asList(modes));
 
         this.baseColor = color;
         this.colorR = color;
         this.colorL = color;
-
-        this.mode = container.get();
-
-        setAction(() -> getContainer().set(mode));
     }
 
     @SafeVarargs
@@ -58,15 +50,10 @@ public class ModeCycleUI<T> extends WidgetUI {
         QuickDraw.drawArrow(getPos().getAdded(borderArrow,borderArrow).getAdded(getSize().getX() - getSize().getY() - borderArrow,0),getColorR(),getSize().getY()-2*borderArrow,false);
 
         //Draw Text
-        String text = (hasTitle() ? getTitle() + ": " : "") + mode;
+        String text = (hasTitle() ? getTitle() + ": " : "") + value;
         int fontSize = (int)getSize().getY();
         setUpDisplayText(text,border,fontSize);
         getDisplayText().drawCentered(scene, mousePos, getSize().getAdded(-border*2,-border*2));
-    }
-
-    @Override
-    protected void tickWidget(Scene scene, Vector mousePos) {
-        this.mode = getContainer().get(); //Consistently sync the value of the container and the value of the widget
     }
 
     @Override
@@ -83,17 +70,17 @@ public class ModeCycleUI<T> extends WidgetUI {
                 int endIndex = isRightButton ? getModes().size() - 1 : 0;
                 int otherEndIndex = !isRightButton ? getModes().size() - 1 : 0;
 
-                arrayNumber = getModes().indexOf(mode);
+                arrayNumber = getModes().indexOf(value);
                 arrayNumber += addNum;
                 if (arrayNumber - addNum != endIndex) {
                     try {
-                        mode = getModes().get(arrayNumber);
+                        value = getModes().get(arrayNumber);
                     } catch (IndexOutOfBoundsException e) {
-                        mode = getModes().get(0);
+                        value = getModes().get(0);
                     }
                     getAction().run();
                 } else { //If the value IS equal to the end index
-                    mode = getModes().get(otherEndIndex);
+                    value = getModes().get(otherEndIndex);
                     arrayNumber = otherEndIndex;
                     getAction().run();
                 }
@@ -128,10 +115,6 @@ public class ModeCycleUI<T> extends WidgetUI {
         this.colorL = colorL;
     }
 
-    public void setContainer(Container<T> container) {
-        this.container = container;
-    }
-
 
     public ColorE getColor() {
         return baseColor;
@@ -143,10 +126,6 @@ public class ModeCycleUI<T> extends WidgetUI {
 
     private ColorE getColorL() {
         return colorL;
-    }
-
-    public Container<T> getContainer() {
-        return container;
     }
 
 

@@ -73,8 +73,8 @@ public class LineUI extends ElementUI implements IShape {
     }
 
     public Vector setCenter(Vector pos) {
-        Vector pos1DirVec = getPos1().getAdded(getCenter().getMultiplied(-1));
-        Vector pos2DirVec = getPos2().getAdded(getCenter().getMultiplied(-1));
+        Vector pos1DirVec = getPos1().getSubtracted(getCenter());
+        Vector pos2DirVec = getPos2().getSubtracted(getCenter());
         setPos1(pos1DirVec.getAdded(pos));
         setPos2(pos2DirVec.getAdded(pos));
         return getCenter();

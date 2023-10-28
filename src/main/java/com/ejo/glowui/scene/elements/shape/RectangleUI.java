@@ -37,12 +37,6 @@ public class RectangleUI extends PolygonUI implements IShape {
         return mouseOver = mouseOverX && mouseOverY;
     }
 
-
-    @Override
-    public Vector setCenter(Vector pos) {
-        return setPos(pos.getAdded(getSize().getMultiplied(-.5f)));
-    }
-
     public void setSize(Vector size) {
         this.size = size;
     }

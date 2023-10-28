@@ -53,7 +53,7 @@ public class RegularPolygonUI extends PolygonUI implements IShape {
 
     @Override
     public boolean updateMouseOver(Vector mousePos) {
-        return mousePos.getAdded(getCenter().getMultiplied(-1)).getMagnitude() < getRadius();
+        return mousePos.getSubtracted(getCenter()).getMagnitude() < getRadius();
     }
 
     @Override

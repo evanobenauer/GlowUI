@@ -40,7 +40,6 @@ public class ButtonUI extends WidgetUI {
 
     @Override
     protected void tickWidget(Scene scene, Vector mousePos) {
-
     }
 
     @Override

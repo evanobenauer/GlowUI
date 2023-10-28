@@ -11,9 +11,7 @@ import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.time.StopWatch;
 
-public class ToggleUI extends WidgetUI {
-
-    private Container<Boolean> container;
+public class ToggleUI extends SettingWidget<Boolean> {
 
     private ColorE color;
 
@@ -29,11 +27,9 @@ public class ToggleUI extends WidgetUI {
     });
 
     public ToggleUI(String title, Vector pos, Vector size, ColorE color, Container<Boolean> container) {
-        super(title, pos, size, true, true,null);
-        this.container = container;
+        super(title, pos, size, true, true,container);
         this.color = color;
 
-        setAction(() -> getContainer().set(!getContainer().get()));
         toggleAnimation.subscribe();
     }
 
@@ -47,16 +43,12 @@ public class ToggleUI extends WidgetUI {
         QuickDraw.drawRect(getPos(),getSize(), Util.WIDGET_BACKGROUND);
         QuickDraw.drawRect(getPos(), getSize(), new ColorE(getColor().getRed(), getColor().getGreen(), getColor().getBlue(), (int) toggleFade));
 
-        double border = 4;//getSize().getY()/5;
+        double border = 4;
 
         //Draw Text
         int size = (int)getSize().getY();
         setUpDisplayText(getTitle(),border,size);
         getDisplayText().drawCentered(scene, mousePos, getSize().getAdded(-border*2,-border*2).getAdded(-getSize().getX()/50,0));
-    }
-
-    @Override
-    protected void tickWidget(Scene scene, Vector mousePos) {
     }
 
     @Override
@@ -67,6 +59,7 @@ public class ToggleUI extends WidgetUI {
     public void onMouseClick(Scene scene, int button, int action, int mods, Vector mousePos) {
         if (isMouseOver()) {
             if (button == Mouse.BUTTON_LEFT.getId() && action == Mouse.ACTION_RELEASE) {
+                this.value = !value;
                 getAction().run();
             }
         }
@@ -77,17 +70,10 @@ public class ToggleUI extends WidgetUI {
         this.color = color;
     }
 
-    public void setContainer(Container<Boolean> container) {
-        this.container = container;
-    }
-
 
     public ColorE getColor() {
         return color;
     }
 
-    public Container<Boolean> getContainer() {
-        return container;
-    }
 
 }

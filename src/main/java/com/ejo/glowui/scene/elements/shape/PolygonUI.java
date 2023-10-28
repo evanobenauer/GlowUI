@@ -40,14 +40,12 @@ public class PolygonUI extends ElementUI implements IShape {
 
     @Override
     public boolean updateMouseOver(Vector mousePos) {
-        //TODO find how to do this lol
-        return false;
+        return false; //TODO finish this
     }
 
 
     public Vector setCenter(Vector pos) {
-        //TODO figure this out too
-        return null;
+        return setPos(getPos().getSubtracted(getCenter()).getAdded(pos));
     }
 
     public void setOutlined(boolean outlined) {
@@ -64,20 +62,21 @@ public class PolygonUI extends ElementUI implements IShape {
     }
 
     public Vector getCenter() {
-        double minX = getVertices()[0].getX();
-        double maxX = getVertices()[0].getX();
+        int iMinX = 0;
+        int iMaxX = 0;
 
-        double minY = getVertices()[0].getY();
-        double maxY = getVertices()[0].getY();
-        
-        for (Vector vertex : getVertices()) {
-            if (vertex.getX() > maxX) maxX = vertex.getX();
-            if (vertex.getX() < minX) minX = vertex.getX();
-            if (vertex.getY() > maxY) maxY = vertex.getY();
-            if (vertex.getY() < minY) minY = vertex.getY();
+        int iMinY = 0;
+        int iMaxY = 0;
+
+        for (int i = 0; i < getVertices().length; i++) {
+            Vector vertex = getVertices()[i];
+            if (vertex.getX() > getVertices()[iMaxX].getX()) iMaxX = i;
+            if (vertex.getX() < getVertices()[iMinX].getX()) iMinX = i;
+            if (vertex.getY() > getVertices()[iMaxY].getY()) iMaxY = i;
+            if (vertex.getY() < getVertices()[iMinY].getY()) iMinY = i;
         }
 
-        return new Vector(maxX + minX,maxY + minY).getMultiplied(.5);
+        return new Vector(getVertices()[iMaxX].getX() + getVertices()[iMinX].getX(),getVertices()[iMaxY].getY() + getVertices()[iMinY].getY()).getMultiplied(.5).getAdded(getPos());
     }
 
     public boolean isOutlined() {
