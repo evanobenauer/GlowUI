@@ -118,28 +118,34 @@ public class SliderUI<T extends Number> extends SettingWidget<T> {
         }
     }
 
-    public void setColor(ColorE color) {
+    public SliderUI<T> setColor(ColorE color) {
         this.color = color;
+        return this;
     }
 
-    public void setValueDisplayed(boolean displayValue) {
+    public SliderUI<T> setValueDisplayed(boolean displayValue) {
         this.displayValue = displayValue;
+        return this;
     }
 
-    public void setType(Type type) {
+    public SliderUI<T> setType(Type type) {
         this.type = type;
+        return this;
     }
 
-    public void setStep(T step) {
+    public SliderUI<T> setStep(T step) {
         this.step = step;
+        return this;
     }
 
-    public void setMax(T max) {
+    public SliderUI<T> setMax(T max) {
         this.max = max;
+        return this;
     }
 
-    public void setMin(T min) {
+    public SliderUI<T> setMin(T min) {
         this.min = min;
+        return this;
     }
 
 

@@ -44,16 +44,19 @@ public class PolygonUI extends ElementUI implements IShape {
     }
 
 
-    public Vector setCenter(Vector pos) {
-        return setPos(getPos().getSubtracted(getCenter()).getAdded(pos));
+    public PolygonUI setCenter(Vector pos) {
+        setPos(getPos().getSubtracted(getCenter()).getAdded(pos));
+        return this;
     }
 
-    public void setOutlined(boolean outlined) {
+    public PolygonUI setOutlined(boolean outlined) {
         this.outlined = outlined;
+        return this;
     }
 
-    public void setColor(ColorE color) {
+    public PolygonUI setColor(ColorE color) {
         this.color = color;
+        return this;
     }
 
 

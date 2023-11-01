@@ -362,80 +362,96 @@ public class Window {
     }
 
 
-    public void run() {
+    public Window run() {
         init();
         startMaintenanceLoop();
         startTickLoop();
         runRenderLoop();
+        return this;
     }
 
-    public void close() {
+    public Window close() {
         GLFW.glfwDestroyWindow(getWindowId());
         GLFW.glfwTerminate();
+        return this;
     }
 
 
-    public void setScene(Scene scene) {
+    public Window setScene(Scene scene) {
         scene.setWindow(this);
         this.scene = scene;
+        return this;
     }
 
-    public void setTitle(String title) {
+    public Window setTitle(String title) {
         glfwSetWindowTitle(getWindowId(), title);
         this.title = title;
+        return this;
     }
 
-    public void setPos(Vector pos) {
+    public Window setPos(Vector pos) {
         glfwSetWindowPos(getWindowId(), (int) pos.getX(), (int) pos.getY());
         this.pos = pos.getMod();
+        return this;
     }
 
-    public void setSize(Vector size) {
+    public Window setSize(Vector size) {
         if (!size.equals(getSize())) doOnResize.reset();
         glfwSetWindowSize(getWindowId(), (int) size.getX(), (int) size.getY());
         this.size = size.getMod();
+        return this;
     }
 
-    public void setVSync(boolean vSync) {
+    public Window setVSync(boolean vSync) {
         glfwSwapInterval(vSync ? 1 : 0);
         this.vSync = vSync;
+        return this;
     }
 
-    public void setAntiAliasing(int level) {
+    public Window setAntiAliasing(int level) {
         if (getAntiAliasing() > 0) GLFW.glfwWindowHint(GLFW_SAMPLES, level);
         this.antiAliasing = level;
+        return this;
     }
 
-    public void setUIScale(double uiScale) {
+    public Window setUIScale(double uiScale) {
         this.uiScale = uiScale;
+        return this;
     }
 
-    public void setOpen(boolean open) {
+    public Window setOpen(boolean open) {
         this.open = open;
+        return this;
     }
 
-    public void setDrawn(boolean drawn) {
+    public Window setDrawn(boolean drawn) {
         this.drawn = drawn;
+        return this;
     }
 
-    public void setTicking(boolean ticking) {
+    public Window setTicking(boolean ticking) {
         this.ticking = ticking;
+        return this;
     }
 
-    public void setEconomic(boolean economic) {
+    public Window setEconomic(boolean economic) {
         this.economic = economic;
+        return this;
     }
 
-    public void setDebug(boolean debug) {
+    public Window setDebug(boolean debug) {
         this.debug = debug;
+        return this;
     }
 
-    public void setMaxTPS(int maxTPS) {
+    public Window setMaxTPS(int maxTPS) {
         this.maxTPS = maxTPS;
+        return this;
     }
 
-    public void setMaxFPS(int maxFPS) {
+    public Window setMaxFPS(int maxFPS) {
         this.maxFPS = maxFPS;
+        return this;
     }
 
 

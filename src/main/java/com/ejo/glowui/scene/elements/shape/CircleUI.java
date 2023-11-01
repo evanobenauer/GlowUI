@@ -70,29 +70,34 @@ public class CircleUI extends ElementUI implements IShape {
 
 
     @Override
-    public Vector setCenter(Vector pos) {
-        return setPos(pos);
+    public CircleUI setCenter(Vector pos) {
+        return (CircleUI) setPos(pos);
     }
 
     @Override
-    public void setColor(ColorE color) {
+    public CircleUI setColor(ColorE color) {
         this.color = color;
+        return this;
     }
 
-    public void setOutlined(boolean outlined) {
+    public CircleUI setOutlined(boolean outlined) {
         this.outlined = outlined;
+        return this;
     }
 
-    public void setRadius(double radius) {
+    public CircleUI setRadius(double radius) {
         this.radius = radius;
+        return this;
     }
 
-    public void setRange(Angle range) {
+    public CircleUI setRange(Angle range) {
         this.range = range;
+        return this;
     }
 
-    public void setType(Type type) {
+    public CircleUI setType(Type type) {
         this.type = type;
+        return this;
     }
 
 

@@ -7,7 +7,7 @@ public interface IDrawable {
 
     void draw(Scene scene, Vector mousePos);
 
-    void setRendered(boolean shouldRender);
+    IDrawable setRendered(boolean shouldRender);
 
     boolean shouldRender();
 

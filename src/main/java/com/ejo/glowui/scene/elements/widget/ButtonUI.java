@@ -69,12 +69,14 @@ public class ButtonUI extends WidgetUI {
     }
 
 
-    public void setColor(ColorE color) {
+    public ButtonUI setColor(ColorE color) {
         this.color = color;
+        return this;
     }
 
-    public void setMouseButton(MouseButton mouseButton) {
+    public ButtonUI setMouseButton(MouseButton mouseButton) {
         this.mouseButton = mouseButton;
+        return this;
     }
 
 

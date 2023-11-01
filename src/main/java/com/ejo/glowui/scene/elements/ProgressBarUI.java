@@ -64,20 +64,24 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
         return mouseOver = mouseOverX && mouseOverY;
     }
 
-    public void setTitle(String title) {
+    public ProgressBarUI<T> setTitle(String title) {
         this.title = title;
+        return this;
     }
 
-    public void setSize(Vector size) {
+    public ProgressBarUI<T> setSize(Vector size) {
         this.size = size;
+        return this;
     }
 
-    public void setColor(ColorE color) {
+    public ProgressBarUI<T> setColor(ColorE color) {
         this.color = color;
+        return this;
     }
 
-    public void setContainer(Container<T> container) {
+    public ProgressBarUI<T> setContainer(Container<T> container) {
         this.container = container;
+        return this;
     }
 
 

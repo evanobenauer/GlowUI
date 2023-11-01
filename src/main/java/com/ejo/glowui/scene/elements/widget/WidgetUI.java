@@ -112,20 +112,26 @@ public abstract class WidgetUI extends ElementUI {
     }
 
 
-    public void removeTitle() {
-        setTitle("");
-    }
 
-    public void setTitle(String title) {
+
+    public WidgetUI setTitle(String title) {
         this.title = title;
+        return this;
     }
 
-    public void setSize(Vector size) {
+    public WidgetUI removeTitle() {
+        setTitle("");
+        return this;
+    }
+
+    public WidgetUI setSize(Vector size) {
         this.size = size;
+        return this;
     }
 
-    public void setAction(Runnable action) {
+    public WidgetUI setAction(Runnable action) {
         this.action = action;
+        return this;
     }
 
 

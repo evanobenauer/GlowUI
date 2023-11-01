@@ -1,12 +1,17 @@
-package com.ejo.glowui.scene.elements.dimensional;
+package com.ejo.glowui.scene.elements.prism;
 
 import com.ejo.glowlib.math.Angle;
+import com.ejo.glowlib.math.MathE;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
+import com.ejo.glowlib.util.NumberUtil;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.ElementUI;
 import com.ejo.glowui.scene.elements.shape.CircleUI;
-import com.ejo.glowui.scene.elements.shape.LineUI;
+import com.ejo.glowui.scene.elements.shape.PolygonUI;
+import com.ejo.glowui.util.render.Fonts;
+import com.ejo.glowui.util.render.GLManager;
+import com.ejo.glowui.util.render.QuickDraw;
 
 /**
  * This class is an attempt to try and make a 3D object using the UI system
@@ -16,27 +21,35 @@ public class Polygon3D extends ElementUI {
     protected final Vector[] originalVertices;
     private Vector[] vertices;
 
+    private final double cameraZ;
+    private Vector cameraPos;
+
     private Vector size;
     private Angle theta;
     private Angle phi;
 
-    public Polygon3D(Vector pos, Vector size, Angle theta, Angle phi, Vector[] vertices) {
+    public Polygon3D(Vector pos, Vector size, double cameraZ, Angle theta, Angle phi,Vector[] vertices) {
         super(pos, true, true);
         this.size = size;
         this.theta = theta;
         this.phi = phi;
+        this.cameraZ = cameraZ;
         this.vertices = vertices;
         this.originalVertices = vertices;
         updateRotation();
     }
 
+    //TODO: Add camera distance to define scale and vertex size w/ cameraZ
     @Override
     protected void drawElement(Scene scene, Vector mousePos) {
+        updateCameraPos(scene);
         updateRotation();
         //Draw Vertices
         for (int i = 0; i < getVertices().length; i++) {
             Vector vertex = getVertices()[i];
-            CircleUI circle = new CircleUI(getPos().getAdded(vertex),ColorE.BLUE,Math.min(10,vertex.getZ() / 10), CircleUI.Type.MEDIUM);
+            if (scene.getWindow().isDebug()) QuickDraw.drawText(String.valueOf(MathE.roundDouble(vertex.getAdded(getPos()).getZ(), 1)), Fonts.getDefaultFont(12),vertex.getAdded(getPos()),ColorE.WHITE);
+            Vector cameraDistance = getCameraPos().getSubtracted(vertex);
+            CircleUI circle = new CircleUI(getPos().getAdded(vertex),ColorE.BLUE, NumberUtil.getBoundValue(1/cameraDistance.getZ() * 2000,0,10).doubleValue(), CircleUI.Type.MEDIUM);
             circle.draw();
         }
     }
@@ -87,11 +100,48 @@ public class Polygon3D extends ElementUI {
         setVertices(vertices);
     }
 
+    private void updateCameraPos(Scene scene) {
+        this.cameraPos = new Vector(scene.getSize().getX(),scene.getSize().getY(),cameraZ);
+    }
+
+    public Polygon3D setCameraPos(Vector cameraPos) {
+        this.cameraPos = cameraPos;
+        return this;
+    }
+
+    public Polygon3D setCenter(Vector pos) {
+        setPos(getPos().getSubtracted(getCenter()).getAdded(pos));
+        return this;
+    }
+
+    public Polygon3D setSize(Vector size) {
+        this.size = size;
+        return this;
+    }
+
+    public Polygon3D setTheta(Angle theta) {
+        this.theta = theta;
+        return this;
+    }
+
+    public Polygon3D setPhi(Angle phi) {
+        this.phi = phi;
+        return this;
+    }
+
+    public Polygon3D setVertices(Vector[] vertices) {
+        this.vertices = vertices;
+        return this;
+    }
+
+
+    public Vector getCameraPos() {
+        return cameraPos;
+    }
 
     public Vector getCenter() {
         return getPos().getAdded(getSize().getMultiplied(.5f));
     }
-
 
     public Vector getSize() {
         return size;
@@ -109,20 +159,4 @@ public class Polygon3D extends ElementUI {
         return vertices;
     }
 
-
-    public void setSize(Vector size) {
-        this.size = size;
-    }
-
-    public void setTheta(Angle theta) {
-        this.theta = theta;
-    }
-
-    public void setPhi(Angle phi) {
-        this.phi = phi;
-    }
-
-    public void setVertices(Vector[] vertices) {
-        this.vertices = vertices;
-    }
 }

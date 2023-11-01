@@ -165,36 +165,42 @@ public abstract class Scene {
         y += 17;
     }
 
-    public void setWindow(Window window) {
+    public Scene setWindow(Window window) {
         this.window = window;
+        return this;
     }
 
-    public void setTitle(String title) {
+    public Scene setTitle(String title) {
         this.title = title;
+        return this;
     }
 
-    public void addElements(ElementUI... elements) {
+    public Scene addElements(ElementUI... elements) {
         for (ElementUI element : elements) {
             if (!getElements().contains(element)) getElements().add(element);
         }
+        return this;
     }
 
-    public void queueAddElements(ElementUI... elements) {
-        for (ElementUI element : elements) {
-            getAddElementQueue().add(element);
-        }
-    }
-
-    public void removeElements(ElementUI... elements) {
+    public Scene removeElements(ElementUI... elements) {
         for (ElementUI element : elements) {
             getElements().remove(element);
         }
+        return this;
     }
 
-    public void queueRemoveElements(ElementUI... elements) {
+    public Scene queueAddElements(ElementUI... elements) {
+        for (ElementUI element : elements) {
+            getAddElementQueue().add(element);
+        }
+        return this;
+    }
+
+    public Scene queueRemoveElements(ElementUI... elements) {
         for (ElementUI element : elements) {
             getRemoveElementQueue().add(element);
         }
+        return this;
     }
 
     public Vector getSize() {

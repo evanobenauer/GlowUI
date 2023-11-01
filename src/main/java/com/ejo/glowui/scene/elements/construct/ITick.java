@@ -7,7 +7,7 @@ public interface ITick {
 
     void tick(Scene scene, Vector mousePos);
 
-    void setTicking(boolean shouldTick);
+    ITick setTicking(boolean shouldTick);
 
     boolean shouldTick();
 

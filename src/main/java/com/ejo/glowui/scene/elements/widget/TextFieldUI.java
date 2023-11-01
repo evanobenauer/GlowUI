@@ -200,24 +200,29 @@ public class TextFieldUI extends SettingWidget<String> {
         else return GLFW.glfwGetKeyName(key, -1).toUpperCase();
     }
 
-    public void setColor(ColorE color) {
+    public TextFieldUI setColor(ColorE color) {
         this.color = color;
+        return this;
     }
 
-    public void setHint(String hint) {
+    public TextFieldUI setHint(String hint) {
         this.hint = hint;
+        return this;
     }
 
-    public void setTyping(boolean typing) {
+    public TextFieldUI setTyping(boolean typing) {
         this.typing = typing;
+        return this;
     }
 
-    public void setNumbersOnly(boolean numbersOnly) {
+    public TextFieldUI setNumbersOnly(boolean numbersOnly) {
         this.numbersOnly = numbersOnly;
+        return this;
     }
 
-    public void setCharLimit(int charLimit) {
+    public TextFieldUI setCharLimit(int charLimit) {
         this.charLimit = charLimit;
+        return this;
     }
 
 

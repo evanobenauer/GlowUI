@@ -93,18 +93,6 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
     public void onMouseScroll(Scene scene, int scroll, Vector mousePos) {
     }
 
-
-    /**
-     * Stops the element from ticking and un-renders the element. This is useful for "removing" elements with an interaction from another element to avoid
-     * a concurrent modification exception
-     * @param disabled
-     */
-    @Deprecated
-    public void disable(boolean disabled) {
-        setRendered(!disabled);
-        setTicking(!disabled);
-    }
-
     /**
      * This method can set the element to be enabled or disabled. Disabling an element is useful for "removing" elements with an interaction
      * from another elements while avoiding a concurrent modification exception
@@ -117,16 +105,19 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
 
     public abstract boolean updateMouseOver(Vector mousePos);
 
-    public void setRendered(boolean shouldRender) {
+    public ElementUI setRendered(boolean shouldRender) {
         this.rendered = shouldRender;
+        return this;
     }
 
-    public void setTicking(boolean ticking) {
+    public ElementUI setTicking(boolean ticking) {
         this.ticking = ticking;
+        return this;
     }
 
-    public Vector setPos(Vector pos) {
-        return this.pos = pos;
+    public ElementUI setPos(Vector pos) {
+        this.pos = pos;
+        return this;
     }
 
     public boolean isMouseOver() {

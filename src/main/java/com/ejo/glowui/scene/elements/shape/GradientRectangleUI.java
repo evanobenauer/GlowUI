@@ -41,16 +41,19 @@ public class GradientRectangleUI extends RectangleUI {
         GL11.glColor4f(1, 1, 1, 1);
     }
 
-    public void setColor1(ColorE color1) {
+    public GradientRectangleUI setColor1(ColorE color1) {
         this.color1 = color1;
+        return this;
     }
 
-    public void setColor2(ColorE color2) {
+    public GradientRectangleUI setColor2(ColorE color2) {
         this.color2 = color2;
+        return this;
     }
 
-    public void setType(Type type) {
+    public GradientRectangleUI setType(Type type) {
         this.type = type;
+        return this;
     }
 
     public ColorE getColor1() {

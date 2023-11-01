@@ -7,9 +7,9 @@ import com.ejo.glowlib.misc.ColorE;
 
 public interface IShape extends IComponent, IDrawable {
 
-    Vector setCenter(Vector pos);
+    IShape setCenter(Vector pos);
 
-    void setColor(ColorE color);
+    IShape setColor(ColorE color);
 
     Vector getCenter();
 

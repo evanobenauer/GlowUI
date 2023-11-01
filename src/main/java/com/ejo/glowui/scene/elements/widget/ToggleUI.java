@@ -66,8 +66,9 @@ public class ToggleUI extends SettingWidget<Boolean> {
     }
 
 
-    public void setColor(ColorE color) {
+    public ToggleUI setColor(ColorE color) {
         this.color = color;
+        return this;
     }
 
 

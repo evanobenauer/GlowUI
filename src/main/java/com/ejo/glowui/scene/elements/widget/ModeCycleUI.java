@@ -103,16 +103,19 @@ public class ModeCycleUI<T> extends SettingWidget<T> {
     }
 
 
-    public void setColor(ColorE baseColor) {
+    public ModeCycleUI<T> setColor(ColorE baseColor) {
         this.baseColor = baseColor;
+        return this;
     }
 
-    private void setColorR(ColorE colorR) {
+    private ModeCycleUI<T> setColorR(ColorE colorR) {
         this.colorR = colorR;
+        return this;
     }
 
-    private void setColorL(ColorE colorL) {
+    private ModeCycleUI<T> setColorL(ColorE colorL) {
         this.colorL = colorL;
+        return this;
     }
 
 

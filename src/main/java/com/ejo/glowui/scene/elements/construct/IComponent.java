@@ -4,7 +4,7 @@ import com.ejo.glowlib.math.Vector;
 
 public interface IComponent {
 
-    Vector setPos(Vector pos);
+    IComponent setPos(Vector pos);
 
     Vector getPos();
 

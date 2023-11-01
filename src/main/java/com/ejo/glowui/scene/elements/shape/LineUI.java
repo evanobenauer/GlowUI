@@ -64,32 +64,36 @@ public class LineUI extends ElementUI implements IShape {
     }
 
 
-    public void setPos1(Vector point1) {
-        setPos(point1);
+    public LineUI setPos1(Vector point1) {
+        return (LineUI) setPos(point1);
     }
 
-    public void setPos2(Vector point2) {
+    public LineUI setPos2(Vector point2) {
         this.pos2 = point2;
+        return this;
     }
 
-    public Vector setCenter(Vector pos) {
+    public LineUI setCenter(Vector pos) {
         Vector pos1DirVec = getPos1().getSubtracted(getCenter());
         Vector pos2DirVec = getPos2().getSubtracted(getCenter());
         setPos1(pos1DirVec.getAdded(pos));
         setPos2(pos2DirVec.getAdded(pos));
-        return getCenter();
+        return this;
     }
 
-    public void setWidth(double width) {
+    public LineUI setWidth(double width) {
         this.width = width;
+        return this;
     }
 
-    public void setType(Type type) {
+    public LineUI setType(Type type) {
         this.type = type;
+        return this;
     }
 
-    public void setColor(ColorE color) {
+    public LineUI setColor(ColorE color) {
         this.colorE = color;
+        return this;
     }
 
 

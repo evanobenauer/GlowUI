@@ -21,8 +21,9 @@ public abstract class SettingWidget<T> extends WidgetUI {
     }
 
 
-    public void setContainer(Container<T> container) {
+    public SettingWidget<T> setContainer(Container<T> container) {
         this.container = container;
+        return this;
     }
 
     public Container<T> getContainer() {

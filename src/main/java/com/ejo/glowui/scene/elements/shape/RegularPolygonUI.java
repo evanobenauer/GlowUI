@@ -57,20 +57,23 @@ public class RegularPolygonUI extends PolygonUI implements IShape {
     }
 
     @Override
-    public Vector setCenter(Vector pos) {
-        return setPos(pos);
+    public RegularPolygonUI setCenter(Vector pos) {
+        return (RegularPolygonUI) setPos(pos);
     }
 
-    public void setRadius(double radius) {
+    public RegularPolygonUI setRadius(double radius) {
         this.radius = radius;
+        return this;
     }
 
-    public void setVertexCount(int vertexCount) {
+    public RegularPolygonUI setVertexCount(int vertexCount) {
         this.vertexCount = vertexCount;
+        return this;
     }
 
-    public void setRotation(Angle rotation) {
+    public RegularPolygonUI setRotation(Angle rotation) {
         this.rotation = rotation;
+        return this;
     }
 
 

@@ -140,6 +140,26 @@ public class SideBarUI extends ElementUI {
         }
     }
 
+    @Override
+    public boolean updateMouseOver(Vector mousePos) {
+        Vector screenSize = Vector.NULL; //TODO: Incomplete. Get the screen size
+        switch (getType()) {
+            case TOP,BOTTOM -> {
+                boolean mouseOverX = mousePos.getX() >= getPos().getX() && mousePos.getX() <= getPos().getX() + screenSize.getX();
+                boolean mouseOverY = mousePos.getY() >= getPos().getY() && mousePos.getY() <= getPos().getY() + getWidth();
+                return mouseOver = mouseOverX && mouseOverY;
+            }
+            case LEFT,RIGHT -> {
+                boolean mouseOverX = mousePos.getX() >= getPos().getX() && mousePos.getX() <= getPos().getX() + getWidth();
+                boolean mouseOverY = mousePos.getY() >= getPos().getY() && mousePos.getY() <= getPos().getY() + screenSize.getY();
+                return mouseOver = mouseOverX && mouseOverY;
+            }
+            default -> {
+                return false;
+            }
+        }
+    }
+
     public void updateButton(Scene scene) {
         int size1 = 25;
         int size2 = 120;
@@ -163,45 +183,30 @@ public class SideBarUI extends ElementUI {
         }
     }
 
-    @Override
-    public boolean updateMouseOver(Vector mousePos) {
-        Vector screenSize = Vector.NULL; //TODO: Incomplete. Get the screen size
-        switch (getType()) {
-            case TOP,BOTTOM -> {
-                boolean mouseOverX = mousePos.getX() >= getPos().getX() && mousePos.getX() <= getPos().getX() + screenSize.getX();
-                boolean mouseOverY = mousePos.getY() >= getPos().getY() && mousePos.getY() <= getPos().getY() + getWidth();
-                return mouseOver = mouseOverX && mouseOverY;
-            }
-            case LEFT,RIGHT -> {
-                boolean mouseOverX = mousePos.getX() >= getPos().getX() && mousePos.getX() <= getPos().getX() + getWidth();
-                boolean mouseOverY = mousePos.getY() >= getPos().getY() && mousePos.getY() <= getPos().getY() + screenSize.getY();
-                return mouseOver = mouseOverX && mouseOverY;
-            }
-            default -> {
-                return false;
-            }
-        }
-    }
 
-
-    public void setTitle(String title) {
+    public SideBarUI setTitle(String title) {
         this.title = title;
+        return this;
     }
 
-    public void setType(Type type) {
+    public SideBarUI setType(Type type) {
         this.type = type;
+        return this;
     }
 
-    public void setWidth(double width) {
+    public SideBarUI setWidth(double width) {
         this.width = width;
+        return this;
     }
 
-    public void setOpen(boolean open) {
+    public SideBarUI setOpen(boolean open) {
         this.open = open;
+        return this;
     }
 
-    public void setColor(ColorE color) {
+    public SideBarUI setColor(ColorE color) {
         this.color = color;
+        return this;
     }
 
 

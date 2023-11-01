@@ -6,6 +6,7 @@ import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.util.render.GLManager;
 import com.ejo.glowui.util.render.QuickDraw;
 
+import javax.tools.Tool;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -56,17 +57,21 @@ public class TooltipUI extends ElementUI {
         return false;
     }
 
-    public void setColor(ColorE color) {
+    public TooltipUI setColor(ColorE color) {
         this.color = color;
+        return this;
     }
 
-    public void setSize(Vector size) {
+    public TooltipUI setSize(Vector size) {
         this.size = size;
+        return this;
     }
 
-    public void setElement(ElementUI element) {
+    public TooltipUI setElement(ElementUI element) {
         this.element = element;
+        return this;
     }
+
 
     public ColorE getColor() {
         return color;

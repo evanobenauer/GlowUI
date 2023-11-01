@@ -37,12 +37,14 @@ public class RectangleUI extends PolygonUI implements IShape {
         return mouseOver = mouseOverX && mouseOverY;
     }
 
-    public void setSize(Vector size) {
+    public RectangleUI setSize(Vector size) {
         this.size = size;
+        return this;
     }
 
-    public void setOutlineWidth(float outlineWidth) {
+    public RectangleUI setOutlineWidth(float outlineWidth) {
         this.outlineWidth = outlineWidth;
+        return this;
     }
 
 
