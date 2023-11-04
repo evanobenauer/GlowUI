@@ -12,15 +12,18 @@ public abstract class SettingWidget<T> extends WidgetUI {
     public SettingWidget(String title, Vector pos, Vector size, boolean shouldRender, boolean shouldTick, Container<T> container) {
         super(title, pos, size, shouldRender, shouldTick, null);
         this.container = container;
-        this.value = getContainer().get();
+        updateValueFromContainer();
         setAction(() -> getContainer().set(value));
     }
 
     @Override
     protected void tickWidget(Scene scene, Vector mousePos) {
-        this.value = getContainer().get();
+        updateValueFromContainer();
     }
 
+    protected void updateValueFromContainer() {
+        this.value = getContainer().get();
+    }
 
     public SettingWidget<T> setContainer(Container<T> container) {
         this.container = container;

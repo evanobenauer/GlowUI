@@ -28,6 +28,7 @@ public class ToggleUI extends SettingWidget<Boolean> {
 
     public ToggleUI(String title, Vector pos, Vector size, ColorE color, Container<Boolean> container) {
         super(title, pos, size, true, true,container);
+        updateValueFromContainer();
         this.color = color;
 
         toggleAnimation.subscribe();

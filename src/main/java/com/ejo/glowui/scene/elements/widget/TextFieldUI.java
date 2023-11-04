@@ -26,6 +26,7 @@ public class TextFieldUI extends SettingWidget<String> {
 
     public TextFieldUI(String title, Vector pos, Vector size, ColorE color, Container<String> container, String hint, boolean numbersOnly, int charLimit) {
         super(title, pos, size, true, true, container);
+        updateValueFromContainer();
         this.hint = hint;
         this.numbersOnly = numbersOnly;
         this.charLimit = charLimit;

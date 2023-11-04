@@ -24,6 +24,7 @@ public class SliderUI<T extends Number> extends SettingWidget<T> {
 
     public SliderUI(String title, Vector pos, Vector size, ColorE color, Container<T> container, T min, T max, T step, Type type, boolean displayValue) {
         super(title,pos,size,true,true,container);
+        updateValueFromContainer();
         this.type = type;
 
         this.color = color;

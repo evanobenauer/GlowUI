@@ -25,6 +25,7 @@ public class ModeCycleUI<T> extends SettingWidget<T> {
     @SafeVarargs
     public ModeCycleUI(String title, Vector pos, Vector size, ColorE color, Container<T> container, T... modes) {
         super(title,pos, size, true, true,container);
+        updateValueFromContainer();
         this.modes = new ArrayList<>(Arrays.asList(modes));
 
         this.baseColor = color;
