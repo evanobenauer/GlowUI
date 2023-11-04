@@ -12,6 +12,7 @@ public abstract class SettingWidget<T> extends WidgetUI {
     public SettingWidget(String title, Vector pos, Vector size, boolean shouldRender, boolean shouldTick, Container<T> container) {
         super(title, pos, size, shouldRender, shouldTick, null);
         this.container = container;
+        this.value = getContainer().get();
         setAction(() -> getContainer().set(value));
     }
 
