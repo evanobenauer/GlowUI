@@ -76,8 +76,8 @@ public class Polygon3D extends ElementUI {
 
             Angle theta = new Angle(Math.atan2(relativeVertex.getY(),relativeVertex.getX()) + getTheta().getRadians());
 
-            double radialX = theta.getDirectionVector().getX() * xyRad;
-            double radialY = theta.getDirectionVector().getY() * xyRad;
+            double radialX = theta.getUnitVector().getX() * xyRad;
+            double radialY = theta.getUnitVector().getY() * xyRad;
 
             vertices[i] = new Vector(radialX, radialY, vertex.getZ() - relativeCenter.getZ()).getAdded(relativeCenter);
         }
@@ -91,8 +91,8 @@ public class Polygon3D extends ElementUI {
 
             Angle phi = new Angle(Math.atan2(relativeVertex.getZ(),relativeVertex.getX()) + getPhi().getRadians());
 
-            double radialX = phi.getDirectionVector().getX() * xzRad;
-            double radialZ = phi.getDirectionVector().getY() * xzRad;
+            double radialX = phi.getUnitVector().getX() * xzRad;
+            double radialZ = phi.getUnitVector().getY() * xzRad;
 
             vertices[i] = new Vector(radialX, vertex.getY() - relativeCenter.getY(), radialZ).getAdded(relativeCenter);
         }
