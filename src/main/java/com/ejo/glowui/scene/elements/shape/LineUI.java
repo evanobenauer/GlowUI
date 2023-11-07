@@ -15,8 +15,8 @@ public class LineUI extends ElementUI implements IShape {
     private double width;
     private Type type;
 
-    public LineUI(Vector pos1, Vector pos2, ColorE color, Type type, double width) {
-        super(pos1, true, true);
+    public LineUI(Vector pos, Vector pos2, ColorE color, Type type, double width) {
+        super(pos, true, true);
         this.pos2 = pos2;
         this.colorE = color;
 
@@ -49,7 +49,7 @@ public class LineUI extends ElementUI implements IShape {
 
         GL11.glBegin(GL11.GL_LINES);
         GL11.glColor4d(getColor().getRed(),getColor().getGreen(),getColor().getBlue(),getColor().getAlpha());
-        GL11.glVertex2d(getPos1().getX(), getPos1().getY());
+        GL11.glVertex2d(getPos().getX(), getPos().getY());
         GL11.glVertex2d(getPos2().getX(), getPos2().getY());
         GL11.glEnd();
     }
@@ -63,20 +63,15 @@ public class LineUI extends ElementUI implements IShape {
         return false;
     }
 
-
-    public LineUI setPos1(Vector point1) {
-        return (LineUI) setPos(point1);
-    }
-
     public LineUI setPos2(Vector point2) {
         this.pos2 = point2;
         return this;
     }
 
     public LineUI setCenter(Vector pos) {
-        Vector pos1DirVec = getPos1().getSubtracted(getCenter());
+        Vector pos1DirVec = getPos().getSubtracted(getCenter());
+        setPos(pos1DirVec.getAdded(pos));
         Vector pos2DirVec = getPos2().getSubtracted(getCenter());
-        setPos1(pos1DirVec.getAdded(pos));
         setPos2(pos2DirVec.getAdded(pos));
         return this;
     }
@@ -97,16 +92,12 @@ public class LineUI extends ElementUI implements IShape {
     }
 
 
-    public Vector getPos1() {
-        return getPos();
-    }
-
     public Vector getPos2() {
         return pos2;
     }
 
     public Vector getCenter() {
-        return getPos1().getAdded(getPos2().getAdded(getPos1().getMultiplied(-1)).getMultiplied(.5));
+        return getPos().getAdded(getPos2().getSubtracted(getPos().getMultiplied(-1)).getMultiplied(.5));
     }
 
     public double getWidth() {
@@ -114,7 +105,7 @@ public class LineUI extends ElementUI implements IShape {
     }
 
     public double getLength() {
-        return getPos1().getAdded(getPos2().getMultiplied(-1)).getMagnitude();
+        return getPos().getAdded(getPos2().getMultiplied(-1)).getMagnitude();
     }
 
     public Type getType() {
