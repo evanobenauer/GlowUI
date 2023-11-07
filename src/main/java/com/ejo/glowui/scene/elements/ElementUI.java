@@ -1,6 +1,5 @@
 package com.ejo.glowui.scene.elements;
 
-import com.ejo.glowlib.math.VectorMod;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.construct.IDrawable;
 import com.ejo.glowui.scene.elements.construct.IInput;
@@ -27,17 +26,18 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
 
     /**
      * The draw method should be called in the draw method of the scene to which it belongs. This method operates in the render thread
+     *
      * @param scene
      * @param mousePos
      */
     @Override
     public void draw(Scene scene, Vector mousePos) {
         if (!shouldRender()) return;
-        drawElement(scene,mousePos);
+        drawElement(scene, mousePos);
     }
 
     public void draw(Scene scene) {
-        draw(scene,scene.getWindow().getScaledMousePos());
+        draw(scene, scene.getWindow().getScaledMousePos());
     }
 
     public void draw() {
@@ -47,6 +47,7 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
     /**
      * This is the method that the element will have its contents drawn in. This method is called whenever draw() is called
      * Make sure when drawing elements, do NOT override draw(), and use this method instead
+     *
      * @param scene
      * @param mousePos
      */
@@ -55,6 +56,7 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
 
     /**
      * The tick method should be called in the tick method of the scene to which it belongs. This method operates in the tick thread
+     *
      * @param scene
      * @param mousePos
      */
@@ -62,11 +64,11 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
     public void tick(Scene scene, Vector mousePos) {
         if (!shouldTick()) return;
         mouseOver = updateMouseOver(mousePos);
-        tickElement(scene,mousePos);
+        tickElement(scene, mousePos);
     }
 
     public void tick(Scene scene) {
-        tick(scene,scene.getWindow().getScaledMousePos());
+        tick(scene, scene.getWindow().getScaledMousePos());
     }
 
     public void tick() {
@@ -76,6 +78,7 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
     /**
      * This is the method that the element will have its contents ticked in. This method is called whenever tick() is called
      * Make sure when ticking elements, do NOT override tick(), and use this method instead
+     *
      * @param scene
      * @param mousePos
      */
@@ -96,6 +99,7 @@ public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput 
     /**
      * This method can set the element to be enabled or disabled. Disabling an element is useful for "removing" elements with an interaction
      * from another elements while avoiding a concurrent modification exception
+     *
      * @param enabled
      */
     public void setEnabled(boolean enabled) {

@@ -4,7 +4,6 @@ import com.ejo.glowlib.math.Angle;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowui.scene.Scene;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 

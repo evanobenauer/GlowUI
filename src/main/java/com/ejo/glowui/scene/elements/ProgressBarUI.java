@@ -41,7 +41,7 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
         //Draw Background
         QuickDraw.drawRect(getPos(),getSize(), Util.WIDGET_BACKGROUND);
 
-        int border = 4;//(int)getSize().getY()/5;
+        int border = 4;
 
         //Draw Bar Fill
         double barPercent = NumberUtil.getBoundValue(getContainer().get().doubleValue(), getMin(), getMax()).doubleValue() / getMax();

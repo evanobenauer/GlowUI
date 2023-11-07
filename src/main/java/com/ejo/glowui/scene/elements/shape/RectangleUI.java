@@ -10,7 +10,6 @@ public class RectangleUI extends PolygonUI implements IShape {
     private Vector size;
     private float outlineWidth;
 
-    //TODO: Make order pos, color, size, etc...
     public RectangleUI(Vector pos, Vector size, boolean outlined, float outlineWidth, ColorE color) {
         super(pos,color, outlined, new Vector(0,0),new Vector(0,size.getY()),size,new Vector(size.getX(),0));
         this.size = size;

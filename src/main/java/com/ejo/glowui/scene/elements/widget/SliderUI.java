@@ -24,7 +24,7 @@ public class SliderUI<T extends Number> extends SettingWidget<T> {
 
     public SliderUI(String title, Vector pos, Vector size, ColorE color, Container<T> container, T min, T max, T step, Type type, boolean displayValue) {
         super(title,pos,size,true,true,container);
-        updateValueFromContainer();
+        updateValueFromContainer(); //TODO: Remove these from constructors eventually. I had to add them due to a null error when creating objects that I don't understand
         this.type = type;
 
         this.color = color;
@@ -85,13 +85,14 @@ public class SliderUI<T extends Number> extends SettingWidget<T> {
     protected void tickWidget(Scene scene, Vector mousePos) {
         super.tickWidget(scene,mousePos);
         if (sliding) { //Updates the value of the setting based off of the current width of the slider
-            double valueRange = getMax().doubleValue() - getMin().doubleValue(); //TODO: Fix doubleValue as it breaks float settings
+            double valueRange = getMax().doubleValue() - getMin().doubleValue();
             double sliderWidth = mousePos.getX() - getPos().getX();
             double sliderPercent = NumberUtil.getBoundValue(sliderWidth,0,getSize().getX()).doubleValue() / getSize().getX();
             double calculatedValue = sliderPercent * valueRange + getMin().doubleValue();
 
             double val = MathE.roundDouble((((Math.round(calculatedValue / getStep().doubleValue())) * getStep().doubleValue())), 2); //Rounds the slider based off of the step val
 
+            //value = getType().equals(Type.INTEGER) ? (T) (Integer) (int) val : NumberUtil.isNumberFloat(val) ? (T) (Float) (float) val : (T) (Double) val;
             value = getType().equals(Type.INTEGER) ? (T) (Integer) (int) val : (T) (Double) val;
 
             getAction().run();
