@@ -17,6 +17,18 @@ public class GLManager {
         GL11.glScaled(val,val,val);
     }
 
+    public static void scaleAboutPointStart(Vector point, Vector scale) {
+        GLManager.translate(new Vector(point.getX(),point.getY()));
+        GLManager.scale(new Vector(scale.getX(),scale.getY(),1));
+        GLManager.translate(new Vector(point.getX(),point.getY()).getMultiplied(-1));
+    }
+
+    public static void scaleAboutPointEnd(Vector point, Vector scale) {
+        GLManager.translate(new Vector(point.getX(),point.getY()));
+        GLManager.scale(new Vector(1/scale.getX(),1/scale.getY(),1));
+        GLManager.translate(point.getSubtracted(0,0,point.getZ()).getMultiplied(-1));
+    }
+
     public static void textureScale(Vector vec) {
         GL11.glPixelZoom((float) vec.getX(), (float)-vec.getY());
     }

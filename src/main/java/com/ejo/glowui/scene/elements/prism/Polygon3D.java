@@ -3,12 +3,14 @@ package com.ejo.glowui.scene.elements.prism;
 import com.ejo.glowlib.math.Angle;
 import com.ejo.glowlib.math.MathE;
 import com.ejo.glowlib.math.Vector;
+import com.ejo.glowlib.math.VectorMod;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.util.NumberUtil;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.ElementUI;
 import com.ejo.glowui.scene.elements.shape.CircleUI;
 import com.ejo.glowui.scene.elements.shape.PolygonUI;
+import com.ejo.glowui.util.Key;
 import com.ejo.glowui.util.render.Fonts;
 import com.ejo.glowui.util.render.GLManager;
 import com.ejo.glowui.util.render.QuickDraw;
@@ -19,37 +21,42 @@ import com.ejo.glowui.util.render.QuickDraw;
 public class Polygon3D extends ElementUI {
 
     protected final Vector[] originalVertices;
+    private final Vector[] scaledVertices;
     private Vector[] vertices;
 
-    private final double cameraZ;
     private Vector cameraPos;
 
     private Vector size;
     private Angle theta;
     private Angle phi;
 
-    public Polygon3D(Vector pos, Vector size, double cameraZ, Angle theta, Angle phi,Vector[] vertices) {
+    public Polygon3D(Vector pos, Vector size, double cameraZ, Angle theta, Angle phi, Vector[] vertices) {
         super(pos, true, true);
         this.size = size;
         this.theta = theta;
         this.phi = phi;
-        this.cameraZ = cameraZ;
+        this.cameraPos = new Vector(getCenter().getX(),getCenter().getY(),cameraZ);
         this.vertices = vertices;
-        this.originalVertices = vertices;
+        this.originalVertices = vertices.clone();
+        this.scaledVertices = vertices.clone();
         updateRotation();
     }
 
-    //TODO: Add camera distance to define scale and vertex size w/ cameraZ
     @Override
     protected void drawElement(Scene scene, Vector mousePos) {
-        updateCameraPos(scene);
+        updateCameraPos();
         updateRotation();
+        updateScaledVertices();
         //Draw Vertices
-        for (int i = 0; i < getVertices().length; i++) {
+        for (int i = 0; i < getScaledVertices().length; i++) {
+            Vector scaledVertex = getScaledVertices()[i];
             Vector vertex = getVertices()[i];
-            if (scene.getWindow().isDebug()) QuickDraw.drawText(String.valueOf(MathE.roundDouble(vertex.getAdded(getPos()).getZ(), 1)), Fonts.getDefaultFont(12),vertex.getAdded(getPos()),ColorE.WHITE);
-            Vector cameraDistance = getCameraPos().getSubtracted(vertex);
-            CircleUI circle = new CircleUI(getPos().getAdded(vertex),ColorE.BLUE, NumberUtil.getBoundValue(1/cameraDistance.getZ() * 2000,0,10).doubleValue(), CircleUI.Type.MEDIUM);
+            Vector cameraDistance = getCameraPos().getSubtracted(vertex.getAdded(getPos()));
+            double distanceScale = getCameraPos().getZ() / cameraDistance.getZ(); //TODO: This is not perfect
+
+            if (scene.getWindow().isDebug()) QuickDraw.drawText(String.valueOf(MathE.roundDouble(scaledVertex.getAdded(getPos()).getZ(), 1)), Fonts.getDefaultFont(12),scaledVertex.getAdded(getPos()),ColorE.WHITE);
+
+            CircleUI circle = new CircleUI(scaledVertex.getAdded(getPos()),ColorE.BLUE, 2 * distanceScale, CircleUI.Type.MEDIUM);
             circle.draw();
         }
     }
@@ -63,6 +70,10 @@ public class Polygon3D extends ElementUI {
         return false;
     }
 
+
+    public void updateCameraPos() {
+        setCameraPos(new Vector(getCenter().getX(),getCenter().getY(),getCameraPos().getZ()));
+    }
 
     public void updateRotation() {
         Vector[] vertices = originalVertices.clone();
@@ -100,12 +111,29 @@ public class Polygon3D extends ElementUI {
         setVertices(vertices);
     }
 
-    private void updateCameraPos(Scene scene) {
-        this.cameraPos = new Vector(scene.getSize().getX(),scene.getSize().getY(),cameraZ);
+    private void updateScaledVertices() {
+        for (int i = 0; i < getVertices().length; i++) {
+            Vector vertex = getVertices()[i];
+            Vector cameraDistance = getCameraPos().getSubtracted(vertex.getAdded(getPos()));
+            double distanceScale = (getCenter().getZ()) / cameraDistance.getZ();
+
+            //Scales X and Y around the camera's X and Y based off of the Z distance
+            VectorMod translation = vertex.getAdded(getPos()).getMod();
+            translation.subtract(getCameraPos().getSubtracted(0,0,getCameraPos().getZ()));
+            translation.scale(distanceScale,distanceScale);
+            translation.add(getCameraPos().getSubtracted(0,0,getCameraPos().getZ()));
+
+            scaledVertices[i] = translation.subtract(getPos());
+        }
     }
 
-    public Polygon3D setCameraPos(Vector cameraPos) {
+    private Polygon3D setCameraPos(Vector cameraPos) {
         this.cameraPos = cameraPos;
+        return this;
+    }
+
+    public Polygon3D setCameraZ(double cameraZ) {
+        setCameraPos(new Vector(getCenter().getX(),getCenter().getZ(),cameraZ));
         return this;
     }
 
@@ -159,4 +187,7 @@ public class Polygon3D extends ElementUI {
         return vertices;
     }
 
+    public Vector[] getScaledVertices() {
+        return scaledVertices;
+    }
 }
