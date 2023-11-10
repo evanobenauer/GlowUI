@@ -52,7 +52,7 @@ public class Polygon3D extends ElementUI {
             Vector scaledVertex = getScaledVertices()[i];
             Vector vertex = getVertices()[i];
             Vector cameraDistance = getCameraPos().getSubtracted(vertex.getAdded(getPos()));
-            double distanceScale = getCameraPos().getZ() / cameraDistance.getZ(); //TODO: This is not perfect
+            double distanceScale = (getCenter().getZ()) / cameraDistance.getZ();
 
             if (scene.getWindow().isDebug()) QuickDraw.drawText(String.valueOf(MathE.roundDouble(scaledVertex.getAdded(getPos()).getZ(), 1)), Fonts.getDefaultFont(12),scaledVertex.getAdded(getPos()),ColorE.WHITE);
 
