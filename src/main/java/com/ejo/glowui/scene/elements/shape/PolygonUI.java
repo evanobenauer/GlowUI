@@ -6,6 +6,8 @@ import org.lwjgl.opengl.GL11;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 
+import java.util.ArrayList;
+
 public class PolygonUI extends ElementUI implements IShape {
 
     protected Vector[] vertices;
@@ -40,7 +42,44 @@ public class PolygonUI extends ElementUI implements IShape {
 
     @Override
     public boolean updateMouseOver(Vector mousePos) {
-        return false; //TODO finish this
+        ArrayList<Vector> axisList = new ArrayList<>();
+
+        //Polygon 1 Axes
+        for (int i = 0; i < getVertices().length; i++) {
+            Vector vertex = getVertices()[i];
+            Vector vertex2 = getVertices()[i + 1 >= getVertices().length ? 0 : i + 1];
+            Vector sideVector = vertex2.getSubtracted(vertex);
+            Vector perpendicular = sideVector.getCross(new Vector(0, 0, 1));
+            Vector axis = perpendicular.getUnitVector();
+            axisList.add(axis);
+        }
+
+        for (Vector axis : axisList) {
+            double polygon1Max = 0;
+            double polygon1Min = 0;
+
+            double mouseComponent = axis.getDot(mousePos);
+
+            for (int i = 0; i < getVertices().length; i++) {
+                Vector vertex = getVertices()[i].getAdded(getPos());
+                double axisComponent = axis.getDot(vertex);
+                if (i == 0) {
+                    polygon1Min = axisComponent;
+                    polygon1Max = axisComponent;
+                }
+                if (axisComponent > polygon1Max) polygon1Max = axisComponent;
+                if (axisComponent < polygon1Min) polygon1Min = axisComponent;
+            }
+
+            if (mouseComponent > polygon1Min && mouseComponent < polygon1Max) {
+                continue;
+            } else {
+                return false;
+            }
+
+        }
+        return true;
+
     }
 
 
