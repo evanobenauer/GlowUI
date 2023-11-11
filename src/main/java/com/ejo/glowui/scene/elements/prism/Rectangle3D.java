@@ -40,8 +40,8 @@ public class Rectangle3D extends Polygon3D {
 
         //Draw Scaled Lines
         for (int i = 0; i < 8; i++) {
-            new LineUI(getPos().getAdded(getScaledVertices()[i]), getPos().getAdded(getScaledVertices()[i == 3 ? 0 : i == 7 ? 4 : i + 1]), ColorE.BLUE, LineUI.Type.PLAIN, 1).draw();
-            if (i < 4) new LineUI(getPos().getAdded(getScaledVertices()[i]), getPos().getAdded(getScaledVertices()[i + 4]), ColorE.BLUE, LineUI.Type.PLAIN, 1).draw();
+            new LineUI(ColorE.BLUE, LineUI.Type.PLAIN, 1,getPos().getAdded(getScaledVertices()[i]), getPos().getAdded(getScaledVertices()[i == 3 ? 0 : i == 7 ? 4 : i + 1])).draw();
+            if (i < 4) new LineUI(ColorE.BLUE, LineUI.Type.PLAIN, 1,getPos().getAdded(getScaledVertices()[i]), getPos().getAdded(getScaledVertices()[i + 4])).draw();
         }
     }
 }

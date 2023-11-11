@@ -9,23 +9,23 @@ import org.lwjgl.opengl.GL11;
 
 public class LineUI extends ElementUI implements IShape {
 
-    private Vector pos2;
     private ColorE colorE;
 
     private double width;
     private Type type;
 
-    public LineUI(Vector pos, Vector pos2, ColorE color, Type type, double width) {
-        super(pos, true, true);
-        this.pos2 = pos2;
-        this.colorE = color;
+    private Vector[] vertices;
 
-        this.width = width;
+    public LineUI(ColorE color, Type type, double width, Vector... vertices) {
+        super(vertices[0], true,true);
+        this.vertices = vertices;
+        this.colorE = color;
         this.type = type;
+        this.width = width;
     }
 
     public LineUI(Vector pos, Angle angle, double length, ColorE color, Type type, double width) {
-        this(pos,pos.getAdded(angle.getUnitVector().getMultiplied(length)),color,type,width);
+        this(color,type,width,pos,pos.getAdded(angle.getUnitVector().getMultiplied(length)));
     }
 
     @Override
@@ -47,10 +47,9 @@ public class LineUI extends ElementUI implements IShape {
             }
         }
 
-        GL11.glBegin(GL11.GL_LINES);
+        GL11.glBegin(GL11.GL_LINE_STRIP);
         GL11.glColor4d(getColor().getRed(),getColor().getGreen(),getColor().getBlue(),getColor().getAlpha());
-        GL11.glVertex2d(getPos().getX(), getPos().getY());
-        GL11.glVertex2d(getPos2().getX(), getPos2().getY());
+        for (Vector vertex : getVertices()) GL11.glVertex2d(vertex.getX(), vertex.getY());
         GL11.glEnd();
     }
 
@@ -63,16 +62,23 @@ public class LineUI extends ElementUI implements IShape {
         return false;
     }
 
-    public LineUI setPos2(Vector point2) {
-        this.pos2 = point2;
+
+    public void setVertices(Vector[] vertices) {
+        this.vertices = vertices;
+    }
+
+    @Override
+    public LineUI setPos(Vector pos) {
+        getVertices()[0] = pos;
         return this;
     }
 
     public LineUI setCenter(Vector pos) {
-        Vector pos1DirVec = getPos().getSubtracted(getCenter());
-        setPos(pos1DirVec.getAdded(pos));
-        Vector pos2DirVec = getPos2().getSubtracted(getCenter());
-        setPos2(pos2DirVec.getAdded(pos));
+        Vector oldCenter = getCenter();
+        for (int i = 0; i < getVertices().length; i++) {
+            Vector vertex = getVertices()[i];
+            getVertices()[i] = vertex.getAdded(pos.getSubtracted(oldCenter));
+        }
         return this;
     }
 
@@ -92,12 +98,26 @@ public class LineUI extends ElementUI implements IShape {
     }
 
 
-    public Vector getPos2() {
-        return pos2;
+    public Vector[] getVertices() {
+        return vertices;
     }
 
     public Vector getCenter() {
-        return getPos().getAdded(getPos2().getSubtracted(getPos().getMultiplied(-1)).getMultiplied(.5));
+        int iMinX = 0;
+        int iMaxX = 0;
+
+        int iMinY = 0;
+        int iMaxY = 0;
+
+        for (int i = 0; i < getVertices().length; i++) {
+            Vector vertex = getVertices()[i];
+            if (vertex.getX() > getVertices()[iMaxX].getX()) iMaxX = i;
+            if (vertex.getX() < getVertices()[iMinX].getX()) iMinX = i;
+            if (vertex.getY() > getVertices()[iMaxY].getY()) iMaxY = i;
+            if (vertex.getY() < getVertices()[iMinY].getY()) iMinY = i;
+        }
+
+        return new Vector(getVertices()[iMaxX].getX() + getVertices()[iMinX].getX(),getVertices()[iMaxY].getY() + getVertices()[iMinY].getY()).getMultiplied(.5);
     }
 
     public double getWidth() {
@@ -105,7 +125,15 @@ public class LineUI extends ElementUI implements IShape {
     }
 
     public double getLength() {
-        return getPos().getAdded(getPos2().getMultiplied(-1)).getMagnitude();
+        double length = 0;
+        for (int i = 0; i < getVertices().length; i++) {
+            boolean isThereNextVertex = i == getVertices().length - 1;
+            Vector vertex = getVertices()[i];
+            Vector nextVertex = (isThereNextVertex) ? getVertices()[i + 1] : null;
+            if (isThereNextVertex) length += nextVertex.getSubtracted(vertex).getMagnitude();
+        }
+
+        return length;
     }
 
     public Type getType() {

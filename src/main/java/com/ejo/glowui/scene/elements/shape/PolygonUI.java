@@ -84,7 +84,7 @@ public class PolygonUI extends ElementUI implements IShape {
 
 
     public PolygonUI setCenter(Vector pos) {
-        setPos(getPos().getSubtracted(getCenter()).getAdded(pos));
+        setPos(getPos().getAdded(pos.getSubtracted(getCenter())));
         return this;
     }
 

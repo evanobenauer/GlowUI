@@ -158,7 +158,7 @@ public class Polygon3D extends ElementUI {
     }
 
     public Polygon3D setCenter(Vector pos) {
-        setPos(getPos().getSubtracted(getCenter()).getAdded(pos));
+        setPos(getPos().getAdded(pos.getSubtracted(getCenter())));
         return this;
     }
 
