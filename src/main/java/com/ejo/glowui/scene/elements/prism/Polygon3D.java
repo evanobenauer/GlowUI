@@ -24,18 +24,21 @@ public class Polygon3D extends ElementUI {
     private final Vector[] scaledVertices;
     private Vector[] vertices;
 
+    private double cameraScale;
+
     private Vector cameraPos;
 
     private Vector size;
     private Angle theta;
     private Angle phi;
 
-    public Polygon3D(Vector pos, Vector size, double cameraZ, Angle theta, Angle phi, Vector[] vertices) {
+    public Polygon3D(Vector pos, Vector size, double cameraZ, double cameraScale, Angle theta, Angle phi, Vector[] vertices) {
         super(pos, true, true);
         this.size = size;
         this.theta = theta;
         this.phi = phi;
         this.cameraPos = new Vector(getCenter().getX(),getCenter().getY(),cameraZ);
+        this.cameraScale = cameraScale;
         this.vertices = vertices;
         this.originalVertices = vertices.clone();
         this.scaledVertices = vertices.clone();
@@ -52,7 +55,7 @@ public class Polygon3D extends ElementUI {
             Vector scaledVertex = getScaledVertices()[i];
             Vector vertex = getVertices()[i];
             Vector cameraDistance = getCameraPos().getSubtracted(vertex.getAdded(getPos()));
-            double distanceScale = (getCenter().getZ()) / cameraDistance.getZ();
+            double distanceScale = getCameraScale() / cameraDistance.getZ();
 
             if (scene.getWindow().isDebug()) QuickDraw.drawText(String.valueOf(MathE.roundDouble(scaledVertex.getAdded(getPos()).getZ(), 1)), Fonts.getDefaultFont(12),scaledVertex.getAdded(getPos()),ColorE.WHITE);
 
@@ -115,7 +118,7 @@ public class Polygon3D extends ElementUI {
         for (int i = 0; i < getVertices().length; i++) {
             Vector vertex = getVertices()[i];
             Vector cameraDistance = getCameraPos().getSubtracted(vertex.getAdded(getPos()));
-            double distanceScale = (getCenter().getZ()) / cameraDistance.getZ();
+            double distanceScale = getCameraScale() / cameraDistance.getZ();
 
             //Scales X and Y around the camera's X and Y based off of the Z distance
             VectorMod translation = vertex.getAdded(getPos()).getMod();
@@ -135,6 +138,10 @@ public class Polygon3D extends ElementUI {
     public Polygon3D setCameraZ(double cameraZ) {
         setCameraPos(new Vector(getCenter().getX(),getCenter().getZ(),cameraZ));
         return this;
+    }
+
+    public void setCameraScale(double cameraScale) {
+        this.cameraScale = cameraScale;
     }
 
     public Polygon3D setCenter(Vector pos) {
@@ -165,6 +172,10 @@ public class Polygon3D extends ElementUI {
 
     public Vector getCameraPos() {
         return cameraPos;
+    }
+
+    public double getCameraScale() {
+        return cameraScale;
     }
 
     public Vector getCenter() {

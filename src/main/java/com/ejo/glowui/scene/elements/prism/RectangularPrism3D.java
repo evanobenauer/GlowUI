@@ -11,8 +11,8 @@ import com.ejo.glowui.scene.elements.shape.LineUI;
  */
 public class RectangularPrism3D extends Polygon3D {
 
-    public RectangularPrism3D(Vector pos, Vector size, double cameraZ, Angle theta, Angle phi) {
-        super(pos,size,cameraZ,theta,phi, new Vector[]{
+    public RectangularPrism3D(Vector pos, Vector size, double cameraZ, double cameraScale, Angle theta, Angle phi) {
+        super(pos,size,cameraZ,cameraScale,theta,phi, new Vector[]{
                 Vector.NULL,
                 new Vector(size.getX(), 0),
                 new Vector(size.getX(), size.getY()),
