@@ -14,16 +14,16 @@ import org.lwjgl.opengl.GL11;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.time.StopWatch;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferInt;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.nio.ByteBuffer;
+import java.net.URL;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
+import java.nio.file.Files;
+import java.util.Objects;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -118,13 +118,13 @@ public class Window {
         try {
             int width = 512;
             int height = 512;
-            File imageFile = new File(getClass().getResource("/icon.png").toURI());
+            URL imageURL = getClass().getResource("/icon.png");
             GLFWImage glfwImage = GLFWImage.malloc();
             GLFWImage.Buffer glfwImageBuffer = GLFWImage.malloc(1);
-            glfwImage.set(width,height,TextureUtil.getImageBuffer(imageFile, width,height));
+            glfwImage.set(width, height, TextureUtil.getImageBuffer(imageURL, width, height));
             glfwImageBuffer.close();
             glfwSetWindowIcon(getWindowId(), glfwImageBuffer.put(0,glfwImage));
-        } catch (URISyntaxException | NullPointerException e) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 

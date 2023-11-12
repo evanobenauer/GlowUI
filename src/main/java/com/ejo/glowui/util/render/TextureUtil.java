@@ -6,16 +6,17 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.File;
+import java.net.URL;
 import java.nio.ByteBuffer;
 
 public class TextureUtil {
 
-    public static ByteBuffer getImageBuffer(File imageFile, int width, int height) {
+    public static ByteBuffer getImageBuffer(URL imageURL, int width, int height) {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = img.createGraphics();
         try {
-            graphics.scale((double) img.getWidth() / ImageIO.read(imageFile).getWidth(),(double) img.getHeight() / ImageIO.read(imageFile).getHeight());
-            graphics.drawImage(ImageIO.read(imageFile), 0, 0, null);
+            graphics.scale((double) img.getWidth() / ImageIO.read(imageURL).getWidth(),(double) img.getHeight() / ImageIO.read(imageURL).getHeight());
+            graphics.drawImage(ImageIO.read(imageURL), 0, 0, null);
             graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
             graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         } catch (Exception e) {

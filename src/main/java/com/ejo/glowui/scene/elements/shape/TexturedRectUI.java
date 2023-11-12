@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
 import java.io.File;
+import java.net.URL;
 import java.nio.ByteBuffer;
 
 public class TexturedRectUI extends RectangleUI {
@@ -24,9 +25,9 @@ public class TexturedRectUI extends RectangleUI {
     private Vector texturePos;
     private Vector textureSize;
 
-    public TexturedRectUI(Vector pos, Vector size, File textureFile) {
+    public TexturedRectUI(Vector pos, Vector size, URL textureURL) {
         super(pos, size, ColorE.NULL);
-        setImage(textureFile);
+        setImage(textureURL);
     }
 
     @Override
@@ -38,8 +39,8 @@ public class TexturedRectUI extends RectangleUI {
         GL11.glDrawPixels((int)getSize().getX(),(int)getSize().getY(), GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageBuffer);
     }
 
-    public void setImage(File imageFile) {
-        this.imageBuffer = TextureUtil.getImageBuffer(imageFile,(int)getSize().getX(),(int)getSize().getY());
+    public void setImage(URL imageURL) {
+        this.imageBuffer = TextureUtil.getImageBuffer(imageURL,(int)getSize().getX(),(int)getSize().getY());
     }
 
 }
