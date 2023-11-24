@@ -8,6 +8,7 @@ import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.ElementUI;
 import org.lwjgl.opengl.GL11;
 
+//TODO: Create EllipseUI
 public class CircleUI extends ElementUI implements IShape {
 
     private static final Angle FULL = new Angle(360,true);

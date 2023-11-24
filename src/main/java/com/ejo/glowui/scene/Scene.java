@@ -43,25 +43,16 @@ public abstract class Scene {
             drawElementsList = new ArrayList<>(getElements()); //Stops queued elements from causing a concurrent modification exception
         } catch (ConcurrentModificationException ignored) {
         }
-        try {
-            for (ElementUI element : drawElementsList) {
-                element.draw(this, getWindow().getScaledMousePos());
-            }
-        } catch (ConcurrentModificationException e) {
-            e.printStackTrace();
-        }
+        for (ElementUI element : drawElementsList) element.draw(this, getWindow().getScaledMousePos());
         drawDebugText();
     }
-
     /**
      * This is the main tick method for the scene. It will tick all elements that are added to the scene. To tick more than the elements provided, you
      * must call the super of this method inside your override to continue to support the added elements. This method is called in the tick thread of the window
      */
     public void tick() {
         try {
-            for (ElementUI element : getElements()) {
-                element.tick(this, getWindow().getScaledMousePos());
-            }
+            for (ElementUI element : getElements()) element.tick(this, getWindow().getScaledMousePos());
             if (getAddElementQueue().isEmpty() && getRemoveElementQueue().isEmpty()) return;
             removeElements(getRemoveElementQueue().toArray(new ElementUI[0])); //Removes all queued elements to the list after all ticks
             addElements(getAddElementQueue().toArray(new ElementUI[0])); //Adds all queued elements to the list after all ticks

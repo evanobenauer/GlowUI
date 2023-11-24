@@ -28,6 +28,10 @@ public class LineUI extends ElementUI implements IShape {
         this(color,type,width,pos,pos.getAdded(angle.getUnitVector().getMultiplied(length)));
     }
 
+    public LineUI(Vector pos1, Vector pos2, ColorE color, Type type, double width) {
+        this(color,type,width,pos1,pos2);
+    }
+
     @Override
     protected void drawElement(Scene scene, Vector mousePos) {
         GL11.glLineWidth((float)getWidth());
@@ -69,7 +73,11 @@ public class LineUI extends ElementUI implements IShape {
 
     @Override
     public LineUI setPos(Vector pos) {
-        getVertices()[0] = pos;
+        Vector basePos = getVertices()[0];
+        for (int i = 0; i < getVertices().length; i++) {
+            Vector vertex = getVertices()[i];
+            getVertices()[i] = vertex.getAdded(pos.getSubtracted(basePos));
+        }
         return this;
     }
 

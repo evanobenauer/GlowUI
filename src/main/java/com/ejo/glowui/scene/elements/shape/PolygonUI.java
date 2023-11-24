@@ -42,18 +42,27 @@ public class PolygonUI extends ElementUI implements IShape {
 
     @Override
     public boolean updateMouseOver(Vector mousePos) {
+        //TODO: Make this only activate if within a minimum radius
         ArrayList<Vector> axisList = new ArrayList<>();
 
-        //Polygon 1 Axes
+        //Get Axes
         for (int i = 0; i < getVertices().length; i++) {
             Vector vertex = getVertices()[i];
             Vector vertex2 = getVertices()[i + 1 >= getVertices().length ? 0 : i + 1];
             Vector sideVector = vertex2.getSubtracted(vertex);
             Vector perpendicular = sideVector.getCross(new Vector(0, 0, 1));
             Vector axis = perpendicular.getUnitVector();
-            axisList.add(axis);
+            boolean isDuplicate = false;
+            for (Vector currentAxis : axisList) {
+                if (axis.equals(currentAxis)) {
+                    isDuplicate = true;
+                    break;
+                }
+            }
+            if (!isDuplicate) axisList.add(axis);
         }
 
+        //Check Axes for Separation
         for (Vector axis : axisList) {
             double polygon1Max = 0;
             double polygon1Min = 0;
