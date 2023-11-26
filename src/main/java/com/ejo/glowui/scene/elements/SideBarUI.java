@@ -26,6 +26,8 @@ public class SideBarUI extends ElementUI {
     private double width;
     private boolean open;
     private ColorE color;
+
+    private Vector screenSize = Vector.NULL;
     
     private final StopWatch openWatch = new StopWatch();
     protected int openPercent = 0;
@@ -61,6 +63,8 @@ public class SideBarUI extends ElementUI {
 
     @Override
     protected void drawElement(Scene scene, Vector mousePos) {
+        this.screenSize = scene.getSize();
+
         //Sets the position of the sidebar
         setPos(switch(getType()) {
             case TOP -> new Vector(0,0 - getWidth() * (100 - openPercent)/100);
@@ -142,7 +146,6 @@ public class SideBarUI extends ElementUI {
 
     @Override
     public boolean updateMouseOver(Vector mousePos) {
-        Vector screenSize = Vector.NULL; //TODO: Incomplete. Get the screen size
         switch (getType()) {
             case TOP,BOTTOM -> {
                 boolean mouseOverX = mousePos.getX() >= getPos().getX() && mousePos.getX() <= getPos().getX() + screenSize.getX();
