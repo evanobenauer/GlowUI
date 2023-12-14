@@ -2,6 +2,7 @@ package com.ejo.glowui.scene.elements.widget;
 
 import com.ejo.glowlib.setting.Container;
 import com.ejo.glowui.scene.Scene;
+import com.ejo.glowui.util.Key;
 import com.ejo.glowui.util.Util;
 import com.ejo.glowui.util.Mouse;
 import com.ejo.glowlib.math.MathE;
@@ -101,6 +102,19 @@ public class SliderUI<T extends Number> extends SettingWidget<T> {
 
     @Override
     public void onKeyPress(Scene scene, int key, int scancode, int action, int mods) {
+        if (sliding || !isMouseOver() || action == Key.ACTION_RELEASE) return;
+        if (key == Key.KEY_RIGHT.getId()) {
+            if (value.doubleValue() < getMax().doubleValue()) {
+                value = (T) (Double) MathE.roundDouble(value.doubleValue() + getStep().doubleValue(),2);
+                getAction().run();
+            }
+        }
+        if (key == Key.KEY_LEFT.getId()) {
+            if (value.doubleValue() > getMin().doubleValue()) {
+                value = (T) (Double) MathE.roundDouble(value.doubleValue() - getStep().doubleValue(),2);
+                getAction().run();
+            }
+        }
     }
 
     /**

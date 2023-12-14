@@ -112,7 +112,9 @@ public class TextUI extends ElementUI {
 
     @Override
     public boolean updateMouseOver(Vector mousePos) {
-        return false;
+        boolean hoveredX = mousePos.getX() > getPos().getX() && mousePos.getX() < getPos().getX() + getWidth();
+        boolean hoveredY = mousePos.getY() > getPos().getY() && mousePos.getY() < getPos().getY() + getHeight();
+        return this.mouseOver = hoveredX && hoveredY;
     }
 
 
