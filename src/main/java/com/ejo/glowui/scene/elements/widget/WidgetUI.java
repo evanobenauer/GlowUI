@@ -5,7 +5,7 @@ import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.ElementUI;
 import com.ejo.glowui.scene.elements.TextUI;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
-import com.ejo.glowui.util.Util;
+import com.ejo.glowui.util.UIUtil;
 import com.ejo.glowlib.event.EventAction;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
@@ -32,7 +32,7 @@ public abstract class WidgetUI extends ElementUI {
     public EventAction hoverAnimation = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
         fadeWatch.start();
         if (fadeWatch.hasTimePassedMS(1)) {
-            hoverFade = (int) Util.getNextAnimationValue(isMouseOver(),hoverFade,0,75,2f);
+            hoverFade = (int) UIUtil.getNextAnimationValue(isMouseOver(),hoverFade,0,75,2f);
             fadeWatch.restart();
         }
     });

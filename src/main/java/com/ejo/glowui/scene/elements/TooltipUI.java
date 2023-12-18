@@ -35,6 +35,7 @@ public class TooltipUI extends ElementUI {
     protected void drawElement(Scene scene, Vector mousePos) {
         if (!getElement().isMouseOver()) return;
         Vector startPos = mousePos.getAdded(0, -getSize().getY());
+        //TODO: Add width/height capping for when offscreen
         GLManager.translate(startPos);
         QuickDraw.drawRect(Vector.NULL, getSize(), getColor());
         for (ElementUI elementUI : getElementList()) {

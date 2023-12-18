@@ -2,7 +2,7 @@ package com.ejo.glowui.scene.elements;
 
 import com.ejo.glowlib.setting.Container;
 import com.ejo.glowui.scene.Scene;
-import com.ejo.glowui.util.Util;
+import com.ejo.glowui.util.UIUtil;
 import com.ejo.glowui.util.render.Fonts;
 import com.ejo.glowui.util.render.QuickDraw;
 import com.ejo.glowlib.math.Vector;
@@ -39,7 +39,7 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
     @Override
     protected void drawElement(Scene scene, Vector mousePos) {
         //Draw Background
-        QuickDraw.drawRect(getPos(),getSize(), Util.WIDGET_BACKGROUND);
+        QuickDraw.drawRect(getPos(),getSize(), UIUtil.WIDGET_BACKGROUND);
 
         int border = 4;
 

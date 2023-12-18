@@ -3,7 +3,7 @@ package com.ejo.glowui.scene.elements.widget;
 import com.ejo.glowlib.setting.Container;
 import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.scene.Scene;
-import com.ejo.glowui.util.Util;
+import com.ejo.glowui.util.UIUtil;
 import com.ejo.glowui.util.Mouse;
 import com.ejo.glowui.util.render.QuickDraw;
 import com.ejo.glowlib.event.EventAction;
@@ -21,7 +21,7 @@ public class ToggleUI extends SettingWidget<Boolean> {
     public EventAction toggleAnimation = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
         fadeWatch.start();
         if (fadeWatch.hasTimePassedMS(1)) {
-            toggleFade = (int) Util.getNextAnimationValue(getContainer().get(), toggleFade,0,150,2f);
+            toggleFade = (int) UIUtil.getNextAnimationValue(getContainer().get(), toggleFade,0,150,2f);
             fadeWatch.restart();
         }
     });
@@ -41,7 +41,7 @@ public class ToggleUI extends SettingWidget<Boolean> {
     
     @Override
     protected void drawWidget(Scene scene, Vector mousePos) {
-        QuickDraw.drawRect(getPos(),getSize(), Util.WIDGET_BACKGROUND);
+        QuickDraw.drawRect(getPos(),getSize(), UIUtil.WIDGET_BACKGROUND);
         QuickDraw.drawRect(getPos(), getSize(), new ColorE(getColor().getRed(), getColor().getGreen(), getColor().getBlue(), (int) toggleFade));
 
         double border = 4;
