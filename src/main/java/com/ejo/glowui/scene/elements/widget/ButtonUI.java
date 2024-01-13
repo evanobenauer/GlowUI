@@ -1,7 +1,7 @@
 package com.ejo.glowui.scene.elements.widget;
 
 import com.ejo.glowui.scene.Scene;
-import com.ejo.glowui.util.Mouse;
+import com.ejo.glowui.util.input.Mouse;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.util.NumberUtil;

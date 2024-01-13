@@ -7,12 +7,15 @@ import com.ejo.glowui.scene.elements.shape.PolygonUI;
 import com.ejo.glowui.scene.elements.shape.RectangleUI;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
-import com.ejo.glowui.util.Mouse;
+import com.ejo.glowui.util.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
 public class QuickDraw {
+
+    public static ColorE GLOW_BLUE = new ColorE(0,125,200);
+    public static ColorE WIDGET_BACKGROUND = new ColorE(50,50,50,200);
 
     public static void drawRect(Vector pos, Vector size, ColorE color) {
         new RectangleUI(pos,size,color).draw(null, Mouse.NULL_POS);

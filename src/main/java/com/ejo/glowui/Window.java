@@ -4,8 +4,8 @@ import com.ejo.glowlib.misc.DoOnce;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.util.render.GLManager;
-import com.ejo.glowui.util.Key;
-import com.ejo.glowui.util.Mouse;
+import com.ejo.glowui.util.input.Key;
+import com.ejo.glowui.util.input.Mouse;
 import com.ejo.glowui.util.render.TextureUtil;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
@@ -14,16 +14,9 @@ import org.lwjgl.opengl.GL11;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.time.StopWatch;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
-import java.nio.file.Files;
-import java.util.Objects;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -115,17 +108,15 @@ public class Window {
         Mouse.onMouse.subscribe();
 
         // Load the window icon
-        try {
+        URL imageURL = getClass().getResource("/icon.png");
+        if (imageURL != null) {
             int width = 512;
             int height = 512;
-            URL imageURL = getClass().getResource("/icon.png");
             GLFWImage glfwImage = GLFWImage.malloc();
             GLFWImage.Buffer glfwImageBuffer = GLFWImage.malloc(1);
             glfwImage.set(width, height, TextureUtil.getImageBuffer(imageURL, width, height));
             glfwImageBuffer.close();
-            glfwSetWindowIcon(getWindowId(), glfwImageBuffer.put(0,glfwImage));
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+            glfwSetWindowIcon(getWindowId(), glfwImageBuffer.put(0, glfwImage));
         }
 
         //Show the window

@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.evanobenauer:GlowLib:98ac5a15fb'
+    implementation 'com.github.evanobenauer:GlowLib:1.2.3b'
 
     implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 

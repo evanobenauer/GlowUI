@@ -1,4 +1,4 @@
-package com.ejo.glowui.util;
+package com.ejo.glowui.util.input;
 
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowui.event.EventRegistry;

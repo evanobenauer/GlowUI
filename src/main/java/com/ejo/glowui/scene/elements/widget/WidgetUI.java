@@ -10,6 +10,7 @@ import com.ejo.glowlib.event.EventAction;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
 import com.ejo.glowlib.time.StopWatch;
+import com.ejo.glowui.util.render.AnimationUtil;
 import com.ejo.glowui.util.render.Fonts;
 
 public abstract class WidgetUI extends ElementUI {
@@ -32,7 +33,7 @@ public abstract class WidgetUI extends ElementUI {
     public EventAction hoverAnimation = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
         fadeWatch.start();
         if (fadeWatch.hasTimePassedMS(1)) {
-            hoverFade = (int) UIUtil.getNextAnimationValue(isMouseOver(),hoverFade,0,75,2f);
+            hoverFade = (int) AnimationUtil.getNextAnimationValue(isMouseOver(),hoverFade,0,75,2f);
             fadeWatch.restart();
         }
     });

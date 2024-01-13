@@ -39,7 +39,7 @@ public class ProgressBarUI<T extends Number> extends ElementUI {
     @Override
     protected void drawElement(Scene scene, Vector mousePos) {
         //Draw Background
-        QuickDraw.drawRect(getPos(),getSize(), UIUtil.WIDGET_BACKGROUND);
+        QuickDraw.drawRect(getPos(),getSize(), QuickDraw.WIDGET_BACKGROUND);
 
         int border = 4;
 

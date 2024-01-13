@@ -6,7 +6,7 @@ import com.ejo.glowui.scene.elements.construct.IInput;
 import com.ejo.glowui.scene.elements.construct.IComponent;
 import com.ejo.glowui.scene.elements.construct.ITick;
 import com.ejo.glowlib.math.Vector;
-import com.ejo.glowui.util.Mouse;
+import com.ejo.glowui.util.input.Mouse;
 
 //TODO: Make all elements stop rendering when off the scene
 public abstract class ElementUI implements IComponent, IDrawable, ITick, IInput {

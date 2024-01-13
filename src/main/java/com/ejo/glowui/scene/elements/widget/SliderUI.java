@@ -2,9 +2,9 @@ package com.ejo.glowui.scene.elements.widget;
 
 import com.ejo.glowlib.setting.Container;
 import com.ejo.glowui.scene.Scene;
-import com.ejo.glowui.util.Key;
+import com.ejo.glowui.util.input.Key;
 import com.ejo.glowui.util.UIUtil;
-import com.ejo.glowui.util.Mouse;
+import com.ejo.glowui.util.input.Mouse;
 import com.ejo.glowlib.math.MathE;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.misc.ColorE;
@@ -46,7 +46,7 @@ public class SliderUI<T extends Number> extends SettingWidget<T> {
     @Override
     protected void drawWidget(Scene scene, Vector mousePos) {
         //Draw Background
-        QuickDraw.drawRect(getPos(),getSize(), UIUtil.WIDGET_BACKGROUND);
+        QuickDraw.drawRect(getPos(),getSize(), QuickDraw.WIDGET_BACKGROUND);
 
         double border = getSize().getY()/5;
 

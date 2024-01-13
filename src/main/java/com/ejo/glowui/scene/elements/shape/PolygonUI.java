@@ -42,7 +42,7 @@ public class PolygonUI extends ElementUI implements IShape {
 
     @Override
     public boolean updateMouseOver(Vector mousePos) {
-        //TODO: Make this only activate if within a minimum radius
+        if (mousePos.getSubtracted(getCenter()).getMagnitude() > getMaximumVectorDistance()) return false;
         ArrayList<Vector> axisList = new ArrayList<>();
 
         //Get Axes
@@ -89,6 +89,15 @@ public class PolygonUI extends ElementUI implements IShape {
         }
         return true;
 
+    }
+
+    private double getMaximumVectorDistance() {
+        double maxDistance = 0;
+        for (Vector vertex : vertices) {
+            double dist = vertex.getAdded(getPos()).getSubtracted(getCenter()).getMagnitude();
+            if (dist > maxDistance) maxDistance = dist;
+        }
+        return maxDistance;
     }
 
 

@@ -8,6 +8,7 @@ import com.ejo.glowui.event.EventRegistry;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.widget.ButtonUI;
 import com.ejo.glowui.util.UIUtil;
+import com.ejo.glowui.util.render.AnimationUtil;
 import com.ejo.glowui.util.render.Fonts;
 import com.ejo.glowui.util.render.GLManager;
 import com.ejo.glowui.util.render.QuickDraw;
@@ -35,7 +36,7 @@ public class SideBarUI extends ElementUI {
     public EventAction openAnimation = new EventAction(EventRegistry.EVENT_RUN_MAINTENANCE, () -> {
         openWatch.start();
         if (openWatch.hasTimePassedMS(1)) {
-            openPercent = (int) UIUtil.getNextAnimationValue(isOpen(), openPercent, 0, 100, 2f);
+            openPercent = (int) AnimationUtil.getNextAnimationValue(isOpen(), openPercent, 0, 100, 2f);
             openWatch.restart();
         }
     });

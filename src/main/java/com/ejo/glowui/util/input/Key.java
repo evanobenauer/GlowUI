@@ -1,4 +1,4 @@
-package com.ejo.glowui.util;
+package com.ejo.glowui.util.input;
 
 import com.ejo.glowui.event.EventRegistry;
 import org.lwjgl.glfw.GLFW;

@@ -5,14 +5,10 @@ import com.ejo.glowlib.math.MathE;
 import com.ejo.glowlib.math.Vector;
 import com.ejo.glowlib.math.VectorMod;
 import com.ejo.glowlib.misc.ColorE;
-import com.ejo.glowlib.util.NumberUtil;
 import com.ejo.glowui.scene.Scene;
 import com.ejo.glowui.scene.elements.ElementUI;
 import com.ejo.glowui.scene.elements.shape.CircleUI;
-import com.ejo.glowui.scene.elements.shape.PolygonUI;
-import com.ejo.glowui.util.Key;
 import com.ejo.glowui.util.render.Fonts;
-import com.ejo.glowui.util.render.GLManager;
 import com.ejo.glowui.util.render.QuickDraw;
 
 /**
